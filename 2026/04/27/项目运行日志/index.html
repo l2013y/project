@@ -112,14 +112,6 @@
             <ul class="nav navbar-nav navbar-right">
                 
                     <li>
-                        <a href="/project/">
-                            
-                                首页
-                            
-                        </a>
-                    </li>
-                
-                    <li>
                         <a href="/project/archives">
                             
                                 归档
@@ -204,6 +196,7 @@
                 <h1 id="4-27"><a href="#4-27" class="headerlink" title="4.27"></a>4.27</h1><h2 id="刚面对新项目"><a href="#刚面对新项目" class="headerlink" title="刚面对新项目"></a>刚面对新项目</h2><p>对于这个项目毫无头绪，甚至哪个文件夹是干嘛的都不知道，只记得 <code>npm install</code> 和 <code>npm run dev</code> 这两个命令。</p>
 <h2 id="4-29"><a href="#4-29" class="headerlink" title="4.29"></a>4.29</h2><h3 id="1-前端（vecode）"><a href="#1-前端（vecode）" class="headerlink" title="1. 前端（vecode）"></a>1. 前端（vecode）</h3><p>在借助AI工具的帮助下，在shoptour-backstage、shoptour-frontend两个前端项目中分别运行了 <code>npm install</code> 和 <code>npm run dev</code> 可以正常启动，端口号为<ins> <a target="_blank" rel="noopener" href="http://localhsot:8080/">http://localhsot:8080</a> </ins>。</p>
 <h3 id="2-后端（IDEA）"><a href="#2-后端（IDEA）" class="headerlink" title="2. 后端（IDEA）"></a>2. 后端（IDEA）</h3><p>在进入上述端口之后是一个登录页面，这时候需要进去idea找到shoptour-platform中的web文件夹，运行三个包中的agent和app文件夹中的jar包，这时候就可以在之前的8080端口输入 <ins> <a target="_blank" rel="noopener" href="http://localhsot:9088/admin/doc.html">http://localhsot:9088/admin/doc.html</a> </ins> ，之后再终端输入 <code>Test-NetConnection -ComputerName localhost -Port 9088</code> 测试连通性，终端输出<strong>true</strong>则连通成功。<br>如果运行app文件中的jar包，之后输入<ins><a target="_blank" rel="noopener" href="http://localhost:9090/app/doc.html">http://localhost:9090/app/doc.html</a></ins>。</p>
+<h3 id=""><a href="#" class="headerlink" title="!"></a>!</h3><p>运行AgentRun之后会自动退出，我让通义灵码查看之后给出结果是没有引入<strong>spring-boot-starter-web</strong>依赖，但考虑到不一定需要安装这个依赖，所以并没有添加</p>
 
 
                 
