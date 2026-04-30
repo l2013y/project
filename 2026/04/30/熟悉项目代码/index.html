@@ -23,7 +23,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="markdown学习历程"/>
+        <meta property="og:title" content="熟悉项目代码"/>
     
 
     <!--Open Graph Description-->
@@ -55,7 +55,7 @@
 
     <!-- Title -->
     
-    <title>markdown学习历程 - 路毅的博客</title>
+    <title>熟悉项目代码 - 路毅的博客</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
@@ -151,13 +151,13 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-heading">
-                    <h1>markdown学习历程</h1>
+                    <h1>熟悉项目代码</h1>
                     
                     <span class="meta">
                         <!-- Date and Author -->
                         
                         
-                            2026-04-24
+                            2026-04-30
                         
                     </span>
                 </div>
@@ -193,84 +193,21 @@
 
             <!-- Post Main Content -->
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <style>
- h1,h3  {
-  color: #2C3E50;
-}
-</style>
-
-<p><img src="/project/images/lv.jpg"></p>
-<h1 id="基本入门语法"><a href="#基本入门语法" class="headerlink" title="基本入门语法"></a>基本入门语法</h1><p> 注意！：使用这种方法#与文本之间要加空格<br>使用方法：#一级标题</p>
-<h2 id="二级标题"><a href="#二级标题" class="headerlink" title="二级标题"></a>二级标题</h2><p>使用方法：##二级方法，三级四级的方法都是##的增加，以此类推；<br>不过还有其他的标题写法：一级标题用法2.0：在文本下方添加任意数量的&#x3D;&#x3D;&#x3D;符号，效果如下：二级标题就是在文本下面添加——-</p>
-<h1 id="Heading-level-1"><a href="#Heading-level-1" class="headerlink" title="Heading level 1                        "></a>Heading level 1                        </h1><h2 id="Heading-level-2"><a href="#Heading-level-2" class="headerlink" title="Heading  level 2"></a>Heading  level 2</h2><h3 id="段落写法"><a href="#段落写法" class="headerlink" title="段落写法"></a>段落写法</h3><p>每个段落的首行都不用进行空格处理，反而进行空格应该会报错<br>  尝试空格后果，试一下（好像不会报错）</p>
-<h3 id="强调效果"><a href="#强调效果" class="headerlink" title="强调效果"></a>强调效果</h3><p>下划线要用到类似于html标签处理<br>这是 <ins> 下划线的示例 </ins> </p>
-<p>加粗文本要用到的是“ **    ** “或”_     _“两个星或下划线包裹要加粗的部分例如：<br><strong>加粗样本1</strong>     <strong>加粗样本2</strong>  <strong>加粗样本3</strong></p>
-<p>斜体的话”*     *“一个星号或下划线包裹文本：<br><em>斜体样本1</em>  <em>样本2</em></p>
-<p>斜体加粗一起用的话星号和下划线都要用到三个，但用下划线的话两边需要留个空格<br>这就是<em><strong>粗体</strong></em>和 <em><strong>斜体</strong></em> 一起用的效果</p>
-<h3 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h3><blockquote>
-<p>题目  “&gt;”</p>
-<ul>
-<li>观点1  ”&gt; -“ </li>
-<li>观点2  “&gt; - ”</li>
-</ul>
-</blockquote>
-<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><ul>
-<li>list</li>
-<li>list</li>
-<li>list</li>
-</ul>
+                <h1 id="先从前端下手"><a href="#先从前端下手" class="headerlink" title="先从前端下手"></a>先从前端下手</h1><p>我询问AI最佳的学习顺序是：可以先从<strong>shoptour-backstage</strong>开始。</p>
 <ol>
-<li>one</li>
-<li>two</li>
-<li>three</li>
+<li>先了解<strong>main.js</strong>，了解VUE如何初始化，注册插件，了解完这个文件就可以大概知道应用的框架</li>
+<li>了解App.vue，它包含了路由视图、全局状态和页面组织。</li>
+<li>src&#x2F;pages&#x2F;: 如<strong>home.vue</strong>,<strong>login.vue等</strong>，这些事用户可直接看到的页面，逻辑相对简单</li>
+<li>src&#x2F;components: 可复用组件，如<strong>navlist.vue</strong>（导航列表），学习如何拆分和复用UI。</li>
+<li>index.js: 路由配置，了解页面如何跳转。</li>
+<li>http.js: 数据请求部分，了解前后端交互。</li>
+<li>index.js: 状态管理，了解全局数据如何流动。</li>
 </ol>
-<h3 id="代码语法"><a href="#代码语法" class="headerlink" title="代码语法"></a>代码语法</h3><p>这句话中我是  <code>代码</code><br>&lt;html&gt;<br>  &lt;head&gt;<br>  <head><br>&lt;&#x2F;html&gt;<br><img src="/project/images/code.png"></p>
-<hr>
-<h3 id="分隔线"><a href="#分隔线" class="headerlink" title="分隔线"></a>分隔线</h3><p>创建分隔线需要单独一行多个星号、破折号、下划线且不能包含其他内容</p>
-<hr>
-<h3 id="语法链接"><a href="#语法链接" class="headerlink" title="语法链接"></a>语法链接</h3><p>这个就是<a target="_blank" rel="noopener" href="https://markdown.com.cn/" title="Markdown语法教程入门">Markdown语法</a></p>
-<h3 id="表格"><a href="#表格" class="headerlink" title="表格"></a>表格</h3><table>
-<thead>
-<tr>
-<th align="left">name</th>
-<th align="center">height</th>
-<th align="right">gender</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">红</td>
-<td align="center">175cm</td>
-<td align="right">女</td>
-</tr>
-<tr>
-<td align="left">明</td>
-<td align="center">165cm</td>
-<td align="right">男</td>
-</tr>
-<tr>
-<td align="left">冒号在哪一边就是对哪边对齐</td>
-<td align="center"></td>
-<td align="right"></td>
-</tr>
-</tbody></table>
-<h3 id="围栏代码块"><a href="#围栏代码块" class="headerlink" title="围栏代码块"></a>围栏代码块</h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line"> <span class="string">&quot;Name&quot;</span>：“lu”，</span><br><span class="line"> <span class="string">&quot;age&quot;</span>：<span class="number">20</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>-&gt; 这是<strong>main.js</strong>中的滚动监听事件， <em><strong>t和p的位置就可以看为滚动条上边缘相对于容器顶部的距离</strong></em> ，<br>tips：<br>下列都是只读属性（系统自带&#x2F;规定）<br><strong>scrollHeight</strong>：元素内容总高度（包括溢出不可视部分）<br><strong>clientHeight</strong>：元素可视区域高度（包括内边距，不包括边框、滚动条、外边距）<br><strong>scrollTop</strong>：已滚动高度（向上滚动时，顶部藏了多少）<br><strong>offsetHeight</strong>：元素自身高度（clientHeight + 边框 + 滚动条）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Vue</span>.<span class="title function_">directive</span>(<span class="string">&#x27;loadmore&#x27;</span>, &#123;</span><br><span class="line">  <span class="title function_">bind</span>(<span class="params">el, binding</span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> p = <span class="number">0</span>;  <span class="comment">//previous，记录上一次滚动事件开始的位置</span></span><br><span class="line">    <span class="keyword">var</span> t = <span class="number">0</span>;  <span class="comment">//temp/current,记录当前的滚动事件结束位置</span></span><br><span class="line">    <span class="keyword">var</span> down = <span class="literal">true</span>;  <span class="comment">//假设用户向下滚动</span></span><br><span class="line">    <span class="keyword">var</span> selectWrap = el.<span class="title function_">querySelector</span>(<span class="string">&#x27; .待绑定的滚动容器 &#x27;</span>);</span><br><span class="line">    selectWrap.<span class="title function_">addEventListener</span>(<span class="string">&#x27;scroll&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="comment">//判断是否向下滚动</span></span><br><span class="line">      p = <span class="title class_">Math</span>.<span class="title function_">ceil</span>(<span class="variable language_">this</span>.<span class="property">scrollTop</span>);  <span class="comment">//相当于把scroolTop的功能赋予了p</span></span><br><span class="line">      <span class="keyword">if</span>(t &lt; p)&#123;  <span class="comment">//当前位置&lt;之前的位置，则视滚动为真</span></span><br><span class="line">        down = <span class="literal">true</span>;</span><br><span class="line">      &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        down = <span class="literal">false</span>;  <span class="comment">//当前位置&gt;之前位置，则视滚动为假</span></span><br><span class="line">      &#125;</span><br><span class="line">      t = p;  <span class="comment">//将当前位置存为“旧位置”，为下一次滚动做准备</span></span><br><span class="line">      <span class="keyword">const</span> scrollDistance = <span class="variable language_">this</span>.<span class="property">scrollHeight</span> - p - <span class="variable language_">this</span>.<span class="property">clientHeight</span>; </span><br><span class="line"><span class="comment">//前面的式子=&gt;  滚动距离=内容总高度-已经滚上去的高度-眼睛能看到的高度</span></span><br><span class="line">      <span class="keyword">if</span> (scrollDistance == <span class="number">0</span> &amp;&amp; down) &#123;</span><br><span class="line">        binding.<span class="title function_">value</span>();  <span class="comment">//</span></span><br><span class="line">      &#125;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>关键点：为什么用p而不用t？<br>用t：如果快速连续滚动，浏览器可能会派发多个 scroll 事件。用 p（事件最开始的值）计算，能够保证在这一次滚动事件处理完成前，不会被其他事件干扰而重复触发加载。</p>
+<h2 id="学习资源："><a href="#学习资源：" class="headerlink" title="学习资源："></a>学习资源：</h2><p>边学边查Vue.js官方文档，重点看组件、生命周期、数据绑定。不要急于全懂，先理解一个页面，再扩展。</p>
 
-<h3 id="注脚-footnote"><a href="#注脚-footnote" class="headerlink" title="注脚 ^footnote"></a>注脚 <a href="%E8%84%9A%E6%B3%A8%E4%BD%BF%E6%82%A8%E5%8F%AF%E4%BB%A5%E6%B7%BB%E5%8A%A0%E6%B3%A8%E9%87%8A%E5%92%8C%E5%8F%82%E8%80%83%EF%BC%8C%E8%80%8C%E4%B8%8D%E4%BC%9A%E4%BD%BF%E6%96%87%E6%A1%A3%E6%AD%A3%E6%96%87%E6%B7%B7%E4%B9%B1%E3%80%82%E5%BD%93%E6%82%A8%E5%88%9B%E5%BB%BA%E8%84%9A%E6%B3%A8%E6%97%B6%EF%BC%8C%E5%B8%A6%E6%9C%89%E8%84%9A%E6%B3%A8%E7%9A%84%E4%B8%8A%E6%A0%87%E6%95%B0%E5%AD%97%E4%BC%9A%E5%87%BA%E7%8E%B0%E5%9C%A8%E6%82%A8%E6%B7%BB%E5%8A%A0%E8%84%9A%E6%B3%A8%E5%8F%82%E8%80%83%E7%9A%84%E4%BD%8D%E7%BD%AE%E3%80%82%E8%AF%BB%E8%80%85%E5%8F%AF%E4%BB%A5%E5%8D%95%E5%87%BB%E9%93%BE%E6%8E%A5%E4%BB%A5%E8%B7%B3%E8%87%B3%E9%A1%B5%E9%9D%A2%E5%BA%95%E9%83%A8%E7%9A%84%E8%84%9A%E6%B3%A8%E5%86%85%E5%AE%B9">^footnote</a></h3><p>要创建脚注参考，请在方括号（[^1]）内添加插入符号和标识符。标识符可以是数字或单词，但不能包含空格或制表符。标识符仅将脚注参考与脚注本身相关联-在输出中，脚注按顺序编号</p>
-<h3 id="定义列表"><a href="#定义列表" class="headerlink" title="定义列表"></a>定义列表</h3><dl><dt>First term<br>：这是定义列表的第一列表演示<br>Second term</dt><dd>这是定义列表的第二列表演示<br>（必须为英文冒号，第一个就是中文状态下的冒号）</dd></dl><h3 id="插入视频"><a href="#插入视频" class="headerlink" title="插入视频"></a>插入视频</h3><p>原理还是html</p>
-<iframe src="//player.bilibili.com/player.html?isOutside=true&aid=114201066479129&bvid=BV1GPX1YpErE&cid=28993847393&p=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe>
-
-<h3 id="任务列表语法"><a href="#任务列表语法" class="headerlink" title="任务列表语法"></a>任务列表语法</h3><p>⚙️用Markdown自带语法-[]无法实现，还得用html</p>
-<ul style=" list-style : none;">
-  <li>
-    <input type="checkbox"> 这是第一个任务
-  </li>
-  <li>
-    <input type="checkbox"> 这是第二个任务
-  </li>
-  <li>
-    <input type="checkbox"> 这是第三个任务
-  </li>
-</ul>
 
                 
             </div>
