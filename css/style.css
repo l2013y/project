@@ -554,8 +554,7 @@ pre .doctype,
 pre .pi,
 pre .lisp .string,
 pre .javadoc {
-  color: #93a1a1;
-  font-style: italic;
+  color: #9e9e9e;
 }
 pre .keyword,
 pre .winutils,
@@ -614,4 +613,7 @@ pre .clojure .title {
 }
 pre .deletion {
   color: #dc322f;
+}
+table thead th {
+  text-align: center !important;
 }
