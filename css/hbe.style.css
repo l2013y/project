@@ -840,6 +840,9 @@ color: #cfd6e4;
 background: #4d8df0;
 color: #fff;
 }
+.hbe-button{
+	text-align:center;
+}
 .hbe-button:hover,
 .hbe-button:focus {
 background: #6ba1f5;
