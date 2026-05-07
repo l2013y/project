@@ -62,7 +62,7 @@
 
     <!-- Custom CSS -->
     
-<link rel="stylesheet" href="/project/css/style.css">
+<link rel="stylesheet" href="/blog/css/style.css">
 
 
     <!-- Custom Fonts -->
@@ -104,7 +104,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/project/">博客首页</a>
+            <a class="navbar-brand" href="/blog/">博客首页</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -112,7 +112,7 @@
             <ul class="nav navbar-nav navbar-right">
                 
                     <li>
-                        <a href="/project/archives">
+                        <a href="/blog/archives">
                             
                                 归档
                             
@@ -120,7 +120,7 @@
                     </li>
                 
                     <li>
-                        <a href="/project/tags">
+                        <a href="/blog/tags">
                             
                                 标签
                             
@@ -128,7 +128,7 @@
                     </li>
                 
                     <li>
-                        <a target="_blank" rel="noopener" href="https://github.com/l2013y/project">
+                        <a href="/blog/git@github.com:l2013y/blog.git">
                             
                                 <i class="fa fa-github fa-stack-2x"></i>
                             
@@ -146,7 +146,7 @@
     <!-- Page Header -->
 <!-- Set your background image for this header in your post front-matter: cover -->
 
-<header class="intro-header" style="background-image: url('/project/images/scenery1.png')">
+<header class="intro-header" style="background-image: url('/blog/images/scenery1.png')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -178,7 +178,7 @@
                         
 
 
-<a href="/project/tags/学习/">#学习</a>
+<a href="/blog/tags/学习/">#学习</a>
 
 
                     
@@ -213,7 +213,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 注册一个全局前置守卫</span></span><br><span class="line">router.<span class="title function_">beforeEach</span>(<span class="function">(<span class="params">to, <span class="keyword">from</span>, next</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="comment">// 这里的代码会在每次路由跳转时自动执行</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;即将从&#x27;</span>, <span class="keyword">from</span>.<span class="property">path</span>, <span class="string">&#x27;跳转到&#x27;</span>, to.<span class="property">path</span>);</span><br><span class="line">  <span class="comment">// 检查用户是否登录</span></span><br><span class="line">  <span class="keyword">if</span> (to.<span class="property">path</span> !== <span class="string">&#x27;/login&#x27;</span> &amp;&amp; !<span class="title function_">getToken</span>()) &#123;</span><br><span class="line">    <span class="title function_">next</span>(<span class="string">&#x27;/login&#x27;</span>);  <span class="comment">// 没登录就踢回登录页</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="title function_">next</span>();  <span class="comment">// 已登录，放行</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 <p><code>to.path !== &#39;/login&#39; &amp;&amp; !getToken()</code> 的意思是如果用户跳转的页面不是登录页面，或者getToken（一个函数，如果用户登陆过，就会存储一个凭证，函数就能返回true，没登陆就会返回false）的返回值为false，就需要返回登录页面进行登录</p>
 <h2 id="Vue三大模块"><a href="#Vue三大模块" class="headerlink" title="Vue三大模块"></a>Vue三大模块</h2><p><code>template</code> :<br>主要用来编写页面结构和布局，比如页面上有按钮，输入框，列表等<br><code>script</code> :<br>编写逻辑、数据、行为等，类似于HTML中的javascript，决定你能够做什么，点击和互动，语法上会有不同<br><code>style</code> :<br>样式和外观，决定页面的美观程度</p>
-<h2 id="2026-5-6"><a href="#2026-5-6" class="headerlink" title="2026.5.6"></a>2026.5.6</h2><h3 id="v-for-v-if"><a href="#v-for-v-if" class="headerlink" title="v-for &#x2F; v-if"></a>v-for &#x2F; v-if</h3><p><strong>v-for</strong>类似java的for循环,一般会在script标签里设置一个数据源，可以用v-for为这个数据源添加列表，表格等一系列操作<br>常用数组方法有slice（截取数组的一部分）、map（对每个函数执行函数，并返回新数组）、filter（筛选符合条件的元素，返回新数组）<br><img src="/project/images/arr.png"></p>
+<h2 id="2026-5-6"><a href="#2026-5-6" class="headerlink" title="2026.5.6"></a>2026.5.6</h2><h3 id="v-for-v-if"><a href="#v-for-v-if" class="headerlink" title="v-for &#x2F; v-if"></a>v-for &#x2F; v-if</h3><p><strong>v-for</strong>类似java的for循环,一般会在script标签里设置一个数据源，可以用v-for为这个数据源添加列表，表格等一系列操作<br>常用数组方法有slice（截取数组的一部分）、map（对每个函数执行函数，并返回新数组）、filter（筛选符合条件的元素，返回新数组）<br><img src="/blog/images/arr.png"></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;div&gt;v-<span class="keyword">for</span> =<span class="string">&quot;userList.slice(0,3)&quot;</span><span class="comment">//slice是Javascript中的内置数组方法,从数组中的0开始索引到2</span></span><br><span class="line"><span class="comment">//取决于括号内的数字，目的是优化性能，如果数据太多，页面只需要显示slice指定的数据即可</span></span><br><span class="line">&lt;/div&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"><span class="title function_">data</span>(<span class="params"></span>)&#123;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">	userList = [<span class="string">&#x27;张三&#x27;</span>,<span class="string">&#x27;李四&#x27;</span>,<span class="string">&#x27;王五&#x27;</span>...] <span class="comment">//假设这里有多个数据</span></span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml">&#125;</span></span></span><br><span class="line"><span class="language-javascript"><span class="language-xml"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 <p><strong>v-if</strong>满足条件就显示v-if其中代码，不满足条件就相当于这行代码不存在（不会出现在页面上）例：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;p v-<span class="keyword">if</span> = <span class="string">&#x27;true&#x27;</span>&gt;页面显示&lt;/p&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span> = <span class="string">&#x27;flase&#x27;</span>&gt;</span>页面不显示<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span> =<span class="string">&#x27;age&gt;18&#x27;</span>&gt;</span>成年<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
@@ -249,7 +249,7 @@
 
                     
                         <li>
-                            <a href="https://github.com/l2013y/project" target="_blank">
+                            <a href="git@github.com:l2013y/blog.git" target="_blank">
                                 <span class="fa-stack fa-lg">
                                     <i class="fa fa-circle fa-stack-2x"></i>
                                     <i class="fa fa-github fa-stack-1x fa-inverse"></i>
