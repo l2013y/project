@@ -218,6 +218,16 @@
 <p><strong>v-if</strong>满足条件就显示v-if其中代码，不满足条件就相当于这行代码不存在（不会出现在页面上）例：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;p v-<span class="keyword">if</span> = <span class="string">&#x27;true&#x27;</span>&gt;页面显示&lt;/p&gt;</span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span> = <span class="string">&#x27;flase&#x27;</span>&gt;</span>页面不显示<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">p</span> <span class="attr">v-if</span> =<span class="string">&#x27;age&gt;18&#x27;</span>&gt;</span>成年<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
 
+<h2 id="2026-5-8"><a href="#2026-5-8" class="headerlink" title="2026.5.8"></a>2026.5.8</h2><h3 id="前后端边界"><a href="#前后端边界" class="headerlink" title="前后端边界"></a>前后端边界</h3><p>理解了前端的用户权限和后端的数据管理，前端用户一般只有新建账号或者删除自己账号&#x2F;其他内容，后端只有管理员可以删除数据，处理垃圾信息或违规内容。</p>
+<h3 id="暴力新建账户"><a href="#暴力新建账户" class="headerlink" title="暴力新建账户"></a>暴力新建账户</h3><p>注册页面一般会有验证码或令牌对新建速率进行限制，还有一种方法是某个接口的流量突然飙升，系统会启动“熔断机制”，这个接口会停止响应，等到攻击结束再恢复。</p>
+<h3 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h3><p>对含有断点的代码进行Debug调试时，含有断点的那一行代码以及后续的代码都不会被执行</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">duandian</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> <span class="string">&quot;张三&quot;</span>;           <span class="comment">// 第2行</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">age</span> <span class="operator">=</span> <span class="number">25</span>;                  <span class="comment">// 第3行</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> greet(name, age); <span class="comment">// 第4行</span></span><br><span class="line">            System.out.println(result);    <span class="comment">// 第5行</span></span><br><span class="line">            System.out.println(<span class="string">&quot;程序结束&quot;</span>);   <span class="comment">// 第6行</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">static</span> String <span class="title function_">greet</span><span class="params">(String name, <span class="type">int</span> age)</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">greeting</span> <span class="operator">=</span> <span class="string">&quot;你好，&quot;</span> + name;  <span class="comment">// 第10行</span></span><br><span class="line">            <span class="keyword">if</span> (age &lt; <span class="number">18</span>) &#123;                    <span class="comment">// 第11行</span></span><br><span class="line">                <span class="keyword">return</span> greeting + <span class="string">&quot;小朋友&quot;</span>;      <span class="comment">// 第12行</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;                           <span class="comment">// 第13行</span></span><br><span class="line">                <span class="keyword">return</span> greeting + <span class="string">&quot;先生/女士&quot;</span>;    <span class="comment">// 第14行</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>对第4行打上断点进行调试，结果会在线程和变量面板出现 <code>name = &quot;张三&quot; age = 25</code> </li>
+<li>对第5行打上断点继续进行测试（也可以用F8快捷键对下一行进行断点调试），线程和变量面板会显示 <code>name = &quot;张三&quot; age = 25 result = &quot;你好，张三先生/女士&quot;</code> ，继续向下调试第6行，控制台输入result，继续向下调试，程序结束。（线程和变量面板和控制台差不多，但本质是两个东西，变量面板是看内存里有什么，控制台时看程序输出了什么）</li>
+<li>虽然说方法的代码在断点之后，但是方法被调用在断点之前，所以断点在第五行时线程和变量可以正常显示result<br> 快捷键：<strong>F8</strong>，继续向下一行调试；<strong>F7</strong>，步入断点这行所调用的方法代码内部进行调试</li>
+</ol>
+
 
                 
             </div>
@@ -264,6 +274,32 @@
 
                     
                 </ul>
+                <div id="goTopBtn" class="go-top-btn">
+                 ⬆
+                </div>
+
+<script>
+  (function() {
+    var goTopBtn = document.getElementById('goTopBtn');
+    if (!goTopBtn) return;
+
+    window.addEventListener('scroll', function() {
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      if (scrollTop > 200) {
+        goTopBtn.classList.add('show');
+      } else {
+        goTopBtn.classList.remove('show');
+      }
+    });
+
+    goTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  })();
+</script>
                 <p class="copyright text-muted">&copy; 2026 l2013y<br></p>
                 
             </div>

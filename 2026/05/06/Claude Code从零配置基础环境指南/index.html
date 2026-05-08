@@ -389,6 +389,32 @@
 
                     
                 </ul>
+                <div id="goTopBtn" class="go-top-btn">
+                 ⬆
+                </div>
+
+<script>
+  (function() {
+    var goTopBtn = document.getElementById('goTopBtn');
+    if (!goTopBtn) return;
+
+    window.addEventListener('scroll', function() {
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      if (scrollTop > 200) {
+        goTopBtn.classList.add('show');
+      } else {
+        goTopBtn.classList.remove('show');
+      }
+    });
+
+    goTopBtn.addEventListener('click', function() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  })();
+</script>
                 <p class="copyright text-muted">&copy; 2026 l2013y<br></p>
                 
             </div>
