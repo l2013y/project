@@ -323,15 +323,32 @@
 <script type="text/javascript">
     function generateToc() {
         var tocContainer = $('#toc-container');
-        if (!tocContainer.length) return;
+        var mobileTocContent = $('#mobileTocContent');
+        var mobileTocBtn = $('#mobileTocBtn');
 
         var headings = $('.article-content h1, .article-content h2, .article-content h3');
 
-        if (headings.length === 0) {
-            tocContainer.html('<div class="toc-placeholder">暂无目录</div>');
-            return;
+        // PC 端目录
+        if (tocContainer.length) {
+            if (headings.length === 0) {
+                tocContainer.html('<div class="toc-placeholder">暂无目录</div>');
+            } else {
+                generateTocContent(tocContainer, headings, false);
+            }
         }
 
+        // 移动端目录：如果有标题才显示按钮
+        if (mobileTocBtn.length) {
+            if (headings.length === 0) {
+                mobileTocBtn.hide();
+            } else {
+                mobileTocBtn.show();
+                generateTocContent(mobileTocContent, headings, true);
+            }
+        }
+    }
+
+    function generateTocContent(container, headings, isMobile) {
         // Clear existing IDs to avoid duplicates
         headings.removeAttr('id');
 
@@ -349,10 +366,10 @@
         });
         tocHtml += '</ul>';
 
-        tocContainer.html(tocHtml);
+        container.html(tocHtml);
 
         // Smooth scroll
-        tocContainer.find('a').off('click').on('click', function(e) {
+        container.find('a').off('click').on('click', function(e) {
             e.preventDefault();
             var target = $($(this).attr('href'));
             if (target.length) {
@@ -360,28 +377,50 @@
                     scrollTop: target.offset().top - 80
                 }, 300);
             }
+            // 移动端：点击后关闭面板
+            if (isMobile) {
+                closeMobileToc();
+            }
         });
 
-        // Highlight active heading
-        function highlightToc() {
-            var scrollPos = $(window).scrollTop() + 100;
-            headings.each(function() {
-                var heading = $(this);
-                var link = tocContainer.find('a[href="#' + heading.attr('id') + '"]');
+        // Highlight active heading (only for PC)
+        if (!isMobile) {
+            function highlightToc() {
+                var scrollPos = $(window).scrollTop() + 100;
+                headings.each(function() {
+                    var heading = $(this);
+                    var link = container.find('a[href="#' + heading.attr('id') + '"]');
 
-                if (heading.offset().top <= scrollPos) {
-                    tocContainer.find('a').removeClass('active');
-                    link.addClass('active');
-                }
-            });
+                    if (heading.offset().top <= scrollPos) {
+                        container.find('a').removeClass('active');
+                        link.addClass('active');
+                    }
+                });
+            }
+            $(window).off('scroll.toc').on('scroll.toc', highlightToc);
+            highlightToc();
         }
+    }
 
-        $(window).off('scroll.toc').on('scroll.toc', highlightToc);
-        highlightToc();
+    // 移动端目录开关
+    function openMobileToc() {
+        $('#tocOverlay').addClass('show');
+        $('#mobileTocPanel').addClass('show');
+        $('body').css('overflow', 'hidden');
+    }
+
+    function closeMobileToc() {
+        $('#tocOverlay').removeClass('show');
+        $('#mobileTocPanel').removeClass('show');
+        $('body').css('overflow', '');
     }
 
     $(function() {
         generateToc();
+
+        // 移动端目录事件
+        $('#mobileTocBtn').on('click', openMobileToc);
+        $('#tocCloseBtn, #tocOverlay').on('click', closeMobileToc);
 
         // For encrypted posts: use polling since MutationObserver doesn't work well
         if ($('#hexo-blog-encrypt').length) {
