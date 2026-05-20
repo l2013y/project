@@ -23,7 +23,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="路毅的博客"/>
+        <meta property="og:title" content="AI--代码"/>
     
 
     <!--Open Graph Description-->
@@ -36,7 +36,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website"/>
+        <meta property="og:type" content="article"/>
     
 
     <!--Page Cover-->
@@ -55,7 +55,7 @@
 
     <!-- Title -->
     
-    <title>归档：2026/5 - 路毅的博客</title>
+    <title>AI--代码 - 路毅的博客</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
@@ -145,88 +145,166 @@
 </nav>
 
     <!-- Main Content -->
-    
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
 
-<!-- Page Header -->
-<!-- Set your background image for this header in the theme's configuration: index_cover -->
-<header class="intro-header" style="background-image: url('/project/img/home-bg.jpg')">
+<header class="intro-header" style="background-image: url('/project/images/scenery7.jpg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="site-heading">
-                    <h1>2026/5</h1>
+            <div class="col-lg-12 text-center">
+                <div class="post-heading">
+                    <h1>AI--代码</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2026-05-19
+                        
+                    </span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            
-                <div class="post-preview">
-    <a href="/project/2026/05/19/AI-代码/">
-        <h1 class="post-title archive">
-            AI--代码
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2026-05-19
-    </p>
-</div>
-            
-                <div class="post-preview">
-    <a href="/project/2026/05/06/代码学习规划/">
-        <h1 class="post-title archive">
-            代码学习规划
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2026-05-06
-    </p>
-</div>
-            
-                <div class="post-preview">
-    <a href="/project/2026/05/06/单词/">
-        <h1 class="post-title archive">
-            单词
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2026-05-06
-    </p>
-</div>
-            
-                <div class="post-preview">
-    <a href="/project/2026/05/06/Claude Code从零配置基础环境指南/">
-        <h1 class="post-title archive">
-            Claude Code从零配置基础环境指南
-        </h1>
-    </a>
-    <p class="post-meta archive">
-        <!-- Date and Author -->
-        
-        2026-05-06
-    </p>
-</div>
-            
-            <div class="archive-before-pagination"></div>
-            <ul class="pager">
-    
-    
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row content-with-sidebar">
+
+            <!-- Post Main Content -->
+            <div class="main-content col-lg-9 col-md-8">
+
+                <!-- Tags and categories -->
+               
+                    <div class="post-tags">
+                        
+                            
+
+
+<a href="/project/tags/AI开发/">#AI开发</a>
+
+
+                        
+                    </div>
+                    <div class="post-categories">
+                        
+                    </div>
+                
+
+                <!-- Gallery -->
+                
+
+                <div class="article-content">
+                    <h2 id="2026-5-19"><a href="#2026-5-19" class="headerlink" title="2026.5.19"></a>2026.5.19</h2><p>今天下午先是用deepseek帮我生成了一份语音转文字的提示测，之后复制提示词让claude帮我生成了语音转文字的基础网页代码，先是生成了index.html和server.js,之后在文件夹中打开终端 <code>npm install ws</code> 安装了依赖，之后在cscode的终端中使用node server.js启动了服务。<br>打开网页之后发现无法实现语音转文字的这个功能，因为一开始只给了Claude百度模型的APP ID，之后经过一番调试之后，在百度智能云创建了API key，Secret key，access_token，并把这些一股脑都给claude之后再次调试就成功了！</p>
+<h2 id="这些是失败原因总结："><a href="#这些是失败原因总结：" class="headerlink" title="这些是失败原因总结："></a>这些是失败原因总结：</h2><h3 id="阶段-1"><a href="#阶段-1" class="headerlink" title="阶段: 1"></a>阶段: 1</h3><ul>
+<li>问题: 火山引擎401错误<br>  原因: 豆包语音识别需要复杂的V3签名认证，不是简单在Header里放APP_ID就行，百度<br>  是OAuth，火山是HMAC签名，机制完全不同<br>  解决方式: 放弃火山，改用百度</li>
 </ul>
+<hr>
+<h3 id="阶段-2"><a href="#阶段-2" class="headerlink" title="阶段: 2"></a>阶段: 2</h3><ul>
+<li>问题: 百度3300错误 url param cuid error<br>  原因: 参数位置放错了：- token 应该放body里，不是url参数- cuid<br>格式有限制，不能带下划线<br>  解决方式: 修正参数位置，cuid改成纯数字</li>
+</ul>
+<hr>
+<h3 id="阶段-3"><a href="#阶段-3" class="headerlink" title="阶段: 3"></a>阶段: 3</h3><ul>
+<li>问题: 识别结果为空 result:[“”]<br>  原因: 音频采样率转换有bug：浏览器48kHz采样 →<br>代码里降采样到16kHz时算法有问题，生成的音频数据百度无法识别<br>  解决方式: 直接让AudioContext用16kHz采集，跳过降采样步骤</li>
+</ul>
+<hr>
+<h3 id="阶段-4"><a href="#阶段-4" class="headerlink" title="阶段: 4"></a>阶段: 4</h3><ul>
+<li>问题: 重复识别、重复文字<br>  原因: 点击停止后：- 按钮没禁用，可以重复点-<br>2秒超时逻辑又会触发stop导致后端收到N次stop，识别N次<br>  解决方式: 加 disabled 锁，后端加防重复处理</li>
+</ul>
+
+                </div>
+
+                
+
+                <!-- Comments -->
+                
+                    <div style="margin-top: 30px;">
+                        
+
+
+                    </div>
+                
+
+                <!-- Post Navigation -->
+                <nav class="post-navigation">
+                    
+                    
+                    <a href="/project/2026/05/06/%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/" class="nav-item" style="text-align: right;">
+                        <div class="nav-label">下一篇 →</div>
+                        <div class="nav-title">代码学习规划</div>
+                    </a>
+                    
+                </nav>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar col-lg-3 col-md-4">
+                <!-- Author Card -->
+                <div class="sidebar-card author-card">
+                    <div class="author-avatar">
+                        <img src="/project/images/avatar.jpg" alt="头像" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">
+                    </div>
+                    <div class="author-name">l2013y</div>
+                    <div class="author-bio">分享技术与生活点滴</div>
+                </div>
+
+                <!-- Table of Contents -->
+                <div class="sidebar-card toc-card" id="toc-card">
+                    <h4>📑 文章目录</h4>
+                    <div class="toc-container" id="toc-container">
+                        <div class="toc-placeholder">目录加载中...</div>
+                    </div>
+                </div>
+
+                <!-- Recent Posts -->
+                <div class="sidebar-card">
+                    <h4>最新文章</h4>
+                    <ul>
+                        
+                            <li>
+                                <a href="/project/2026/05/19/AI-%E4%BB%A3%E7%A0%81/">AI--代码</a>
+                            </li>
+                        
+                            <li>
+                                <a href="/project/2026/05/06/%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/">代码学习规划</a>
+                            </li>
+                        
+                            <li>
+                                <a href="/project/2026/05/06/%E5%8D%95%E8%AF%8D/">单词</a>
+                            </li>
+                        
+                            <li>
+                                <a href="/project/2026/05/06/Claude%20Code%E4%BB%8E%E9%9B%B6%E9%85%8D%E7%BD%AE%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%8C%87%E5%8D%97/">Claude Code从零配置基础环境指南</a>
+                            </li>
+                        
+                            <li>
+                                <a href="/project/2026/04/30/%E7%86%9F%E6%82%89%E9%A1%B9%E7%9B%AE%E4%BB%A3%E7%A0%81/">熟悉项目代码</a>
+                            </li>
+                        
+                    </ul>
+                </div>
+
+                <!-- Tag Cloud -->
+                
+                <div class="sidebar-card">
+                    <h4>标签云</h4>
+                    <div class="tag-cloud">
+                        
+                            <a href="/project/tags/AI%E5%BC%80%E5%8F%91/">#AI开发</a>
+                        
+                            <a href="/project/tags/%E5%AD%A6%E4%B9%A0/">#学习</a>
+                        
+                            <a href="/project/tags/%E8%A7%84%E5%88%92/">#规划</a>
+                        
+                    </div>
+                </div>
+                
+            </div>
         </div>
     </div>
-</div>
-
+</article>
 
     <!-- Footer -->
     <hr />

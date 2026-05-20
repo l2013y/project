@@ -32,8 +32,12 @@ h6,
   font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 body {
-  font-size: 20px;
+  font-size: 18px;
   color: #404040;
+  background-color: #f8f9fa;
+  background-image: radial-gradient(#e9ecef 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-attachment: fixed;
 }
 p {
   line-height: 1.5;
@@ -81,10 +85,11 @@ hr.small {
 }
 .navbar-custom .navbar-brand {
   font-weight: 800;
+  font-size: 18px;
 }
 .navbar-custom .nav li a {
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 800;
   letter-spacing: 1px;
   text-decoration: none;
@@ -234,6 +239,18 @@ hr.small {
     font-size: 30px;
   }
 }
+.post-preview {
+  background: #fff;
+  padding: 30px;
+  margin-bottom: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  transition: all 0.3s ease;
+}
+.post-preview:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+}
 .post-preview > a {
   color: #404040;
 }
@@ -243,9 +260,9 @@ hr.small {
   color: #0085a1;
 }
 .post-preview > a > .post-title {
-  font-size: 30px;
-  margin-top: 30px;
-  margin-bottom: 10px;
+  font-size: 26px;
+  margin-top: 0;
+  margin-bottom: 12px;
 }
 .post-preview > a > .post-title.archive {
   font-size: 22px;
@@ -254,12 +271,14 @@ hr.small {
   margin: 0;
   font-weight: 300;
   margin-bottom: 10px;
+  color: #535353;
 }
 .post-preview > .post-meta {
   color: #808080;
-  font-size: 18px;
+  font-size: 16px;
   font-style: italic;
-  margin-top: 0;
+  margin-top: 15px;
+  margin-bottom: 0;
 }
 .post-preview > .post-meta.archive {
   font-size: 16px;
@@ -275,7 +294,7 @@ hr.small {
 }
 @media only screen and (min-width: 768px) {
   .post-preview > a > .post-title {
-    font-size: 36px;
+    font-size: 32px;
   }
 }
 .section-heading {
@@ -295,15 +314,24 @@ hr.small {
 }
 .post-tags,
 .post-categories {
-  font-size: 15px;
-  margin-top: 30px;
-  margin-bottom: 30px;
+  font-size: 13px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 .post-tags a,
 .post-categories a {
-  border-bottom: 1px dotted #ababab;
+  display: inline-block;
+  padding: 4px 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  border-radius: 20px;
+  text-decoration: none;
+  transition: all 0.2s ease;
   text-transform: uppercase;
-  margin-right: 10px;
+  letter-spacing: 0.5px;
 }
 .post-tags a:hover,
 .post-categories a:hover,
@@ -312,7 +340,16 @@ hr.small {
 .post-tags a:active,
 .post-categories a:active {
   text-decoration: none;
-  border-bottom: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+}
+.post-tags.post-categories a,
+.post-categories.post-categories a {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+.post-tags.post-categories a:hover,
+.post-categories.post-categories a:hover {
+  box-shadow: 0 4px 12px rgba(245,87,108,0.4);
 }
 .archive-before-pagination {
   height: 30px;
