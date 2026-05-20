@@ -378,6 +378,11 @@
         var mobileTocContent = $('#mobileTocContent');
         var mobileTocBtn = $('#mobileTocBtn');
 
+        // 如果不在文章页，直接返回
+        if (!tocContainer.length && !mobileTocBtn.length) {
+            return;
+        }
+
         var headings = $('.article-content h1, .article-content h2, .article-content h3');
 
         // PC 端目录
@@ -468,6 +473,11 @@
     }
 
     $(function() {
+        // 仅移动端显示目录按钮
+        if ($(window).width() <= 991) {
+            $('#mobileTocBtn, #tocOverlay, #mobileTocPanel').show();
+        }
+
         generateToc();
 
         // 移动端目录事件

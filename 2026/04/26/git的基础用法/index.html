@@ -310,9 +310,9 @@
     </div>
 
     <!-- Mobile TOC -->
-    <div class="mobile-toc-btn" id="mobileTocBtn">📑</div>
-    <div class="toc-overlay" id="tocOverlay"></div>
-    <div class="mobile-toc-panel" id="mobileTocPanel">
+    <div class="mobile-toc-btn" id="mobileTocBtn" style="display: none;">📑</div>
+    <div class="toc-overlay" id="tocOverlay" style="display: none;"></div>
+    <div class="mobile-toc-panel" id="mobileTocPanel" style="display: none;">
         <div class="toc-header">
             <h4>📑 文章目录</h4>
             <span class="toc-close-btn" id="tocCloseBtn">×</span>
@@ -421,6 +421,11 @@
         var mobileTocContent = $('#mobileTocContent');
         var mobileTocBtn = $('#mobileTocBtn');
 
+        // 如果不在文章页，直接返回
+        if (!tocContainer.length && !mobileTocBtn.length) {
+            return;
+        }
+
         var headings = $('.article-content h1, .article-content h2, .article-content h3');
 
         // PC 端目录
@@ -511,6 +516,11 @@
     }
 
     $(function() {
+        // 仅移动端显示目录按钮
+        if ($(window).width() <= 991) {
+            $('#mobileTocBtn, #tocOverlay, #mobileTocPanel').show();
+        }
+
         generateToc();
 
         // 移动端目录事件
