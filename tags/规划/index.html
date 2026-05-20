@@ -370,13 +370,13 @@
 
     // 移动端目录开关
     function openMobileToc() {
-        $('#tocOverlay').addClass('show');
+        $('#tocOverlay').addClass('show').css('visibility', 'visible');
         $('#mobileTocPanel').addClass('show');
         $('body').css('overflow', 'hidden');
     }
 
     function closeMobileToc() {
-        $('#tocOverlay').removeClass('show');
+        $('#tocOverlay').removeClass('show').css('visibility', 'hidden');
         $('#mobileTocPanel').removeClass('show');
         $('body').css('overflow', '');
     }
