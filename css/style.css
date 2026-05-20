@@ -679,8 +679,16 @@ table thead th {
   flex-shrink: 0;
 }
 @media (max-width: 991px) {
+  .content-with-sidebar {
+    flex-direction: column;
+    gap: 20px;
+  }
   .content-with-sidebar .sidebar {
     width: 100%;
+    order: 2;
+  }
+  .content-with-sidebar .main-content {
+    order: 1;
   }
 }
 .sidebar-card {
@@ -840,6 +848,18 @@ table thead th {
 .toc-card::-webkit-scrollbar-thumb {
   background: #ddd;
   border-radius: 2px;
+}
+@media (max-width: 991px) {
+  .toc-card {
+    position: static;
+    max-height: none;
+  }
+}
+@media (max-width: 991px) {
+  .sidebar-card {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
 }
 .toc-container .toc-placeholder {
   color: #808080;
