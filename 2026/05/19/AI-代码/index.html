@@ -197,22 +197,218 @@
                 
 
                 <div class="article-content">
-                    <h2 id="2026-5-19"><a href="#2026-5-19" class="headerlink" title="2026.5.19"></a>2026.5.19</h2><p>今天下午先是用deepseek帮我生成了一份语音转文字的提示测，之后复制提示词让claude帮我生成了语音转文字的基础网页代码，先是生成了index.html和server.js,之后在文件夹中打开终端 <code>npm install ws</code> 安装了依赖，之后在cscode的终端中使用node server.js启动了服务。<br>打开网页之后发现无法实现语音转文字的这个功能，因为一开始只给了Claude百度模型的APP ID，之后经过一番调试之后，在百度智能云创建了API key，Secret key，access_token，并把这些一股脑都给claude之后再次调试就成功了！</p>
-<h2 id="这些是失败原因总结："><a href="#这些是失败原因总结：" class="headerlink" title="这些是失败原因总结："></a>这些是失败原因总结：</h2><h3 id="阶段-1"><a href="#阶段-1" class="headerlink" title="阶段: 1"></a>阶段: 1</h3><ul>
-<li>问题: 火山引擎401错误<br>  原因: 豆包语音识别需要复杂的V3签名认证，不是简单在Header里放APP_ID就行，百度<br>  是OAuth，火山是HMAC签名，机制完全不同<br>  解决方式: 放弃火山，改用百度</li>
+                    <style>
+ th,td {
+    border: solid 1px ;
+ }
+</style>
+
+<h2 id="2026-5-19"><a href="#2026-5-19" class="headerlink" title="2026.5.19"></a>2026.5.19</h2><p>今天下午先是用deepseek帮我生成了一份语音转文字的提示测，之后复制提示词让claude帮我生成了语音转文字的基础网页代码，先是生成了index.html和server.js,之后在文件夹中打开终端 <code>npm install ws</code> 安装了依赖，之后在cscode的终端中使用node server.js启动了服务。</p>
+<p>打开网页之后发现无法实现语音转文字的这个功能，因为一开始只给了Claude百度模型的APP ID，之后经过一番调试之后，在百度智能云创建了API key，Secret key，access_token，并把这些一股脑都给claude之后再次调试就成功了！</p>
+<h3 id="失败原因总结"><a href="#失败原因总结" class="headerlink" title="失败原因总结"></a>失败原因总结</h3><ul>
+<li><p><strong>阶段 1</strong></p>
+<ul>
+<li>问题：火山引擎401错误</li>
+<li>原因：豆包语音识别需要复杂的V3签名认证，不是简单在Header里放APP_ID就行，百度是OAuth，火山是HMAC签名，机制完全不同</li>
+<li>解决方式：放弃火山，改用百度</li>
+</ul>
+</li>
+<li><p><strong>阶段 2</strong></p>
+<ul>
+<li>问题：百度3300错误 url param cuid error</li>
+<li>原因：参数位置放错了：token 应该放body里，不是url参数；cuid 格式有限制，不能带下划线</li>
+<li>解决方式：修正参数位置，cuid改成纯数字</li>
+</ul>
+</li>
+<li><p><strong>阶段 3</strong></p>
+<ul>
+<li>问题：识别结果为空 result:[“”]</li>
+<li>原因：音频采样率转换有bug：浏览器48kHz采样 → 代码里降采样到16kHz时算法有问题，生成的音频数据百度无法识别</li>
+<li>解决方式：直接让AudioContext用16kHz采集，跳过降采样步骤</li>
+</ul>
+</li>
+<li><p><strong>阶段 4</strong></p>
+<ul>
+<li>问题：重复识别、重复文字</li>
+<li>原因：点击停止后：按钮没禁用，可以重复点；2秒超时逻辑又会触发stop导致后端收到N次stop，识别N次</li>
+<li>解决方式：加 disabled 锁，后端加防重复处理</li>
+</ul>
+</li>
 </ul>
 <hr>
-<h3 id="阶段-2"><a href="#阶段-2" class="headerlink" title="阶段: 2"></a>阶段: 2</h3><ul>
-<li>问题: 百度3300错误 url param cuid error<br>  原因: 参数位置放错了：- token 应该放body里，不是url参数- cuid<br>格式有限制，不能带下划线<br>  解决方式: 修正参数位置，cuid改成纯数字</li>
+<h2 id="2026-5-20-语音转文字功能的改进"><a href="#2026-5-20-语音转文字功能的改进" class="headerlink" title="2026.5.20 语音转文字功能的改进"></a>2026.5.20 语音转文字功能的改进</h2><p><strong>表单重构：</strong> 姓名使用文本输入框；学校使用下拉选择，可切换输入框模式（预设5所名校，选”其他”时变成输入框，带”返回选择”按钮）；班级使用单选按钮（大一1-3班）；兴趣方向使用复选框（前端开发、后端开发、AI&#x2F;机器学习、其他），选”其他”时弹出文本框。</p>
+<p><strong>火山豆包AI集成：</strong> 接入 doubao-seed-2-0-lite 模型，语音识别完成后自动提取信息并填充表单，学校&#x2F;班级&#x2F;兴趣不匹配时智能处理，修复了API返回格式解析问题。</p>
+<p><strong>模拟测试功能：</strong> 左下角绿色”模拟测试”按钮，无需开口就能测试；5个测试用例，包含各种匹配&#x2F;不匹配场景；每次测试自动清空表单，可连续点击无需刷新；10秒超时兜底保护。</p>
+<p><strong>界面优化：</strong> 标签页显示麦克风图标，移除favicon 404报错，移动端响应式布局，玻璃态毛玻璃效果，录音状态脉冲动画。</p>
+<p><strong>保留原有功能：</strong> 右下角录音按钮，WebSocket语音识别，识别结果展示区，状态提示栏。</p>
+<hr>
+<h2 id="博客方面的优化"><a href="#博客方面的优化" class="headerlink" title="博客方面的优化"></a>博客方面的优化</h2><ul>
+<li><p><strong>1. 响应式布局问题</strong></p>
+<p>问题：手机端侧边栏头像、目录卡挡在文章内容前面，无法阅读和点击。</p>
+<p>解决：修改 flex 布局，移动端改为 <code>flex-direction: column</code>；文章内容 <code>order: 1</code>（上面），侧边栏 <code>order: 2</code>（下面）；移动端设置 <code>position: static</code> 清除定位，避免覆盖内容。</p>
+</li>
+<li><p><strong>2. 移动端所有按钮点击失效</strong></p>
+<p>问题：手机端进入文章页面，除了返回顶部按钮外其他都点不了，有密码的文章也输入不了。</p>
+<p>根因：遮罩层 <code>.toc-overlay</code> 在移动端默认是透明的（<code>opacity: 0</code>）但仍存在于页面上，看不见但覆盖了整个页面，拦截所有点击事件。</p>
+<p>解决：添加 <code>visibility: hidden</code>，未激活时完全不拦截点击；打开目录时才设置 <code>visibility: visible</code>。</p>
+</li>
+<li><p><strong>3. PC 端显示移动端悬浮目录按钮</strong></p>
+<p>问题：PC 端左下角也出现了移动端才有的目录按钮。</p>
+<p>解决：双重保险——CSS 加 <code>display: none !important</code> + JavaScript 窗口宽度判断，只有宽度 ≤ 991px 才显示按钮。</p>
+</li>
+<li><p><strong>4. 点击目录出现黑框</strong></p>
+<p>问题：PC 端点击目录链接后，项目上留下一个黑色聚焦边框。</p>
+<p>解决：全局加 <code>*:focus &#123; outline: none !important; &#125;</code>，移除所有元素的聚焦样式。</p>
+</li>
+<li><p><strong>5. 目录按钮与返回顶部高度不一致</strong></p>
+<p>解决：统一两个按钮的尺寸——50px × 50px，<code>bottom: 30px</code>，<code>font-size: 24px</code>。现在左下角目录按钮和右下角返回顶部按钮完全对称对齐。</p>
+</li>
+</ul>
+<p>最终效果：PC 端侧边栏 + 粘性目录，无多余悬浮按钮；移动端左右两个对称悬浮按钮，点击目录弹出侧边面板；加密文章解密后目录正常生成，密码输入可交互。</p>
+<hr>
+<h2 id="2026-5-25-小程序端的问题"><a href="#2026-5-25-小程序端的问题" class="headerlink" title="2026.5.25 小程序端的问题"></a>2026.5.25 小程序端的问题</h2><p><strong>1. 微信开发者工具输入账号密码后一直转圈</strong></p>
+<ul>
+<li>原因之一：前端请求超时时间太长，原来是 <code>200000ms</code>，真机网络异常时会等很久。</li>
+<li>原因之二：<code>fly.lock()</code> 后没有正确 <code>unlock()</code>，一旦接口 401，后续请求可能被锁住，看起来就是一直转圈。</li>
+<li>已处理：<code>shoptour-frontend/src/main.js</code>，请求超时改成 <code>10000ms</code>，修复 token 刷新后没有释放请求锁的问题，修复 401 错误分支里错误引用 <code>response.request</code> 的问题。</li>
+</ul>
+<p><strong>2. 电脑端有时自动进入首页，不显示登录页</strong></p>
+<ul>
+<li>原因：小程序启动时会执行静默登录 <code>getTokenByCode</code>，后端返回 <code>&quot;bindWx&quot;: 1</code>，所以前端直接跳转首页。</li>
+<li>涉及位置：<code>shoptour-frontend/src/App.vue</code>、<code>shoptour-frontend/src/pages/pageOne/index.vue</code>。</li>
+<li>处理过程：临时关闭过静默登录，方便测试账号密码登录；验证登录正常后，已经恢复静默登录逻辑。</li>
+</ul>
+<p><strong>3. 真机不输入密码也能直接进入</strong></p>
+<ul>
+<li>原因：当前微信 openId 已经和账号绑定在后端数据库里。清微信开发者工具缓存只能清本地 token，不能解除服务端绑定。</li>
+<li>后端返回过：</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;openId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;oPY1a7EA-YcapyMPxllM7fmYglpQ&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;userId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1665660508056469505&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;bindWx&quot;</span><span class="punctuation">:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>处理方式：临时关闭静默登录和首屏 token 自动跳转，验证账号密码登录，验证成功后恢复。</li>
+</ul>
+<p><strong>4. 真机访问后端网络问题排查</strong></p>
+<ul>
+<li>测试手机浏览器访问 <code>http://192.168.3.25:9090/app/auth/getTokenByCode?code=test</code>，手机能返回 JSON，说明手机到电脑后端 9090 端口网络是通的，不是 WiFi、防火墙、AP 隔离导致的连接失败。</li>
+<li>返回乱码是因为后端错误信息编码显示问题，本质是 invalid code，这是正常的，因为 code&#x3D;test 不是微信真实 code。</li>
+</ul>
+<p><strong>5. auth&#x2F;login 曾返回”账号已经被其他微信绑定”</strong></p>
+<ul>
+<li>原因：后端账号绑定逻辑会校验当前 openId 是否和数据库已有绑定一致，位置在 <code>后端/src/.../IUserImpl.java</code>。</li>
+<li>后来真机静默登录成功，说明当前微信实际已经绑定该账号，这不是当前主要问题了。</li>
+</ul>
+<p> <strong>绑定是指：</strong> 巡店系统里的用户账号绑定到微信小程序里的某个微信用户OpenId，绑定关系存在本地数据库 <code>sys_user_wx</code>，不是绑定在电脑上，也不是绑定在手机号上，而是绑定在 <em>微信 openId + 小程序 appId + 系统 userId</em> 这三者的关系上。</p>
+<p><strong>6. 点击”我的”导航栏时报 #toast 组件找不到</strong></p>
+<ul>
+<li>报错：<code>无法找到对应的组件，请按文档说明使用组件</code> &#x2F; <code>null is not an object ... handleShow</code></li>
+<li>原因：”我的”页调用了 <code>this.$dialog.toast(...)</code> 但页面模板里没有 <code>&lt;i-toast id=&quot;toast&quot; /&gt;</code>。</li>
+<li>已处理：在 <code>shoptour-frontend/src/pages/home/index.vue</code> 中添加了 <code>&lt;i-toast id=&quot;toast&quot; /&gt;</code>。</li>
+</ul>
+<p><strong>7. 点击”我的”后整屏弹出错误信息</strong></p>
+<ul>
+<li>原因：接口失败时直接把后端完整 <code>res.message</code> 用 toast 弹出来，真机上看起来像整屏报错。</li>
+<li>已处理：将长错误弹窗改成短提示，详细错误保留到 <code>console.log</code>。文件：<code>shoptour-frontend/src/pages/home/index.vue</code>。</li>
+</ul>
+<p><strong>8. “我的”页提示 首页统计加载失败</strong></p>
+<ul>
+<li>对应接口 <code>/home/getHomeStatistics</code>，后端 <code>HomeStatisticsController.java</code>，实现位置 <code>shoptour-platform/.../HomeStatisticsImpl.java</code>。</li>
+<li>这个接口聚合了报告统计、问题处理统计、问题发起统计、审批申请统计、审批审核统计。</li>
+<li>当前处理：因为它不影响登录和”我的”页基础展示，先去掉前端弹窗，只保留控制台日志。后续如果要彻底修，需要继续看后端日志或接口返回，定位是哪条统计 SQL&#x2F;模块报错。</li>
+</ul>
+<p><strong>9. AI 语音转文字是否适合加到小程序</strong></p>
+<ul>
+<li>结论：目前不建议加。</li>
+<li>原因：小程序端当前核心是巡店、报告、问题、审批流程，没看到特别强的高频长文本输入场景；加语音会引入录音授权、上传、识别失败、隐私合规、网络延迟等复杂度。</li>
+<li>建议：小程序端暂时不做，如果以后 PC 后台有大量文本填报，再考虑加更合适。</li>
+</ul>
+<p><strong>当前代码主要改动文件：</strong> <code>/src/main.js</code>、<code>/src/App.vue</code>、<code>/src/pages/pageOne/index.vue</code>、<code>/src/pages/home/index.vue</code>。</p>
+<p><strong>当前状态：</strong> 电脑端登录不再卡住；真机端账号密码登录已验证可用；静默登录已恢复；”我的”页 toast 组件缺失已修；”首页统计加载失败”弹窗已隐藏，但后端统计接口本身可能仍有问题，后续可继续排查。</p>
+<hr>
+<h2 id="2026-5-26-登录问题"><a href="#2026-5-26-登录问题" class="headerlink" title="2026.5.26 登录问题"></a>2026.5.26 登录问题</h2><p><strong>1. PC 小程序登录提示”网络异常”</strong></p>
+<p>小程序 PC 端输入账号密码后提示”网络异常，请稍后再试”，控制台报 <code>POST https://mountable-juggling-daily.ngrok-free.dev/app/auth/login 502 Bad Gateway</code>。</p>
+<p>原因：一开始前端请求的是 ngrok 地址 <code>https://mountable-juggling-daily.ngrok-free.dev/app/auth/login</code>，但是本地后端 9090 当时没有正常监听，所以 ngrok 转发不到后端，返回 502。</p>
+<p>解决：确认后端启动后，本地接口 <code>curl -i http://127.0.0.1:9090/app/auth/login</code> 返回 <code>&#123;&quot;success&quot;:false,&quot;message&quot;:&quot;Request method &#39;GET&#39; not supported&quot;&#125;</code>（说明后端已跑通，只是 GET 不支持）。之后用 POST 测试 <code>curl -i -X POST &quot;http://127.0.0.1:9090/app/auth/login&quot; -d &quot;username=bxy@jimei.cn&amp;password=xundian123&quot;</code>，ngrok 地址也测试成功，网络链路恢复。</p>
+<p><strong>2. MySQL 提示 No database selected</strong></p>
+<p>执行 SQL 时提示 <code>ERROR 1046 (3D000): No database selected</code>。原因是进入 MySQL 后还没有选择数据库。解决：先执行 <code>USE 数据库名;</code>。</p>
+<p><strong>3. curl 在 MySQL 里执行导致一直换行</strong></p>
+<p>在 MySQL 里输入 curl 后出现 <code>-&gt;</code> 不断换行。原因是 curl 是 Windows 命令行命令，不是 SQL，当时还停留在 MySQL 命令行里，MySQL 把它当成未完成 SQL 处理。解决：先 <code>exit;</code> 退出 MySQL，回到命令行再执行 curl。</p>
+<p><strong>4. curl 登录成功，但小程序显示”账号不存在”</strong></p>
+<p>curl 返回 <code>&quot;success&quot;: true</code>，但小程序 Network 返回 <code>&#123;success: false, code: 2000, message: &quot;账号不存在&quot;&#125;</code>。</p>
+<p>原因：curl 默认用表单格式 <code>application/x-www-form-urlencoded</code>，而小程序请求可能按 JSON 方式提交。后端登录方法 <code>public R login(@ParameterObject LoginDto loginDto, HttpServletRequest request)</code> 不是 <code>@RequestBody</code>，更适合接收表单参数。</p>
+<p>解决：修改 <code>shoptour-frontend/src/pages/loginPage/index.vue</code>，登录请求增加 <code>headers: &#123; &#39;content-type&#39;: &#39;application/x-www-form-urlencoded&#39; &#125;</code>；同时修改 <code>shoptour-frontend/src/main.js</code>，避免请求拦截器覆盖单个请求自己的 headers。</p>
+<p><strong>5. 本地调试不再使用 ngrok</strong></p>
+<p>因为不需要上传体验版，只做本地调试。把小程序接口地址从 <code>https://mountable-juggling-daily.ngrok-free.dev/app</code> 改成 <code>http://127.0.0.1:9090/app</code>，修改 <code>shoptour-frontend/config/dev.env.js</code> 和 <code>prod.env.js</code>。PC 微信开发者工具模拟器可以正常访问。</p>
+<p><strong>6. 手机真机调试不能用 127.0.0.1</strong></p>
+<p>PC 模拟器正常，但手机真机提示网络异常。原因：电脑上 <code>127.0.0.1</code> 指电脑自己，手机上 <code>127.0.0.1</code> 指手机自己，手机上没有 Java 后端。</p>
+<p>解决：查到电脑局域网 IPv4 为 <code>192.168.3.25</code>，把接口地址改成 <code>http://192.168.3.25:9090/app</code>，修改 dev.env.js 和 prod.env.js 并重新构建。手机浏览器访问 <code>http://192.168.3.25:9090/app/auth/login</code> 能返回后端 JSON，说明链路成功。</p>
+<p><strong>7. 真机调试提示 8001 局域网连接失败</strong></p>
+<p>微信开发者工具提示”连接局域网 192.168.3.25:8001 失败，已切回广域网模式”。8001 是微信开发者工具自己的真机调试通道端口，不是项目后端端口（9090）。手机浏览器能访问 9090，说明项目接口本身没问题。继续使用真机调试即可，后续可检查 Windows 防火墙。</p>
+<p><strong>8. 临时关闭静默登录</strong></p>
+<p>为了方便手机端直接测试账号密码登录，<code>/src/App.vue</code> 把启动时的 <code>wx.login()</code> → <code>getTokenByCode</code> 静默登录流程去掉，改成启动直接跳转登录页：</p>
+<blockquote>
+<p>onLaunch: function (option) {<br>  wx.navigateTo({ url : ‘&#x2F;pages&#x2F;loginPage&#x2F;main’ })<br>}</p>
+</blockquote>
+<p><strong>9. 手机端最终登录成功</strong></p>
+<p>手机端使用另一个未绑定账号成功登录。下面这条链路已经打通：</p>
+<blockquote>
+<p>手机小程序 → <a target="_blank" rel="noopener" href="http://192.168.3.25:9090/app">http://192.168.3.25:9090/app</a> → 本地 Java 后端 → 本地 MySQL 数据库</p>
+</blockquote>
+<p>本地真机调试环境已经成功跑通。</p>
+<p><strong>本地调试配置备忘：</strong> 后端端口 9090，接口上下文 <code>/app</code>，本地数据库 <code>lyhl_xjsp</code>，Redis 6379。小程序接口地址使用 <code>http://192.168.3.25:9090/app</code>（同时兼容 PC 模拟器和手机真机）。</p>
+<p><strong>常见错误判断：</strong></p>
+<ul>
+<li><strong>网络异常，请稍后重试</strong> —— 优先检查：后端 9090 是否启动、手机是否和电脑在同一 Wi-Fi、小程序 BASE_URL 是否是 <code>192.168.3.25:9090</code>、手机浏览器能否访问 <code>http://192.168.3.25:9090/app/auth/login</code>。</li>
+<li><strong>账号不存在</strong> —— 说明 username 没查到，检查是否输错账号、数据库 <code>sys_user.username</code> 是否存在、请求参数是否正确传到后端。</li>
+<li><strong>账号密码错误</strong> —— 账号存在，但密码不对。</li>
+<li><strong>账号已经被其他微信绑定</strong> —— 账号已绑定别的 open_id，可换账号，或本地开发时清绑定：<code>USE lyhl_xjsp; DELETE FROM sys_user_wx WHERE user_id = 用户ID; UPDATE sys_user SET bind_wx = 0 WHERE id = 用户ID;</code></li>
 </ul>
 <hr>
-<h3 id="阶段-3"><a href="#阶段-3" class="headerlink" title="阶段: 3"></a>阶段: 3</h3><ul>
-<li>问题: 识别结果为空 result:[“”]<br>  原因: 音频采样率转换有bug：浏览器48kHz采样 →<br>代码里降采样到16kHz时算法有问题，生成的音频数据百度无法识别<br>  解决方式: 直接让AudioContext用16kHz采集，跳过降采样步骤</li>
+<h2 id="userid、appid和openid的解释"><a href="#userid、appid和openid的解释" class="headerlink" title="userid、appid和openid的解释"></a>userid、appid和openid的解释</h2><p><strong>userId</strong> 是指系统里的用户ID，存在于数据库表中，例如：</p>
+<table>
+<thead>
+<tr>
+<th align="center">id</th>
+<th align="center">username</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">001</td>
+<td align="center"><a href="mailto:&#x6c;&#x75;&#121;&#105;&#64;&#120;&#120;&#120;&#120;&#x2e;&#99;&#110;">&#x6c;&#x75;&#121;&#105;&#64;&#120;&#120;&#120;&#120;&#x2e;&#99;&#110;</a></td>
+</tr>
+</tbody></table>
+<p>其中的001就是用户ID，代表的是系统中的某个账号，只要这个系统用户不被删除重建，userId 一般不会变。</p>
+<p><strong>appId</strong> 是微信给每个小程序分配的ID，目前这个项目所用的 wxe612…. 就是appid，相当于微信小程序的身份证。</p>
+<p><strong>openId</strong> 是微信给”某个微信用户在某个小程序下”生成的唯一 ID。代表某个微信用户在这个小程序中的身份，更改微信号、换小程序appId会导致openId的改变。</p>
+<h2 id="2026-5-27-小程序-AI-语音转文字-—-从踩坑到上线"><a href="#2026-5-27-小程序-AI-语音转文字-—-从踩坑到上线" class="headerlink" title="2026.5.27 小程序 AI 语音转文字 — 从踩坑到上线"></a>2026.5.27 小程序 AI 语音转文字 — 从踩坑到上线</h2><p><strong>一、功能定位：第一版只做巡店总结</strong></p>
+<p>巡检表单里有很多字段：合格&#x2F;不合格、打分、单选、情况说明、签字、巡店总结。起初容易被”AI 控制整张表单”的思路带偏，但逐个分析后发现：</p>
+<ul>
+<li>合格&#x2F;不合格 → 点一下就行，语音反而增加误判风险</li>
+<li>打分、单选 → 需要精确解析，第一版实现成本高</li>
+<li>签字 → 不适合语音</li>
+<li>巡店总结 → 长文本，手动输入成本高，语音收益最大</li>
 </ul>
-<hr>
-<h3 id="阶段-4"><a href="#阶段-4" class="headerlink" title="阶段: 4"></a>阶段: 4</h3><ul>
-<li>问题: 重复识别、重复文字<br>  原因: 点击停止后：- 按钮没禁用，可以重复点-<br>2秒超时逻辑又会触发stop导致后端收到N次stop，识别N次<br>  解决方式: 加 disabled 锁，后端加防重复处理</li>
-</ul>
+<p>收获：第一版功能要克制，选收益最高、风险最低的字段切入，不要一上来就追求”全自动”。</p>
+<p><strong>二、入口问题：找到真正的页面</strong></p>
+<p>小程序底部导航是”任务、报告、问题、汇总、我的”，没有”巡检”这个入口。实际流程是：任务列表 → 点某个任务的”巡检”按钮 → 进入巡检详情页。</p>
+<p>收获：页面名称和用户操作入口不一定一一对应，要看代码里的跳转逻辑确认真实页面。</p>
+<p><strong>三、组件 vs 页面内实现</strong></p>
+<p>一开始想做通用语音组件给其他页面复用，但 mpvue 的组件编译和开发者工具缓存叠加后，容易出现”找不到组件 WXML 文件”的报错。后来把语音按钮直接写在页面里，功能快速跑通。</p>
+<p>收获：复用是方向，但如果框架编译不够稳，先跑通再抽象。源码、构建产物、开发者工具缓存三者可能不一致，清缓存是基本功。</p>
+<p><strong>四、百度云切腾讯云</strong></p>
+<p>认证方式完全不同：百度云用 OAuth token（需缓存+续期），腾讯云用 TC3-HMAC-SHA256 签名（每次请求动态计算）。换云服务不只是换 URL。</p>
+<p><strong>五、Network Error 排查</strong></p>
+<p>网页端全站报 Network Error，后端服务正常。根因是前端 axios 配置 <code>withCredentials: true</code>，后端 CORS 配置 <code>allowCredentials: false</code>，浏览器检测到不匹配直接拦截。</p>
+<p>收获：后端无日志 + 前端 Network Error → 优先查 CORS credentials。</p>
+<p><strong>六、微信 API 异步陷阱</strong></p>
+<p><code>wx.showModal</code> 弹提示后代码继续往下执行，弹窗和录音”一起发生”，弹窗被覆盖。弹窗后需要 <code>return</code>，在回调里启动录音。</p>
+<p>收获：微信 API 几乎是全异步的，弹窗不会阻塞代码。</p>
+<p><strong>七、权限按钮的坑</strong></p>
+<p>加了个删除按钮，按钮不显示。因为用 <code>showBtnFn</code> 做了权限校验，但数据库权限表里没这个 key。新按钮如果配了权限，先确认权限数据有没有。</p>
+<p><strong>八、语音录入的目标选择</strong></p>
+<p>每个检查项都有自己的”情况说明”文本框，全局就一个语音按钮，录给谁？</p>
+<p>当前设计：默认录入巡店总结；如果用户先点击打开了某个”情况说明”文本框，则优先录入那个。首次使用弹提示：”语音内容默认录入巡店总结，如需写入情况说明，请先点击对应输入框”。</p>
+<p>收获：UI 简洁比功能强大更重要，一个按钮 + 上下文判断，比到处放按钮体验好。</p>
 
                 </div>
 
@@ -248,14 +444,6 @@
                     </div>
                     <div class="author-name">l2013y</div>
                     <div class="author-bio">分享技术与生活点滴</div>
-                </div>
-
-                <!-- Table of Contents -->
-                <div class="sidebar-card toc-card" id="toc-card">
-                    <h4>📑 文章目录</h4>
-                    <div class="toc-container" id="toc-container">
-                        <div class="toc-placeholder">目录加载中...</div>
-                    </div>
                 </div>
 
                 <!-- Recent Posts -->
@@ -301,14 +489,22 @@
                     </div>
                 </div>
                 
+
+                <!-- Table of Contents -->
+                <div class="sidebar-card toc-card" id="toc-card">
+                    <h4>📑 文章目录</h4>
+                    <div class="toc-container" id="toc-container">
+                        <div class="toc-placeholder">目录加载中...</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Mobile TOC -->
-    <div class="mobile-toc-btn" id="mobileTocBtn" style="display: none;">📑</div>
-    <div class="toc-overlay" id="tocOverlay" style="display: none;"></div>
-    <div class="mobile-toc-panel" id="mobileTocPanel" style="display: none;">
+    <div class="mobile-toc-btn" id="mobileTocBtn">📑</div>
+    <div class="toc-overlay" id="tocOverlay"></div>
+    <div class="mobile-toc-panel" id="mobileTocPanel">
         <div class="toc-header">
             <h4>📑 文章目录</h4>
             <span class="toc-close-btn" id="tocCloseBtn">×</span>
@@ -349,32 +545,6 @@
 
                     
                 </ul>
-                <div id="goTopBtn" class="go-top-btn">
-                 ⬆
-                </div>
-
-<script>
-  (function() {
-    var goTopBtn = document.getElementById('goTopBtn');
-    if (!goTopBtn) return;
-
-    window.addEventListener('scroll', function() {
-      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollTop > 200) {
-        goTopBtn.classList.add('show');
-      } else {
-        goTopBtn.classList.remove('show');
-      }
-    });
-
-    goTopBtn.addEventListener('click', function() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
-  })();
-</script>
                 <p class="copyright text-muted">&copy; 2026 l2013y<br></p>
                 
             </div>
@@ -436,9 +606,9 @@
         // 移动端目录：如果有标题才显示按钮
         if (mobileTocBtn.length) {
             if (headings.length === 0) {
-                mobileTocBtn.hide();
+                mobileTocBtn.removeClass('has-toc');
             } else {
-                mobileTocBtn.show();
+                mobileTocBtn.addClass('has-toc');
                 generateTocContent(mobileTocContent, headings, true);
             }
         }
@@ -500,23 +670,18 @@
 
     // 移动端目录开关
     function openMobileToc() {
-        $('#tocOverlay').addClass('show').css('visibility', 'visible');
+        $('#tocOverlay').addClass('show');
         $('#mobileTocPanel').addClass('show');
         $('body').css('overflow', 'hidden');
     }
 
     function closeMobileToc() {
-        $('#tocOverlay').removeClass('show').css('visibility', 'hidden');
+        $('#tocOverlay').removeClass('show');
         $('#mobileTocPanel').removeClass('show');
         $('body').css('overflow', '');
     }
 
     $(function() {
-        // 仅移动端显示目录按钮
-        if ($(window).width() <= 991) {
-            $('#mobileTocBtn, #tocOverlay, #mobileTocPanel').show();
-        }
-
         generateToc();
 
         // 移动端目录事件
@@ -550,25 +715,46 @@
 </script>
 
 <!-- Go to Top Button -->
-<button class="go-top-btn" id="goTopBtn" title="返回顶部">↑</button>
+<button class="go-top-btn" id="goTopBtn" title="返回顶部">⬆</button>
 <script type="text/javascript">
-    $(function() {
-        var goTopBtn = $('#goTopBtn');
+    (function() {
+        function getGoTopBtn() {
+            return document.getElementById('goTopBtn');
+        }
 
-        $(window).scroll(function() {
-            if ($(this).scrollTop() > 300) {
-                goTopBtn.addClass('show');
+        function toggleGoTopBtn() {
+            var btn = getGoTopBtn();
+            if (!btn) return;
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if (scrollTop > 300) {
+                btn.classList.add('show');
             } else {
-                goTopBtn.removeClass('show');
+                btn.classList.remove('show');
+            }
+        }
+
+        window.addEventListener('scroll', toggleGoTopBtn);
+        document.addEventListener('touchend', toggleGoTopBtn);
+        toggleGoTopBtn();
+
+        document.addEventListener('click', function(e) {
+            var btn = getGoTopBtn();
+            if (btn && btn.contains(e.target)) {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
         });
 
-        goTopBtn.click(function() {
-            $('html, body').animate({
-                scrollTop: 0
-            }, 300);
+        // 加密文章解锁后重新绑定
+        document.addEventListener('click', function(e) {
+            if (e.target.classList && e.target.classList.contains('hbe-button')) {
+                setTimeout(toggleGoTopBtn, 1000);
+                setTimeout(toggleGoTopBtn, 3000);
+            }
         });
-    });
+    })();
 </script>
 
 <!-- Disqus Comments -->

@@ -271,32 +271,6 @@
 
                     
                 </ul>
-                <div id="goTopBtn" class="go-top-btn">
-                 ⬆
-                </div>
-
-<script>
-  (function() {
-    var goTopBtn = document.getElementById('goTopBtn');
-    if (!goTopBtn) return;
-
-    window.addEventListener('scroll', function() {
-      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollTop > 200) {
-        goTopBtn.classList.add('show');
-      } else {
-        goTopBtn.classList.remove('show');
-      }
-    });
-
-    goTopBtn.addEventListener('click', function() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
-  })();
-</script>
                 <p class="copyright text-muted">&copy; 2026 l2013y<br></p>
                 
             </div>
@@ -358,9 +332,9 @@
         // 移动端目录：如果有标题才显示按钮
         if (mobileTocBtn.length) {
             if (headings.length === 0) {
-                mobileTocBtn.hide();
+                mobileTocBtn.removeClass('has-toc');
             } else {
-                mobileTocBtn.show();
+                mobileTocBtn.addClass('has-toc');
                 generateTocContent(mobileTocContent, headings, true);
             }
         }
@@ -422,23 +396,18 @@
 
     // 移动端目录开关
     function openMobileToc() {
-        $('#tocOverlay').addClass('show').css('visibility', 'visible');
+        $('#tocOverlay').addClass('show');
         $('#mobileTocPanel').addClass('show');
         $('body').css('overflow', 'hidden');
     }
 
     function closeMobileToc() {
-        $('#tocOverlay').removeClass('show').css('visibility', 'hidden');
+        $('#tocOverlay').removeClass('show');
         $('#mobileTocPanel').removeClass('show');
         $('body').css('overflow', '');
     }
 
     $(function() {
-        // 仅移动端显示目录按钮
-        if ($(window).width() <= 991) {
-            $('#mobileTocBtn, #tocOverlay, #mobileTocPanel').show();
-        }
-
         generateToc();
 
         // 移动端目录事件
@@ -472,25 +441,46 @@
 </script>
 
 <!-- Go to Top Button -->
-<button class="go-top-btn" id="goTopBtn" title="返回顶部">↑</button>
+<button class="go-top-btn" id="goTopBtn" title="返回顶部">⬆</button>
 <script type="text/javascript">
-    $(function() {
-        var goTopBtn = $('#goTopBtn');
+    (function() {
+        function getGoTopBtn() {
+            return document.getElementById('goTopBtn');
+        }
 
-        $(window).scroll(function() {
-            if ($(this).scrollTop() > 300) {
-                goTopBtn.addClass('show');
+        function toggleGoTopBtn() {
+            var btn = getGoTopBtn();
+            if (!btn) return;
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if (scrollTop > 300) {
+                btn.classList.add('show');
             } else {
-                goTopBtn.removeClass('show');
+                btn.classList.remove('show');
+            }
+        }
+
+        window.addEventListener('scroll', toggleGoTopBtn);
+        document.addEventListener('touchend', toggleGoTopBtn);
+        toggleGoTopBtn();
+
+        document.addEventListener('click', function(e) {
+            var btn = getGoTopBtn();
+            if (btn && btn.contains(e.target)) {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
         });
 
-        goTopBtn.click(function() {
-            $('html, body').animate({
-                scrollTop: 0
-            }, 300);
+        // 加密文章解锁后重新绑定
+        document.addEventListener('click', function(e) {
+            if (e.target.classList && e.target.classList.contains('hbe-button')) {
+                setTimeout(toggleGoTopBtn, 1000);
+                setTimeout(toggleGoTopBtn, 3000);
+            }
         });
-    });
+    })();
 </script>
 
 <!-- Disqus Comments -->

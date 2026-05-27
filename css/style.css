@@ -210,6 +210,15 @@ hr.small {
     font-size: 80px;
   }
 }
+.intro-header .typing-title .typing-cursor {
+  display: inline-block;
+  width: 0.08em;
+  height: 0.9em;
+  margin-left: 0.08em;
+  background: currentColor;
+  vertical-align: -0.05em;
+  animation: typing-cursor-blink 0.8s infinite;
+}
 .intro-header .post-heading h1 {
   font-size: 35px;
 }
@@ -482,6 +491,38 @@ img::-moz-selection {
 body {
   webkit-tap-highlight-color: #0085a1;
 }
+@-moz-keyframes typing-cursor-blink {
+  0%, 45% {
+    opacity: 1;
+  }
+  46%, 100% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes typing-cursor-blink {
+  0%, 45% {
+    opacity: 1;
+  }
+  46%, 100% {
+    opacity: 0;
+  }
+}
+@-o-keyframes typing-cursor-blink {
+  0%, 45% {
+    opacity: 1;
+  }
+  46%, 100% {
+    opacity: 0;
+  }
+}
+@keyframes typing-cursor-blink {
+  0%, 45% {
+    opacity: 1;
+  }
+  46%, 100% {
+    opacity: 0;
+  }
+}
 article .container .row img {
   max-width: 100% !important;
   height: auto;
@@ -644,6 +685,26 @@ pre .clojure .title {
 }
 pre .deletion {
   color: #dc322f;
+}
+@media (max-width: 991px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+  .article-content {
+    overflow-x: hidden;
+  }
+  .article-content table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .article-content pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
 }
 table thead th {
   text-align: center !important;
@@ -873,11 +934,10 @@ table thead th {
   }
 }
 .mobile-toc-btn {
-  display: none !important;
+  display: none;
 }
 @media (max-width: 991px) {
   .mobile-toc-btn {
-    display: flex !important;
     position: fixed;
     bottom: 30px;
     left: 20px;
@@ -894,16 +954,19 @@ table thead th {
     box-shadow: 0 4px 15px rgba(102,126,234,0.4);
     transition: all 0.3s;
   }
+  .mobile-toc-btn.has-toc {
+    display: flex;
+  }
   .mobile-toc-btn:active {
     transform: scale(0.95);
   }
 }
 .toc-overlay {
-  display: none !important;
+  display: none;
 }
 @media (max-width: 991px) {
   .toc-overlay {
-    display: block !important;
+    display: block;
     position: fixed;
     top: 0;
     left: 0;
@@ -921,11 +984,11 @@ table thead th {
   }
 }
 .mobile-toc-panel {
-  display: none !important;
+  display: none;
 }
 @media (max-width: 991px) {
   .mobile-toc-panel {
-    display: block !important;
+    display: block;
     position: fixed;
     top: 0;
     right: -85%;
@@ -1066,18 +1129,22 @@ table thead th {
 .go-top-btn {
   position: fixed;
   bottom: 30px;
-  right: 30px;
+  right: 20px;
   width: 50px;
   height: 50px;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: #fff;
-  text-align: center;
-  line-height: 50px;
-  font-size: 24px;
-  font-weight: bold;
+  border: none;
+  appearance: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
   border-radius: 50%;
   cursor: pointer;
-  z-index: 999;
+  z-index: 1001;
   box-shadow: 0 4px 15px rgba(102,126,234,0.4);
   opacity: 0;
   visibility: hidden;

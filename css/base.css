@@ -210,6 +210,15 @@ hr.small {
     font-size: 80px;
   }
 }
+.intro-header .typing-title .typing-cursor {
+  display: inline-block;
+  width: 0.08em;
+  height: 0.9em;
+  margin-left: 0.08em;
+  background: currentColor;
+  vertical-align: -0.05em;
+  animation: typing-cursor-blink 0.8s infinite;
+}
 .intro-header .post-heading h1 {
   font-size: 35px;
 }
@@ -481,4 +490,36 @@ img::-moz-selection {
 }
 body {
   webkit-tap-highlight-color: #0085a1;
+}
+@-moz-keyframes typing-cursor-blink {
+  0%, 45% {
+    opacity: 1;
+  }
+  46%, 100% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes typing-cursor-blink {
+  0%, 45% {
+    opacity: 1;
+  }
+  46%, 100% {
+    opacity: 0;
+  }
+}
+@-o-keyframes typing-cursor-blink {
+  0%, 45% {
+    opacity: 1;
+  }
+  46%, 100% {
+    opacity: 0;
+  }
+}
+@keyframes typing-cursor-blink {
+  0%, 45% {
+    opacity: 1;
+  }
+  46%, 100% {
+    opacity: 0;
+  }
 }

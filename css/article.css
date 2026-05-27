@@ -161,6 +161,26 @@ pre .clojure .title {
 pre .deletion {
   color: #dc322f;
 }
+@media (max-width: 991px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+  .article-content {
+    overflow-x: hidden;
+  }
+  .article-content table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .article-content pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}
 /* 强制所有表格表头居中 */
 table thead th {
   text-align: center !important;

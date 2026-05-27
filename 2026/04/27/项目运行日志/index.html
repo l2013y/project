@@ -197,12 +197,14 @@
                 
 
                 <div class="article-content">
-                    <h1 id="2026-4-27"><a href="#2026-4-27" class="headerlink" title="2026.4.27"></a>2026.4.27</h1><h2 id="刚面对新项目"><a href="#刚面对新项目" class="headerlink" title="刚面对新项目"></a>刚面对新项目</h2><p>对于这个项目毫无头绪，甚至哪个文件夹是干嘛的都不知道，只记得 <code>npm install</code> 和 <code>npm run dev</code> 这两个命令。</p>
-<h2 id="2026-4-29"><a href="#2026-4-29" class="headerlink" title="2026.4.29"></a>2026.4.29</h2><h3 id="1-前端（vecode）"><a href="#1-前端（vecode）" class="headerlink" title="1. 前端（vecode）"></a>1. 前端（vecode）</h3><p>在借助AI工具的帮助下，在shoptour-backstage、shoptour-frontend两个前端项目中分别运行了 <code>npm install</code> 和 <code>npm run dev</code> 可以正常启动，端口号为<ins> <a target="_blank" rel="noopener" href="http://localhsot:8080/">http://localhsot:8080</a> </ins>。</p>
+                    <p><em><strong>2026.4.27</strong></em></p>
+<h2 id="刚面对新项目"><a href="#刚面对新项目" class="headerlink" title="刚面对新项目"></a>刚面对新项目</h2><p>对于这个项目毫无头绪，甚至哪个文件夹是干嘛的都不知道，只记得 <code>npm install</code> 和 <code>npm run dev</code> 这两个命令。<br><em><strong>2026.4.29</strong></em> </p>
+<h3 id="1-前端（vecode）"><a href="#1-前端（vecode）" class="headerlink" title="1. 前端（vecode）"></a>1. 前端（vecode）</h3><p>在借助AI工具的帮助下，在shoptour-backstage、shoptour-frontend两个前端项目中分别运行了 <code>npm install</code> 和 <code>npm run dev</code> 可以正常启动，端口号为<ins> <a target="_blank" rel="noopener" href="http://localhsot:8080/">http://localhsot:8080</a> </ins>。</p>
 <h3 id="2-后端（IDEA）"><a href="#2-后端（IDEA）" class="headerlink" title="2. 后端（IDEA）"></a>2. 后端（IDEA）</h3><p>在进入上述端口之后是一个登录页面，这时候需要进去idea找到shoptour-platform中的web文件夹，运行三个包中的agent和app文件夹中的jar包，这时候就可以在之前的8080端口输入 <ins> <a target="_blank" rel="noopener" href="http://localhsot:9088/admin/doc.html">http://localhsot:9088/admin/doc.html</a> </ins> ，之后再终端输入 <code>Test-NetConnection -ComputerName localhost -Port 9088</code> 测试连通性，终端输出<strong>true</strong>则连通成功。</p>
 <p>如果运行app文件中的jar包，之后输入<ins><a target="_blank" rel="noopener" href="http://localhost:9090/app/doc.html">http://localhost:9090/app/doc.html</a></ins>。</p>
 <h3 id=""><a href="#" class="headerlink" title="!"></a>!</h3><p>运行AgentRun之后会自动退出，我让通义灵码查看之后给出结果是没有引入<strong>spring-boot-starter-web</strong>依赖，但考虑到不一定需要安装这个依赖，所以并没有添加</p>
-<h2 id="2026-5-8"><a href="#2026-5-8" class="headerlink" title="2026.5.8"></a>2026.5.8</h2><h3 id="前后端边界"><a href="#前后端边界" class="headerlink" title="前后端边界"></a>前后端边界</h3><p>理解了前端的用户权限和后端的数据管理，前端用户一般只有新建账号或者删除自己账号&#x2F;其他内容，后端只有管理员可以删除数据，处理垃圾信息或违规内容。</p>
+<p><em><strong>2026.5.8</strong></em></p>
+<h3 id="前后端边界"><a href="#前后端边界" class="headerlink" title="前后端边界"></a>前后端边界</h3><p>理解了前端的用户权限和后端的数据管理，前端用户一般只有新建账号或者删除自己账号&#x2F;其他内容，后端只有管理员可以删除数据，处理垃圾信息或违规内容。</p>
 <h3 id="暴力新建账户"><a href="#暴力新建账户" class="headerlink" title="暴力新建账户"></a>暴力新建账户</h3><p>注册页面一般会有验证码或令牌对新建速率进行限制，还有一种方法是某个接口的流量突然飙升，系统会启动“熔断机制”，这个接口会停止响应，等到攻击结束再恢复。</p>
 <h3 id="断点"><a href="#断点" class="headerlink" title="断点"></a>断点</h3><p>对含有断点的代码进行Debug调试时，含有断点的那一行代码以及后续的代码都不会被执行</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">duandian</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">name</span> <span class="operator">=</span> <span class="string">&quot;张三&quot;</span>;           <span class="comment">// 第2行</span></span><br><span class="line">            <span class="type">int</span> <span class="variable">age</span> <span class="operator">=</span> <span class="number">25</span>;                  <span class="comment">// 第3行</span></span><br><span class="line">            <span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> greet(name, age); <span class="comment">// 第4行</span></span><br><span class="line">            System.out.println(result);    <span class="comment">// 第5行</span></span><br><span class="line">            System.out.println(<span class="string">&quot;程序结束&quot;</span>);   <span class="comment">// 第6行</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">static</span> String <span class="title function_">greet</span><span class="params">(String name, <span class="type">int</span> age)</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">greeting</span> <span class="operator">=</span> <span class="string">&quot;你好，&quot;</span> + name;  <span class="comment">// 第10行</span></span><br><span class="line">            <span class="keyword">if</span> (age &lt; <span class="number">18</span>) &#123;                    <span class="comment">// 第11行</span></span><br><span class="line">                <span class="keyword">return</span> greeting + <span class="string">&quot;小朋友&quot;</span>;      <span class="comment">// 第12行</span></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;                           <span class="comment">// 第13行</span></span><br><span class="line">                <span class="keyword">return</span> greeting + <span class="string">&quot;先生/女士&quot;</span>;    <span class="comment">// 第14行</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -212,11 +214,11 @@
 <li>虽然说方法的代码在断点之后，但是方法被调用在断点之前，所以断点在第五行时线程和变量可以正常显示result<br> 快捷键：<strong>F8</strong>，继续向下一行调试；<strong>F7</strong>，步入断点这行所调用的方法代码内部进行调试</li>
 </ol>
 <hr>
-<h2 id="2026-5-9"><a href="#2026-5-9" class="headerlink" title="2026.5.9"></a>2026.5.9</h2><p><strong>xjsp-common</strong>中<strong>result</strong>文件夹主要用于用户的登录时返回的响应结果和提示用户是否有访问权限，例如抛出用户密码或者账号是否正确、用户是否存在。<br><strong>exception</strong>文件夹用来处理系统异常，例如某个操作需要特定操作而没有进行特定操作，那么就会抛出“操作异常”，如果异常较多，可以定义全局处理器：比如第一个处理器是处理参数校验失败的，那么这个处理器会自动捕获参数校验异常，统一转换为R.error(一般是报错代码+错误文本)如：（500，”操作异常”),之后前端会收到</p>
+<p><em><strong>2026.5.9</strong></em><br><strong>xjsp-common</strong>中<strong>result</strong>文件夹主要用于用户的登录时返回的响应结果和提示用户是否有访问权限，例如抛出用户密码或者账号是否正确、用户是否存在。<br><strong>exception</strong>文件夹用来处理系统异常，例如某个操作需要特定操作而没有进行特定操作，那么就会抛出“操作异常”，如果异常较多，可以定义全局处理器：比如第一个处理器是处理参数校验失败的，那么这个处理器会自动捕获参数校验异常，统一转换为R.error(一般是报错代码+错误文本)如：（500，”操作异常”),之后前端会收到</p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">json<span class="punctuation">&#123;</span><span class="string">&quot;success&quot;</span>：<span class="literal"><span class="keyword">false</span></span>，</span><br><span class="line">         <span class="string">&quot;code&quot;</span>：<span class="number">500</span>，</span><br><span class="line">         <span class="string">&quot;message&quot;</span>：操作异常”</span><br><span class="line">    <span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 <p>全局处理器的存在能够使代码更简洁，处理异常操作更快捷。全局处理器包名一般以Handler结尾<br><strong>Constant</strong>文件夹作用是集中管理项目中各种固定不变的值</p>
 <hr>
-<h2 id="2026-5-15"><a href="#2026-5-15" class="headerlink" title="2026.5.15"></a>2026.5.15</h2><p>利用<strong>claude code</strong>对巡店系统的任务派发模块添加了一个‘进度’按钮，其中包括‘待处理、处理中、待验收、任务结束’四个选项，最初的问题是只能在网页上显示，但是页面无法保存，刷新页面又会返回’待处理‘这个默认选项，之后在本地复制了远程数据库的数据之后，点击四个选项的其中一个还是报错，AI分析原因之后是数据库中没有字段，在数据库添加完字段之后再次试验就可以正常运行了。</p>
+<p><em><strong>2026.5.15</strong></em><br>利用<strong>claude code</strong>对巡店系统的任务派发模块添加了一个‘进度’按钮，其中包括‘待处理、处理中、待验收、任务结束’四个选项，最初的问题是只能在网页上显示，但是页面无法保存，刷新页面又会返回’待处理‘这个默认选项，之后在本地复制了远程数据库的数据之后，点击四个选项的其中一个还是报错，AI分析原因之后是数据库中没有字段，在数据库添加完字段之后再次试验就可以正常运行了。</p>
 
                 </div>
 
@@ -257,14 +259,6 @@
                     </div>
                     <div class="author-name">l2013y</div>
                     <div class="author-bio">分享技术与生活点滴</div>
-                </div>
-
-                <!-- Table of Contents -->
-                <div class="sidebar-card toc-card" id="toc-card">
-                    <h4>📑 文章目录</h4>
-                    <div class="toc-container" id="toc-container">
-                        <div class="toc-placeholder">目录加载中...</div>
-                    </div>
                 </div>
 
                 <!-- Recent Posts -->
@@ -310,14 +304,22 @@
                     </div>
                 </div>
                 
+
+                <!-- Table of Contents -->
+                <div class="sidebar-card toc-card" id="toc-card">
+                    <h4>📑 文章目录</h4>
+                    <div class="toc-container" id="toc-container">
+                        <div class="toc-placeholder">目录加载中...</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Mobile TOC -->
-    <div class="mobile-toc-btn" id="mobileTocBtn" style="display: none;">📑</div>
-    <div class="toc-overlay" id="tocOverlay" style="display: none;"></div>
-    <div class="mobile-toc-panel" id="mobileTocPanel" style="display: none;">
+    <div class="mobile-toc-btn" id="mobileTocBtn">📑</div>
+    <div class="toc-overlay" id="tocOverlay"></div>
+    <div class="mobile-toc-panel" id="mobileTocPanel">
         <div class="toc-header">
             <h4>📑 文章目录</h4>
             <span class="toc-close-btn" id="tocCloseBtn">×</span>
@@ -358,32 +360,6 @@
 
                     
                 </ul>
-                <div id="goTopBtn" class="go-top-btn">
-                 ⬆
-                </div>
-
-<script>
-  (function() {
-    var goTopBtn = document.getElementById('goTopBtn');
-    if (!goTopBtn) return;
-
-    window.addEventListener('scroll', function() {
-      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-      if (scrollTop > 200) {
-        goTopBtn.classList.add('show');
-      } else {
-        goTopBtn.classList.remove('show');
-      }
-    });
-
-    goTopBtn.addEventListener('click', function() {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
-  })();
-</script>
                 <p class="copyright text-muted">&copy; 2026 l2013y<br></p>
                 
             </div>
@@ -445,9 +421,9 @@
         // 移动端目录：如果有标题才显示按钮
         if (mobileTocBtn.length) {
             if (headings.length === 0) {
-                mobileTocBtn.hide();
+                mobileTocBtn.removeClass('has-toc');
             } else {
-                mobileTocBtn.show();
+                mobileTocBtn.addClass('has-toc');
                 generateTocContent(mobileTocContent, headings, true);
             }
         }
@@ -509,23 +485,18 @@
 
     // 移动端目录开关
     function openMobileToc() {
-        $('#tocOverlay').addClass('show').css('visibility', 'visible');
+        $('#tocOverlay').addClass('show');
         $('#mobileTocPanel').addClass('show');
         $('body').css('overflow', 'hidden');
     }
 
     function closeMobileToc() {
-        $('#tocOverlay').removeClass('show').css('visibility', 'hidden');
+        $('#tocOverlay').removeClass('show');
         $('#mobileTocPanel').removeClass('show');
         $('body').css('overflow', '');
     }
 
     $(function() {
-        // 仅移动端显示目录按钮
-        if ($(window).width() <= 991) {
-            $('#mobileTocBtn, #tocOverlay, #mobileTocPanel').show();
-        }
-
         generateToc();
 
         // 移动端目录事件
@@ -559,25 +530,46 @@
 </script>
 
 <!-- Go to Top Button -->
-<button class="go-top-btn" id="goTopBtn" title="返回顶部">↑</button>
+<button class="go-top-btn" id="goTopBtn" title="返回顶部">⬆</button>
 <script type="text/javascript">
-    $(function() {
-        var goTopBtn = $('#goTopBtn');
+    (function() {
+        function getGoTopBtn() {
+            return document.getElementById('goTopBtn');
+        }
 
-        $(window).scroll(function() {
-            if ($(this).scrollTop() > 300) {
-                goTopBtn.addClass('show');
+        function toggleGoTopBtn() {
+            var btn = getGoTopBtn();
+            if (!btn) return;
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if (scrollTop > 300) {
+                btn.classList.add('show');
             } else {
-                goTopBtn.removeClass('show');
+                btn.classList.remove('show');
+            }
+        }
+
+        window.addEventListener('scroll', toggleGoTopBtn);
+        document.addEventListener('touchend', toggleGoTopBtn);
+        toggleGoTopBtn();
+
+        document.addEventListener('click', function(e) {
+            var btn = getGoTopBtn();
+            if (btn && btn.contains(e.target)) {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
             }
         });
 
-        goTopBtn.click(function() {
-            $('html, body').animate({
-                scrollTop: 0
-            }, 300);
+        // 加密文章解锁后重新绑定
+        document.addEventListener('click', function(e) {
+            if (e.target.classList && e.target.classList.contains('hbe-button')) {
+                setTimeout(toggleGoTopBtn, 1000);
+                setTimeout(toggleGoTopBtn, 3000);
+            }
         });
-    });
+    })();
 </script>
 
 <!-- Disqus Comments -->
