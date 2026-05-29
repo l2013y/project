@@ -153,7 +153,7 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="post-heading">
-                    <h1>Claude Code从零配置基础环境指南</h1>
+                    <h1 class="typing-title" data-text="Claude Code从零配置基础环境指南"><span class="typing-text">Claude Code从零配置基础环境指南</span><span class="typing-cursor"></span></h1>
                     
                     <span class="meta">
                         <!-- Date and Author -->
@@ -183,7 +183,7 @@
                             
 
 
-<a href="/project/tags/AI开发/">#AI开发</a>
+<a href="/project/tags/开发环境/">#开发环境</a>
 
 
                         
@@ -345,6 +345,50 @@
 <li><a target="_blank" rel="noopener" href="https://hexo.io/">Hexo 博客系统</a></li>
 </ul>
 <hr>
+<h2 id="2026-5-29Claude-Code如何实现在D盘的全局安装"><a href="#2026-5-29Claude-Code如何实现在D盘的全局安装" class="headerlink" title="2026.5.29Claude Code如何实现在D盘的全局安装"></a>2026.5.29Claude Code如何实现在D盘的全局安装</h2><p> <em>claude版本更新为  <strong>2.1.156</strong>  导致火山大模型不可用，所以现在降级为  <strong>2.1.153</strong>  来保证火山大模型可以正常使用</em><br><em><strong>解决方法来自这篇<a target="_blank" rel="noopener" href="https://blog.csdn.net/bc202205/article/details/161505390?spm=1001.2014.3001.5502">博客及评论区</a></strong></em></p>
+<blockquote>
+<p>此方法只是 Claude Code 程序本体在 D 盘，数据保存还是默认 C 盘。</p>
+</blockquote>
+<p><strong>步骤 1：修改 npm 全局包安装路径</strong></p>
+<p>打开 PowerShell，执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config <span class="built_in">set</span> prefix <span class="string">&quot;D:\nodejs-global&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>验证修改结果：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm config get prefix</span><br></pre></td></tr></table></figure>
+
+<p>输出应为 <code>D:\nodejs-global</code></p>
+<p><strong>步骤 2：将 D 盘路径添加到系统环境变量 PATH</strong></p>
+<p>按 <code>Win+R</code>，输入 <code>sysdm.cpl</code>，回车 → 切换到”高级”选项卡 → 点击”环境变量” → 在”系统变量”列表中找到 <code>Path</code>，选中后点击”编辑” → 点击”新建”，添加 <code>D:\nodejs-global</code> → 将这一条上移到最上方（避免被其他路径干扰）→ 依次点击”确定”关闭所有窗口。</p>
+<blockquote>
+<p>重要：关闭所有 PowerShell 窗口，重新打开一个新的 PowerShell。</p>
+</blockquote>
+<p><strong>步骤 3：验证 PATH 是否生效</strong></p>
+<p>在新开的 PowerShell 中执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$env</span>:Path -<span class="built_in">split</span> <span class="string">&#x27;;&#x27;</span> | Select-String <span class="string">&quot;nodejs-global&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>如有输出 <code>D:\nodejs-global</code>，说明 PATH 配置成功。</p>
+<p><strong>步骤 4：安装 Claude Code 指定版本</strong></p>
+<p>执行以下命令安装 <code>2.1.153</code> 版本（该版本与 DeepSeek&#x2F;火山 API 兼容，不会出现 system 报错）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @anthropic-ai/claude-code@2.1.153</span><br></pre></td></tr></table></figure>
+
+<p>等待安装完成，出现 <code>added xxx packages</code> 提示即成功。</p>
+<p><strong>步骤 5：验证安装结果</strong></p>
+<p>查看 claude 命令所在位置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Get-Command claude</span><br></pre></td></tr></table></figure>
+
+<p>输出应为 <code>D:\nodejs-global\claude.ps1</code> 或 <code>D:\nodejs-global\claude</code></p>
+<p>查看版本号：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">claude --version</span><br></pre></td></tr></table></figure>
+
+<p>输出应为 <code>2.1.153</code></p>
+<p><strong>步骤 6：锁定版本，禁止自动更新</strong></p>
+<p>用记事本打开用户级配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">notepad <span class="variable">$env</span>:USERPROFILE\.claude\settings.json</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>env</code> 对象中添加以下配置项：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;DISABLE_AUTOUPDATER&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>保存并关闭文件。</p>
 <p><em>如果你在使用过程中遇到问题或有任何建议，欢迎在评论区留言讨论！</em></p>
 
                 </div>
@@ -394,6 +438,10 @@
                     <ul>
                         
                             <li>
+                                <a href="/project/2026/05/28/%E4%BB%8E%E9%9B%B6%E9%85%8D%E7%BD%AE%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%85%A8%E6%8C%87%E5%8D%97/">从零配置开发环境全指南</a>
+                            </li>
+                        
+                            <li>
                                 <a href="/project/2026/05/19/AI-%E4%BB%A3%E7%A0%81/">AI--代码</a>
                             </li>
                         
@@ -409,10 +457,6 @@
                                 <a href="/project/2026/05/06/Claude%20Code%E4%BB%8E%E9%9B%B6%E9%85%8D%E7%BD%AE%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%8C%87%E5%8D%97/">Claude Code从零配置基础环境指南</a>
                             </li>
                         
-                            <li>
-                                <a href="/project/2026/04/30/%E7%86%9F%E6%82%89%E9%A1%B9%E7%9B%AE%E4%BB%A3%E7%A0%81/">熟悉项目代码</a>
-                            </li>
-                        
                     </ul>
                 </div>
 
@@ -425,6 +469,8 @@
                             <a href="/project/tags/AI%E5%BC%80%E5%8F%91/">#AI开发</a>
                         
                             <a href="/project/tags/%E5%AD%A6%E4%B9%A0/">#学习</a>
+                        
+                            <a href="/project/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">#开发环境</a>
                         
                             <a href="/project/tags/%E8%A7%84%E5%88%92/">#规划</a>
                         
@@ -654,6 +700,39 @@
             });
         }
     });
+</script>
+
+<!-- Typing Animation -->
+<script type="text/javascript">
+    (function() {
+        var typed = new Set();
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (!entry.isIntersecting) return;
+                var el = entry.target;
+                if (typed.has(el)) return;
+                typed.add(el);
+
+                var text = el.getAttribute('data-text') || '';
+                var target = el.querySelector('.typing-text');
+                if (!target) return;
+                target.textContent = '';
+
+                var index = 0;
+                var timer = setInterval(function() {
+                    target.textContent += text.charAt(index);
+                    index++;
+                    if (index >= text.length) {
+                        clearInterval(timer);
+                    }
+                }, 180);
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.typing-title').forEach(function(el) {
+            observer.observe(el);
+        });
+    })();
 </script>
 
 <!-- Go to Top Button -->

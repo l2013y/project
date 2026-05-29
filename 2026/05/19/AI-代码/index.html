@@ -153,7 +153,7 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="post-heading">
-                    <h1>AI--代码</h1>
+                    <h1 class="typing-title" data-text="AI--代码"><span class="typing-text">AI--代码</span><span class="typing-cursor"></span></h1>
                     
                     <span class="meta">
                         <!-- Date and Author -->
@@ -374,7 +374,7 @@
 </thead>
 <tbody><tr>
 <td align="center">001</td>
-<td align="center"><a href="mailto:&#x6c;&#x75;&#121;&#105;&#64;&#120;&#120;&#120;&#120;&#x2e;&#99;&#110;">&#x6c;&#x75;&#121;&#105;&#64;&#120;&#120;&#120;&#120;&#x2e;&#99;&#110;</a></td>
+<td align="center"><a href="mailto:&#x6c;&#117;&#x79;&#x69;&#x40;&#x78;&#120;&#x78;&#120;&#46;&#x63;&#110;">&#x6c;&#117;&#x79;&#x69;&#x40;&#x78;&#120;&#x78;&#120;&#46;&#x63;&#110;</a></td>
 </tr>
 </tbody></table>
 <p>其中的001就是用户ID，代表的是系统中的某个账号，只要这个系统用户不被删除重建，userId 一般不会变。</p>
@@ -409,6 +409,40 @@
 <p>每个检查项都有自己的”情况说明”文本框，全局就一个语音按钮，录给谁？</p>
 <p>当前设计：默认录入巡店总结；如果用户先点击打开了某个”情况说明”文本框，则优先录入那个。首次使用弹提示：”语音内容默认录入巡店总结，如需写入情况说明，请先点击对应输入框”。</p>
 <p>收获：UI 简洁比功能强大更重要，一个按钮 + 上下文判断，比到处放按钮体验好。</p>
+<h2 id="2026-5-28-小程序-AI-语音与巡检保存问题整理"><a href="#2026-5-28-小程序-AI-语音与巡检保存问题整理" class="headerlink" title="2026.5.28 小程序 AI 语音与巡检保存问题整理"></a>2026.5.28 小程序 AI 语音与巡检保存问题整理</h2><p><strong>一、AI 语音功能重新收敛</strong></p>
+<p>昨天的方向是让 AI 语音尽量智能地匹配检查项，甚至自动判断合格&#x2F;不合格。今天重新梳理后发现，当前最稳定、最适合上线的版本还是“语音转文字录入文本框”：默认录入巡店总结；如果用户先点击某个情况说明输入框，就把语音内容写入对应输入框。</p>
+<p>收获：第一版不要急着做“AI 自动填整张表”。语音识别先解决长文本输入效率，智能判断可以后面再加，而且最好做成“AI 分析结果预览 + 用户确认填入”，避免误填。</p>
+<p><strong>二、录入目标和高亮逻辑</strong></p>
+<p>点击 AI 语音按钮时，文本框可能会失焦，如果只依赖焦点状态，语音结果就会错误地回到巡店总结。处理方式是用 <code>voiceTarget</code> 记录最后选中的录入目标，不再依赖真实焦点；同时给当前目标加蓝色高亮，让用户知道语音会写到哪里。</p>
+<p>首次提示也改得更明确：默认录入巡店总结；点击输入框高亮后，可将语音内容录入到对应位置。</p>
+<p><strong>三、模拟和自动判断先撤回</strong></p>
+<p>中途尝试过加“模拟”按钮，用手动输入文本模拟语音内容，并用关键词规则自动选择合格&#x2F;不合格，比如“故障、异常、不正常”判为不合格，“正常、合格、没问题”判为合格。</p>
+<p>但关键词规则不是真智能，复杂表达很容易误判，比如“不是不合格”“没有异常但有轻微噪音”。最后决定删除模拟按钮、模拟弹窗、自动匹配合格&#x2F;不合格逻辑，同时删除 <code>index.vue.bak</code>、<code>index.vue.work</code> 这类备份文件，避免旧提示和旧代码干扰判断。</p>
+<p><strong>四、微信开发者工具与导入目录问题</strong></p>
+<p>开发者工具渲染层出现过 <code>getGlobalStorage fail: too eayly</code>，试过临时关闭静默登录后仍然存在，但功能不受影响，暂时判断是微信开发者工具初始化层面的提示，不继续改业务代码。</p>
+<p>另外，不能直接导入 <code>dist</code> 目录，否则容易出现网络和配置异常。这个项目应该导入 <code>shoptour-frontend</code> 根目录，因为根目录的 <code>project.config.json</code> 已经配置了 <code>miniprogramRoot: &quot;dist/&quot;</code>。</p>
+<p><strong>五、巡检保存失败问题</strong></p>
+<p>点击“完成收起”时曾出现“操作失败！null”。后端排查后发现，保存报告时有些字段可能为空：<code>reportItem.getScore()</code>、<code>redline</code>、<code>passline</code> 都可能触发空值问题。</p>
+<p>处理方式：分数为空时按 0 汇总；<code>redline</code> 改成安全判断；<code>passline</code> 为空时按 0 处理；提交报告时，空分数也走空白提交逻辑。</p>
+<p><strong>六、itemId 接收不到问题</strong></p>
+<p>保存巡检时还出现过“巡店项目不存在：null”和 <code>Required request parameter &#39;itemId&#39; is not present</code>。原因是前端用 POST 提交时，参数在 body 里，后端一开始没有稳定接收到。</p>
+<p>处理方式：前端保存时把 <code>itemId</code> 转成字符串；后端 <code>/setReport</code> 改成兼容 POST body 和普通参数。这样保存链路更稳，不会因为参数位置不同导致后端拿不到巡店项目。</p>
+<p><strong>当前结论：</strong> AI 语音第一版只保留稳定的语音转文字录入；巡检保存问题重点处理空值和参数接收。后续如果继续做智能化，应该让大模型结合“语音文字 + 当前检查项标题 + 表单结构”返回结构化结果，再让用户确认后填入。</p>
+<h3 id="2026-5-29-自动AI录音与保存体验优化"><a href="#2026-5-29-自动AI录音与保存体验优化" class="headerlink" title="2026.5.29 自动AI录音与保存体验优化"></a>2026.5.29 自动AI录音与保存体验优化</h3><ol>
+<li><p>点击”完成收起”时出现网络超时提示。确认后端可以正常访问后，把前端请求超时时间从 <code>10000ms</code> 调到 <code>30000ms</code>，保存可以成功，但接口响应仍然偏慢，后续还可以继续优化后端保存性能。</p>
+</li>
+<li><p>选择完全不合格时自动调用 AI 语音。实际业务中，部分合格或扣分项也需要说明原因，所以处理成：只要选择非合格或低于满分项，就自动展开对应的”情况说明”，并把 AI 语音录入目标切换到该说明框。</p>
+</li>
+<li><p>为了避免自动录音打扰用户，增加了”自动AI”开关：关闭时只展开说明框，不自动录音；开启时选择非合格项会自动开始录音。开关放在右下角 AI 语音按钮上方的小三角里，点击后展开或收起，比单独放按钮更清爽，也不容易误触。</p>
+</li>
+<li><p>自动AI 第一次触发时，提示曾经到停止录音时才弹出。处理后，自动触发和手动触发统一走首次提示逻辑；录音过程中点击按钮只停止录音，不再弹提示。小三角和 AI 语音按钮功能反了的问题，也通过 <code>data-action</code> 分发点击行为解决。</p>
+</li>
+<li><p>“未识别到语音”的提示一闪而过，用户来不及看清。现在把识别失败和上传失败的提示延长到 <code>3000ms</code>，同时避免和”识别中”的 loading 重叠。</p>
+</li>
+<li><p>自动录音开始时，用户不一定知道已经开始。现在增加了右下角气泡提示”已开始录音，请说明原因”，带淡入淡出效果，自动录音状态更清楚。</p>
+</li>
+</ol>
+<p><strong>当前结论：</strong> 自动AI 开关让语音录入更灵活，用户可自主选择是否自动触发；按钮交互和提示体验已打磨到位，非合格项自动联动展开说明框的逻辑也已跑通。</p>
 
                 </div>
 
@@ -425,6 +459,11 @@
 
                 <!-- Post Navigation -->
                 <nav class="post-navigation">
+                    
+                    <a href="/project/2026/05/28/%E4%BB%8E%E9%9B%B6%E9%85%8D%E7%BD%AE%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%85%A8%E6%8C%87%E5%8D%97/" class="nav-item">
+                        <div class="nav-label">← 上一篇</div>
+                        <div class="nav-title">从零配置开发环境全指南</div>
+                    </a>
                     
                     
                     <a href="/project/2026/05/06/%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/" class="nav-item" style="text-align: right;">
@@ -452,6 +491,10 @@
                     <ul>
                         
                             <li>
+                                <a href="/project/2026/05/28/%E4%BB%8E%E9%9B%B6%E9%85%8D%E7%BD%AE%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%85%A8%E6%8C%87%E5%8D%97/">从零配置开发环境全指南</a>
+                            </li>
+                        
+                            <li>
                                 <a href="/project/2026/05/19/AI-%E4%BB%A3%E7%A0%81/">AI--代码</a>
                             </li>
                         
@@ -467,10 +510,6 @@
                                 <a href="/project/2026/05/06/Claude%20Code%E4%BB%8E%E9%9B%B6%E9%85%8D%E7%BD%AE%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%8C%87%E5%8D%97/">Claude Code从零配置基础环境指南</a>
                             </li>
                         
-                            <li>
-                                <a href="/project/2026/04/30/%E7%86%9F%E6%82%89%E9%A1%B9%E7%9B%AE%E4%BB%A3%E7%A0%81/">熟悉项目代码</a>
-                            </li>
-                        
                     </ul>
                 </div>
 
@@ -483,6 +522,8 @@
                             <a href="/project/tags/AI%E5%BC%80%E5%8F%91/">#AI开发</a>
                         
                             <a href="/project/tags/%E5%AD%A6%E4%B9%A0/">#学习</a>
+                        
+                            <a href="/project/tags/%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">#开发环境</a>
                         
                             <a href="/project/tags/%E8%A7%84%E5%88%92/">#规划</a>
                         
@@ -712,6 +753,39 @@
             });
         }
     });
+</script>
+
+<!-- Typing Animation -->
+<script type="text/javascript">
+    (function() {
+        var typed = new Set();
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (!entry.isIntersecting) return;
+                var el = entry.target;
+                if (typed.has(el)) return;
+                typed.add(el);
+
+                var text = el.getAttribute('data-text') || '';
+                var target = el.querySelector('.typing-text');
+                if (!target) return;
+                target.textContent = '';
+
+                var index = 0;
+                var timer = setInterval(function() {
+                    target.textContent += text.charAt(index);
+                    index++;
+                    if (index >= text.length) {
+                        clearInterval(timer);
+                    }
+                }, 180);
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.typing-title').forEach(function(el) {
+            observer.observe(el);
+        });
+    })();
 </script>
 
 <!-- Go to Top Button -->

@@ -427,6 +427,39 @@
     });
 </script>
 
+<!-- Typing Animation -->
+<script type="text/javascript">
+    (function() {
+        var typed = new Set();
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (!entry.isIntersecting) return;
+                var el = entry.target;
+                if (typed.has(el)) return;
+                typed.add(el);
+
+                var text = el.getAttribute('data-text') || '';
+                var target = el.querySelector('.typing-text');
+                if (!target) return;
+                target.textContent = '';
+
+                var index = 0;
+                var timer = setInterval(function() {
+                    target.textContent += text.charAt(index);
+                    index++;
+                    if (index >= text.length) {
+                        clearInterval(timer);
+                    }
+                }, 180);
+            });
+        }, { threshold: 0.3 });
+
+        document.querySelectorAll('.typing-title').forEach(function(el) {
+            observer.observe(el);
+        });
+    })();
+</script>
+
 <!-- Go to Top Button -->
 <button class="go-top-btn" id="goTopBtn" title="返回顶部">⬆</button>
 <script type="text/javascript">

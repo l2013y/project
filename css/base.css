@@ -210,7 +210,7 @@ hr.small {
     font-size: 80px;
   }
 }
-.intro-header .typing-title .typing-cursor {
+.typing-title .typing-cursor {
   display: inline-block;
   width: 0.08em;
   height: 0.9em;
