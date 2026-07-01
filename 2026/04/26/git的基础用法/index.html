@@ -112,6 +112,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" id="themeToggleBtn" class="theme-toggle" title="切换白天/黑夜">
+                        <span class="theme-toggle-icon">☀</span>
+                    </a>
+                </li>
                 
                     <li>
                         <a href="/project/archives">
@@ -197,21 +202,55 @@
                 
 
                 <div class="article-content">
-                    <h1 id="知识点汇总："><a href="#知识点汇总：" class="headerlink" title="知识点汇总："></a>知识点汇总：</h1><h2 id="1-重新熟悉在vscode上拉-clone-pull-推-push-代码："><a href="#1-重新熟悉在vscode上拉-clone-pull-推-push-代码：" class="headerlink" title="1. 重新熟悉在vscode上拉(clone&#x2F;pull)推(push)代码："></a>1. 重新熟悉在vscode上拉(clone&#x2F;pull)推(push)代码：</h2><p>先clone或者pull到本地&#x2F;工作区代码进行更改后add加commit到本地仓库，若有其他人在远程仓库（github）上进行更改的话，工作区pull代码会产生冲突，之后解决冲突</p>
-<h2 id="2-了解了branch的用法："><a href="#2-了解了branch的用法：" class="headerlink" title="2. 了解了branch的用法："></a>2. 了解了branch的用法：</h2><p>在 <code>clone/pull</code> 代码之后，一般来说会新建一个分支进行编写代码，编写完代码之后使用 <code>git add,commit</code> ,之后切换到主分支：<code>git switch/checkout [文件名]</code> ,若这段代码在编写期间别人在远程仓库进行了更改，最好先进行 <code>git pull</code> 操作，若有冲突，先解决冲突，之后进行新建分支和主分支的合并: <code>git merge [新建分支名]</code> ,最后确认无误可以push提交</p>
-<h2 id="3-git-checkout代码"><a href="#3-git-checkout代码" class="headerlink" title="3. git checkout代码"></a>3. git checkout代码</h2><p><code>git checkout</code> 可以用来切换分支，也可以将暂存区的文件恢复到工作区。若 <code>git checkout [文件名] </code> ，那么这个命令就是将暂存区的文件覆盖工作区，若 <code>git checkout [branch]</code> ，那就是切换分支，也可用 <code>git switch [branch]</code> 来切换分支 ，而切换分支的前提是要把这个分支 <code>commit</code> 到本地仓库。</p>
-<h2 id="4-模拟每天工作日常"><a href="#4-模拟每天工作日常" class="headerlink" title="4. 模拟每天工作日常"></a>4. 模拟每天工作日常</h2><p>早上到岗：git pull<br>       ↓<br>切换分支：git checkout -b feature-login<br>       ↓<br>写代码、改文件<br>       ↓<br>查看状态：git status<br>       ↓<br>暂存修改：git add .<br>       ↓<br>提交到本地：git commit -m “完成登录框样式”<br>       ↓<br>继续工作，重复 写代码 → add → commit<br>       ↓<br>下午完成功能：git checkout main<br>       ↓<br>拉取最新代码：git pull<br>       ↓<br>合并分支：git merge feature-login<br>       ↓<br>推送成果：git push</p>
-<h2 id="5-git-remote"><a href="#5-git-remote" class="headerlink" title="5.git remote"></a>5.git remote</h2><p><code>git remote -v</code> 检查远程仓库 ，<code>git remote show origin</code> 显示远程仓库的信息</p>
-<h2 id="6-其他的一些命令语句："><a href="#6-其他的一些命令语句：" class="headerlink" title="6.其他的一些命令语句："></a>6.其他的一些命令语句：</h2><ul>
-<li>添加远程仓库地址：<br><code>git remote add origin</code> &lt;远程仓库地址&gt; </li>
-<li>删除当前连接的远程仓库：<br><code>git remote remove origin</code></li>
-<li>显示当前连接的远程仓库：<br><code>git remote -v</code></li>
-<li>查看所有文件（包括隐藏）<br><code>ls -la</code> </li>
-<li>只查看文件和名称<br><code>ls</code><br>（以window风格的列表目录）：<br><code>dir</code></li>
-<li>查看已提交的git的管理文件<br><code>git ls-files</code></li>
-<li>查看当前状态<br><code>git status</code><br><strong>nvm list</strong>列出所有node版本<br><strong>nvm use</strong> 版本号   来切换版本号</li>
+                    <h2 id="Git-基本流程"><a href="#Git-基本流程" class="headerlink" title="Git 基本流程"></a>Git 基本流程</h2><p>Git 日常使用可以简单理解成：先把远程代码拉到本地，在本地修改后提交到本地仓库，最后再推送到远程仓库。</p>
+<ul>
+<li><code>git clone</code>：第一次把远程仓库复制到本地。</li>
+<li><code>git pull</code>：把远程仓库的最新代码拉到本地。</li>
+<li><code>git add</code>：把修改加入暂存区。</li>
+<li><code>git commit</code>：把暂存区内容提交到本地仓库。</li>
+<li><code>git push</code>：把本地提交推送到远程仓库。</li>
 </ul>
-<h2 id="tips"><a href="#tips" class="headerlink" title="tips:"></a>tips:</h2><p>一般来说只有增，删，改过的代码或文件才可以进行add,commit等操作</p>
+<p>如果别人在远程仓库也改了同一部分代码，执行 <code>git pull</code> 时可能会产生冲突，需要先解决冲突，再继续提交和推送。</p>
+<h2 id="分支的基本用法"><a href="#分支的基本用法" class="headerlink" title="分支的基本用法"></a>分支的基本用法</h2><p>一般开发时不会直接在主分支上改代码，而是先新建一个功能分支，写完后再合并回主分支。</p>
+<ul>
+<li><code>git checkout -b feature-login</code>：新建并切换到 <code>feature-login</code> 分支。</li>
+<li><code>git switch 分支名</code>：切换分支，推荐用于单纯切换分支。</li>
+<li><code>git checkout 分支名</code>：也可以切换分支。</li>
+<li><code>git merge 分支名</code>：把指定分支合并到当前分支。</li>
+</ul>
+<p><code>git checkout</code> 还有恢复文件的作用，比如 <code>git checkout 文件名</code> 会用暂存区或版本库里的文件覆盖工作区文件。它既能切分支，又能恢复文件，所以现在单纯切分支时更推荐用 <code>git switch</code>。</p>
+<h2 id="日常工作流程"><a href="#日常工作流程" class="headerlink" title="日常工作流程"></a>日常工作流程</h2><p>一个比较常见的工作流程是：</p>
+<ol>
+<li>早上先执行 <code>git pull</code>，同步远程最新代码。</li>
+<li>新建功能分支：<code>git checkout -b feature-login</code>。</li>
+<li>写代码、改文件。</li>
+<li>用 <code>git status</code> 查看当前修改状态。</li>
+<li>用 <code>git add .</code> 暂存修改。</li>
+<li>用 <code>git commit -m &quot;完成登录框样式&quot;</code> 提交到本地。</li>
+<li>功能完成后切回主分支：<code>git checkout main</code>。</li>
+<li>再执行一次 <code>git pull</code>，确保主分支是最新的。</li>
+<li>合并功能分支：<code>git merge feature-login</code>。</li>
+<li>确认没问题后执行 <code>git push</code>。</li>
+</ol>
+<h2 id="远程仓库相关命令"><a href="#远程仓库相关命令" class="headerlink" title="远程仓库相关命令"></a>远程仓库相关命令</h2><ul>
+<li><code>git remote -v</code>：查看当前连接的远程仓库地址。</li>
+<li><code>git remote show origin</code>：查看远程仓库 <code>origin</code> 的详细信息。</li>
+<li><code>git remote add origin 远程仓库地址</code>：添加远程仓库地址。</li>
+<li><code>git remote remove origin</code>：删除当前名为 <code>origin</code> 的远程仓库连接。</li>
+</ul>
+<h2 id="其他常用命令"><a href="#其他常用命令" class="headerlink" title="其他常用命令"></a>其他常用命令</h2><ul>
+<li><code>ls -la</code>：查看所有文件，包括隐藏文件。</li>
+<li><code>ls</code>：只查看当前目录下的文件和文件夹名称。</li>
+<li><code>dir</code>：以 Windows 风格查看目录。</li>
+<li><code>git ls-files</code>：查看已经被 Git 管理的文件。</li>
+<li><code>git status</code>：查看当前工作区状态。</li>
+<li><code>nvm list</code>：列出所有 Node 版本。</li>
+<li><code>nvm use 版本号</code>：切换 Node 版本。</li>
+<li><code>git push origin 本地分支名:远程分支名</code>：把本地分支推送到指定远程分支。</li>
+<li><code>git push --force-with-lease origin 本地分支名:远程分支名</code>：用本地分支覆盖远程分支，比 <code>--force</code> 更安全，但执行前仍要确认远程旧提交可以被覆盖。</li>
+</ul>
+<h2 id="储物柜-用来保存未提交到本地的代码但想切换分支）"><a href="#储物柜-用来保存未提交到本地的代码但想切换分支）" class="headerlink" title="储物柜(用来保存未提交到本地的代码但想切换分支）"></a>储物柜(用来保存未提交到本地的代码但想切换分支）</h2><p><code>git stash</code>：暂存所有的未提交改动<br><code>git stash push -m</code> “对此次保存的描述”: 给暂存添加备注（目的是为了方便查找）<br><code>git stash list</code>:  查看所有的暂存列表<br><code>git stash pop</code>: 应用最近一次暂存，并删除它<br><code>git stash apply</code>: 应用最近一次暂存，但不删除（可重复应用）<br><code>git stash drop</code>: 删除最近一次暂存<br><code>git stash clear</code>: 清空所有暂存<br>如果有多个stash暂存的话就用<code>git stash list</code>查看所有的暂存列表：<br>示例：<br>stash@{0}: On dev2026: 骑手接单页面<br>stash@{1}: On master: 修复登录bug<br>stash@{2}: On dev2026: 数据库配置<br>想应用哪个的话就用<code>git stash apply/pop</code> ‘stash@{对应的索引号}’</p>
+<h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h2><p>一般来说，只有新增、删除、修改过的代码或文件，才需要执行 <code>git add</code>、<code>git commit</code> 等操作。</p>
 
                 </div>
 
@@ -229,13 +268,19 @@
                 <!-- Post Navigation -->
                 <nav class="post-navigation">
                     
+                    
                     <a href="/project/2026/04/27/%E9%A1%B9%E7%9B%AE%E8%BF%90%E8%A1%8C%E6%97%A5%E5%BF%97/" class="nav-item">
+                        <span class="nav-bg" style="background-image: url('/project/images/scenery2.png');"></span>
+                        <span class="nav-mask"></span>
                         <div class="nav-label">← 上一篇</div>
                         <div class="nav-title">项目运行日志</div>
                     </a>
                     
                     
+                    
                     <a href="/project/2026/04/24/markdown%E5%AD%A6%E4%B9%A0%E5%8E%86%E7%A8%8B/" class="nav-item" style="text-align: right;">
+                        <span class="nav-bg" style="background-image: url('/project/images/scenery3.png');"></span>
+                        <span class="nav-mask"></span>
                         <div class="nav-label">下一篇 →</div>
                         <div class="nav-title">markdown学习历程</div>
                     </a>
@@ -260,7 +305,7 @@
                     <ul>
                         
                             <li>
-                                <a href="/project/2026/05/30/%E4%BC%9A%E5%B1%95%E5%8F%8A%E8%AE%BA%E5%9D%9B%E6%80%BB%E7%BB%93/">会展及论坛总结</a>
+                                <a href="/project/2026/05/30/%E4%BC%9A%E5%B1%95%E5%8F%8A%E8%AE%BA%E5%9D%9B%E6%80%BB%E7%BB%93/">会展及论坛总结&amp;及后续项目发展</a>
                             </li>
                         
                             <li>
@@ -367,7 +412,37 @@
 
     <!-- After footer scripts -->
     
-<!-- jQuery -->
+
+<!-- Theme (Day/Night) Toggle -->
+<script type="text/javascript">
+(function() {
+    var STORAGE_KEY = 'blog-theme';
+    function applyTheme(theme) {
+        var isDark = theme === 'dark';
+        document.body.classList.toggle('dark-mode', isDark);
+        var icon = document.querySelector('#themeToggleBtn .theme-toggle-icon');
+        if (icon) icon.textContent = isDark ? '☾' : '☀';
+    }
+    try {
+        var saved = localStorage.getItem(STORAGE_KEY);
+        if (saved === 'dark') applyTheme('dark');
+    } catch (e) {}
+
+    document.addEventListener('DOMContentLoaded', function() {
+        applyTheme(document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        var btn = document.getElementById('themeToggleBtn');
+        if (!btn) return;
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+            applyTheme(next);
+            try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+            btn.blur();
+        });
+    });
+})();
+</script>
+
 <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 
 <!-- Bootstrap -->
@@ -524,6 +599,122 @@
             });
         }
     });
+</script>
+
+<!-- Knowledge Floating Window -->
+<script type="text/javascript">
+    (function() {
+        function initKnowledgeWindow() {
+            var article = document.querySelector('.article-content');
+            if (!article || document.querySelector('.knowledge-window')) return;
+
+            var headings = article.querySelectorAll('h2');
+            var knowledgeHeading = null;
+            for (var i = 0; i < headings.length; i++) {
+                if (headings[i].textContent.trim() === '知识点') {
+                    knowledgeHeading = headings[i];
+                    break;
+                }
+            }
+            if (!knowledgeHeading) return;
+
+            var content = document.createElement('div');
+            var node = knowledgeHeading.nextElementSibling;
+            while (node && node.tagName !== 'H2') {
+                content.appendChild(node.cloneNode(true));
+                node = node.nextElementSibling;
+            }
+            if (!content.children.length) return;
+
+            var windowEl = document.createElement('div');
+            windowEl.className = 'knowledge-window';
+            windowEl.innerHTML = '<div class="knowledge-window-header"><span>知识点速查</span><button type="button" class="knowledge-window-close" aria-label="关闭知识点浮窗">×</button></div><div class="knowledge-window-body"></div>';
+            windowEl.querySelector('.knowledge-window-body').appendChild(content);
+            document.body.appendChild(windowEl);
+
+            var toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'knowledge-window-toggle hide';
+            toggleBtn.textContent = '知识点';
+            document.body.appendChild(toggleBtn);
+
+            var header = windowEl.querySelector('.knowledge-window-header');
+            var closeBtn = windowEl.querySelector('.knowledge-window-close');
+            var isDragging = false;
+            var startX = 0;
+            var startY = 0;
+            var startLeft = 0;
+            var startTop = 0;
+
+            function startDrag(clientX, clientY) {
+                if (window.innerWidth <= 768) return;
+                isDragging = true;
+                startX = clientX;
+                startY = clientY;
+                var rect = windowEl.getBoundingClientRect();
+                startLeft = rect.left;
+                startTop = rect.top;
+                windowEl.classList.add('dragging');
+            }
+
+            function moveDrag(clientX, clientY) {
+                if (!isDragging) return;
+                var left = startLeft + clientX - startX;
+                var top = startTop + clientY - startY;
+                var maxLeft = window.innerWidth - windowEl.offsetWidth - 12;
+                var maxTop = window.innerHeight - windowEl.offsetHeight - 12;
+                windowEl.style.left = Math.max(12, Math.min(left, maxLeft)) + 'px';
+                windowEl.style.top = Math.max(12, Math.min(top, maxTop)) + 'px';
+                windowEl.style.right = 'auto';
+                windowEl.style.bottom = 'auto';
+            }
+
+            function stopDrag() {
+                isDragging = false;
+                windowEl.classList.remove('dragging');
+            }
+
+            header.addEventListener('mousedown', function(e) {
+                if (e.target === closeBtn) return;
+                startDrag(e.clientX, e.clientY);
+            });
+            document.addEventListener('mousemove', function(e) {
+                moveDrag(e.clientX, e.clientY);
+            });
+            document.addEventListener('mouseup', stopDrag);
+
+            header.addEventListener('touchstart', function(e) {
+                if (e.target === closeBtn || !e.touches.length) return;
+                startDrag(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            document.addEventListener('touchmove', function(e) {
+                if (!e.touches.length) return;
+                moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            document.addEventListener('touchend', stopDrag);
+
+            closeBtn.addEventListener('click', function() {
+                windowEl.classList.add('hide');
+                toggleBtn.classList.remove('hide');
+            });
+
+            toggleBtn.addEventListener('click', function() {
+                windowEl.classList.remove('hide');
+                toggleBtn.classList.add('hide');
+            });
+        }
+
+        $(function() {
+            initKnowledgeWindow();
+
+            if ($('#hexo-blog-encrypt').length) {
+                $(document).on('click', '.hbe-button', function() {
+                    setTimeout(initKnowledgeWindow, 1000);
+                    setTimeout(initKnowledgeWindow, 3000);
+                });
+            }
+        });
+    })();
 </script>
 
 <!-- Typing Animation -->

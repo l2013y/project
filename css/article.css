@@ -181,6 +181,119 @@ pre .deletion {
     overflow-x: auto;
   }
 }
+.knowledge-window {
+  position: fixed;
+  right: 28px;
+  bottom: 96px;
+  width: 360px;
+  max-width: calc(100vw - 32px);
+  max-height: 62vh;
+  z-index: 1200;
+  background: rgba(255,255,255,0.96);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 14px;
+  box-shadow: 0 14px 36px rgba(0,0,0,0.18);
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.knowledge-window.hide {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+}
+.knowledge-window.dragging {
+  user-select: none;
+  transition: none;
+}
+.knowledge-window-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  color: #fff;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  cursor: move;
+  font-weight: 600;
+}
+.knowledge-window-close {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255,255,255,0.22);
+  font-size: 20px;
+  line-height: 24px;
+  cursor: pointer;
+}
+.knowledge-window-close:hover {
+  background: rgba(255,255,255,0.34);
+}
+.knowledge-window-body {
+  max-height: calc(62vh - 50px);
+  padding: 14px 16px;
+  overflow: auto;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #333;
+}
+.knowledge-window-body::-webkit-scrollbar {
+  width: 4px;
+}
+.knowledge-window-body::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.12);
+  border-radius: 4px;
+}
+.knowledge-window-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.22);
+}
+.knowledge-window-body p,
+.knowledge-window-body ul,
+.knowledge-window-body ol,
+.knowledge-window-body pre,
+.knowledge-window-body figure {
+  margin-top: 0;
+}
+.knowledge-window-body ul,
+.knowledge-window-body ol {
+  padding-left: 20px;
+}
+.knowledge-window-body pre,
+.knowledge-window-body figure.highlight {
+  max-width: 100%;
+  overflow: auto;
+}
+.knowledge-window-toggle {
+  position: fixed;
+  right: 28px;
+  bottom: 96px;
+  z-index: 1200;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, #337ab7, #5bc0de);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+  font-size: 14px;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.knowledge-window-toggle.hide {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+}
+.knowledge-window-toggle:hover {
+  transform: translateY(-2px);
+}
+@media (max-width: 768px) {
+  .knowledge-window,
+  .knowledge-window-toggle {
+    display: none;
+  }
+}
 /* 强制所有表格表头居中 */
 table thead th {
   text-align: center !important;

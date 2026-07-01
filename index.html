@@ -112,6 +112,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" id="themeToggleBtn" class="theme-toggle" title="切换白天/黑夜">
+                        <span class="theme-toggle-icon">☀</span>
+                    </a>
+                </li>
                 
                     <li>
                         <a href="/project/archives">
@@ -147,7 +152,7 @@
     <!-- Main Content -->
     <!-- Page Header -->
 <!-- Set your background image for this header in the theme's configuration: index_cover -->
-<header class="intro-header" style="background-image: url('/project/img/home-bg.jpg')">
+<header class="intro-header index-header" style="background-image: url('/project/img/home-bg.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
@@ -170,14 +175,14 @@
             
                 <div class="post-preview">
     <a href="/project/2026/05/30/会展及论坛总结/">
-        <h2 class="post-title">会展及论坛总结</h2>
+        <h2 class="post-title">会展及论坛总结&及后续项目发展</h2>
         
     </a>
     <p class="post-meta">
         <!-- Date and Author -->
         
         2026-05-30
-        <span style="float: right; font-size: 14px;">最后更新：2026-05-30</span>
+        <span style="float: right; font-size: 14px;">最后更新：2026-06-15</span>
     </p>
 </div>
             
@@ -203,7 +208,7 @@
         <!-- Date and Author -->
         
         2026-05-19
-        <span style="float: right; font-size: 14px;">最后更新：2026-05-29</span>
+        <span style="float: right; font-size: 14px;">最后更新：2026-06-09</span>
     </p>
 </div>
             
@@ -229,7 +234,7 @@
         <!-- Date and Author -->
         
         2026-05-06
-        <span style="float: right; font-size: 14px;">最后更新：2026-05-09</span>
+        <span style="float: right; font-size: 14px;">最后更新：2026-06-22</span>
     </p>
 </div>
             
@@ -281,7 +286,7 @@
         <!-- Date and Author -->
         
         2026-04-26
-        <span style="float: right; font-size: 14px;">最后更新：2026-05-20</span>
+        <span style="float: right; font-size: 14px;">最后更新：2026-06-05</span>
     </p>
 </div>
             
@@ -341,7 +346,7 @@
                 <ul>
                     
                         <li>
-                            <a href="/project/2026/05/30/%E4%BC%9A%E5%B1%95%E5%8F%8A%E8%AE%BA%E5%9D%9B%E6%80%BB%E7%BB%93/">会展及论坛总结</a>
+                            <a href="/project/2026/05/30/%E4%BC%9A%E5%B1%95%E5%8F%8A%E8%AE%BA%E5%9D%9B%E6%80%BB%E7%BB%93/">会展及论坛总结&amp;及后续项目发展</a>
                         </li>
                     
                         <li>
@@ -439,7 +444,37 @@
 
     <!-- After footer scripts -->
     
-<!-- jQuery -->
+
+<!-- Theme (Day/Night) Toggle -->
+<script type="text/javascript">
+(function() {
+    var STORAGE_KEY = 'blog-theme';
+    function applyTheme(theme) {
+        var isDark = theme === 'dark';
+        document.body.classList.toggle('dark-mode', isDark);
+        var icon = document.querySelector('#themeToggleBtn .theme-toggle-icon');
+        if (icon) icon.textContent = isDark ? '☾' : '☀';
+    }
+    try {
+        var saved = localStorage.getItem(STORAGE_KEY);
+        if (saved === 'dark') applyTheme('dark');
+    } catch (e) {}
+
+    document.addEventListener('DOMContentLoaded', function() {
+        applyTheme(document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        var btn = document.getElementById('themeToggleBtn');
+        if (!btn) return;
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+            applyTheme(next);
+            try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+            btn.blur();
+        });
+    });
+})();
+</script>
+
 <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 
 <!-- Bootstrap -->
@@ -596,6 +631,122 @@
             });
         }
     });
+</script>
+
+<!-- Knowledge Floating Window -->
+<script type="text/javascript">
+    (function() {
+        function initKnowledgeWindow() {
+            var article = document.querySelector('.article-content');
+            if (!article || document.querySelector('.knowledge-window')) return;
+
+            var headings = article.querySelectorAll('h2');
+            var knowledgeHeading = null;
+            for (var i = 0; i < headings.length; i++) {
+                if (headings[i].textContent.trim() === '知识点') {
+                    knowledgeHeading = headings[i];
+                    break;
+                }
+            }
+            if (!knowledgeHeading) return;
+
+            var content = document.createElement('div');
+            var node = knowledgeHeading.nextElementSibling;
+            while (node && node.tagName !== 'H2') {
+                content.appendChild(node.cloneNode(true));
+                node = node.nextElementSibling;
+            }
+            if (!content.children.length) return;
+
+            var windowEl = document.createElement('div');
+            windowEl.className = 'knowledge-window';
+            windowEl.innerHTML = '<div class="knowledge-window-header"><span>知识点速查</span><button type="button" class="knowledge-window-close" aria-label="关闭知识点浮窗">×</button></div><div class="knowledge-window-body"></div>';
+            windowEl.querySelector('.knowledge-window-body').appendChild(content);
+            document.body.appendChild(windowEl);
+
+            var toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'knowledge-window-toggle hide';
+            toggleBtn.textContent = '知识点';
+            document.body.appendChild(toggleBtn);
+
+            var header = windowEl.querySelector('.knowledge-window-header');
+            var closeBtn = windowEl.querySelector('.knowledge-window-close');
+            var isDragging = false;
+            var startX = 0;
+            var startY = 0;
+            var startLeft = 0;
+            var startTop = 0;
+
+            function startDrag(clientX, clientY) {
+                if (window.innerWidth <= 768) return;
+                isDragging = true;
+                startX = clientX;
+                startY = clientY;
+                var rect = windowEl.getBoundingClientRect();
+                startLeft = rect.left;
+                startTop = rect.top;
+                windowEl.classList.add('dragging');
+            }
+
+            function moveDrag(clientX, clientY) {
+                if (!isDragging) return;
+                var left = startLeft + clientX - startX;
+                var top = startTop + clientY - startY;
+                var maxLeft = window.innerWidth - windowEl.offsetWidth - 12;
+                var maxTop = window.innerHeight - windowEl.offsetHeight - 12;
+                windowEl.style.left = Math.max(12, Math.min(left, maxLeft)) + 'px';
+                windowEl.style.top = Math.max(12, Math.min(top, maxTop)) + 'px';
+                windowEl.style.right = 'auto';
+                windowEl.style.bottom = 'auto';
+            }
+
+            function stopDrag() {
+                isDragging = false;
+                windowEl.classList.remove('dragging');
+            }
+
+            header.addEventListener('mousedown', function(e) {
+                if (e.target === closeBtn) return;
+                startDrag(e.clientX, e.clientY);
+            });
+            document.addEventListener('mousemove', function(e) {
+                moveDrag(e.clientX, e.clientY);
+            });
+            document.addEventListener('mouseup', stopDrag);
+
+            header.addEventListener('touchstart', function(e) {
+                if (e.target === closeBtn || !e.touches.length) return;
+                startDrag(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            document.addEventListener('touchmove', function(e) {
+                if (!e.touches.length) return;
+                moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            document.addEventListener('touchend', stopDrag);
+
+            closeBtn.addEventListener('click', function() {
+                windowEl.classList.add('hide');
+                toggleBtn.classList.remove('hide');
+            });
+
+            toggleBtn.addEventListener('click', function() {
+                windowEl.classList.remove('hide');
+                toggleBtn.classList.add('hide');
+            });
+        }
+
+        $(function() {
+            initKnowledgeWindow();
+
+            if ($('#hexo-blog-encrypt').length) {
+                $(document).on('click', '.hbe-button', function() {
+                    setTimeout(initKnowledgeWindow, 1000);
+                    setTimeout(initKnowledgeWindow, 3000);
+                });
+            }
+        });
+    })();
 </script>
 
 <!-- Typing Animation -->

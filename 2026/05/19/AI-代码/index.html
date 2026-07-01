@@ -112,6 +112,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" id="themeToggleBtn" class="theme-toggle" title="切换白天/黑夜">
+                        <span class="theme-toggle-icon">☀</span>
+                    </a>
+                </li>
                 
                     <li>
                         <a href="/project/archives">
@@ -201,11 +206,130 @@
  th,td {
     border: solid 1px ;
  }
+ .term {
+    cursor: help;
+    border-bottom: 1px dotted #888;
+    transition: background-color .2s ease, color .2s ease, box-shadow .2s ease;
+ }
+ .term-active {
+    background: #fff3a3;
+    color: #222;
+    border-radius: 4px;
+    box-shadow: 0 0 0 2px #fff3a3;
+ }
 </style>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><ul>
+<li><code>Get-Service *mysql*</code>：查看当前 MySQL 服务是否正在运行，以及对应的服务名称。</li>
+<li><code>Restart-Service MySQL97</code>：重启 MySQL 服务。<code>MySQL97</code> 不是固定名称，要根据本机实际安装的 MySQL 服务名调整。</li>
+</ul>
+<p><strong>MySQL 语法模式调整：</strong> 本地和项目数据库的相较于项目多出了group-by语法，可能导致项目无法运行，可以临时执行下面几条命令：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> <span class="keyword">GLOBAL</span> sql_mode <span class="operator">=</span> <span class="string">&#x27;STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION&#x27;</span>;</span><br><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@GLOBAL</span>.sql_mode;</span><br><span class="line"><span class="keyword">SET</span> SESSION sql_mode <span class="operator">=</span> <span class="string">&#x27;STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION&#x27;</span>;</span><br><span class="line"><span class="keyword">SELECT</span> @<span class="variable">@SESSION</span>.sql_mode;</span><br></pre></td></tr></table></figure>
 
-<h2 id="2026-5-19"><a href="#2026-5-19" class="headerlink" title="2026.5.19"></a>2026.5.19</h2><p>今天下午先是用deepseek帮我生成了一份语音转文字的提示测，之后复制提示词让claude帮我生成了语音转文字的基础网页代码，先是生成了index.html和server.js,之后在文件夹中打开终端 <code>npm install ws</code> 安装了依赖，之后在cscode的终端中使用node server.js启动了服务。</p>
+<p>如果需要永久生效，可以执行 <code>SET PERSIST sql_mode = &#39;STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION&#39;;</code>。这样操作之后数据库会永久去掉group-by语法，但之后如果手动修改 <code>my.ini</code> 或重装 MySQL，这个配置可能会被覆盖。</p>
+<p><strong>后端依赖编译：</strong> 后端执行 <code>mvn clean install -DskipTests</code>，用于下载 Maven 依赖并编译整个后端项目。</p>
+<p><strong>常见环境问题：</strong> 启动后端时，如果某个启动项无法启动并提示未定义 JDK，但在命令行输入 <code>java -version</code> 有版本号输出，可以去 IDEA 菜单栏的 <code>文件 -&gt; 项目结构</code> 中选择 JDK 后确定，大概率可以解决。后台管理端一般用 <code>npm install</code> 安装依赖。</p>
+<p> <em><strong>userid、appid和openid的解释</strong></em></p>
+<p><strong>userId</strong> 是指系统里的用户ID，存在于数据库表中，例如：</p>
+<table>
+<thead>
+<tr>
+<th align="center">id</th>
+<th align="center">username</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">001</td>
+<td align="center"><a href="mailto:&#117;&#x73;&#101;&#114;&#x40;&#101;&#120;&#x61;&#109;&#x70;&#x6c;&#101;&#x2e;&#x63;&#111;&#109;">&#117;&#x73;&#101;&#114;&#x40;&#101;&#120;&#x61;&#109;&#x70;&#x6c;&#101;&#x2e;&#x63;&#111;&#109;</a></td>
+</tr>
+</tbody></table>
+<p>其中的001就是用户ID，代表的是系统中的某个账号，只要这个系统用户不被删除重建，userId 一般不会变。</p>
+<p><strong>appId</strong> 是微信给每个小程序分配的ID，目前这个项目所用的 wxe612…. 就是appid，相当于微信小程序的身份证。</p>
+<p><strong>openId</strong> 是微信给”某个微信用户在某个小程序下”生成的唯一 ID。代表某个微信用户在这个小程序中的身份，更改微信号、换小程序appId会导致openId的改变。</p>
+<h2 id="AI-代码质量检查维度"><a href="#AI-代码质量检查维度" class="headerlink" title="AI 代码质量检查维度"></a>AI 代码质量检查维度</h2><p>让 AI 写代码时，不能只看“能不能跑”，还要从正确性、安全性、性能、可维护性等角度检查。下面这张表可以当作一个简单的自查清单：</p>
+<table>
+  <thead>
+    <tr>
+      <th>维度</th>
+      <th>主要看什么</th>
+      <th>常见坏味道</th>
+      <th>更好的做法</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>正确性</td>
+      <td>代码是否按预期运行</td>
+      <td><span class="term" data-term="边界条件">边界条件</span>没处理、<span class="term" data-term="空指针">空指针</span></td>
+      <td>单元测试覆盖、异常处理完善</td>
+    </tr>
+    <tr>
+      <td>安全性</td>
+      <td>是否防止注入、泄露、越权</td>
+      <td><span class="term" data-term="SQL 拼接">SQL 拼接</span>、<span class="term" data-term="密码明文">密码明文</span>、无<span class="term" data-term="权限校验">权限校验</span></td>
+      <td><span class="term" data-term="参数化查询">参数化查询</span>、敏感信息加密、权限控制</td>
+    </tr>
+    <tr>
+      <td>性能</td>
+      <td>响应是否够快，资源占用是否合理</td>
+      <td>循环查数据库、大对象不释放</td>
+      <td>批量操作、<span class="term" data-term="缓存">缓存</span>、<span class="term" data-term="懒加载">懒加载</span></td>
+    </tr>
+    <tr>
+      <td>可维护性</td>
+      <td>后续是否好改、好扩展</td>
+      <td>改一处要改十处、逻辑分散</td>
+      <td><span class="term" data-term="高内聚低耦合">高内聚低耦合</span>、配置与代码分离</td>
+    </tr>
+    <tr>
+      <td>可测试性</td>
+      <td>是否方便写测试验证</td>
+      <td>逻辑全写在 UI 里、强依赖外部环境</td>
+      <td>业务逻辑抽离、<span class="term" data-term="依赖注入">依赖注入</span></td>
+    </tr>
+    <tr>
+      <td>兼容性</td>
+      <td>不同环境下是否都能运行</td>
+      <td><span class="term" data-term="硬编码路径">硬编码路径</span>、默认某个系统环境</td>
+      <td>相对路径、<span class="term" data-term="环境变量">环境变量</span>、配置外置</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>表格内术语简单解释：</strong></p>
+<ul>
+<li><strong><span class="term" data-term="边界条件">边界条件</span></strong>：正常情况之外的特殊情况，比如输入为空、数字特别大、列表没有数据。</li>
+<li><strong><span class="term" data-term="空指针">空指针</span></strong>：代码以为某个对象一定有值，实际却是空的，继续使用就会报错。</li>
+<li><strong><span class="term" data-term="SQL 拼接">SQL 拼接</span></strong>：把用户输入直接拼到 SQL 语句里，容易被恶意输入利用。</li>
+<li><strong><span class="term" data-term="参数化查询">参数化查询</span></strong>：把用户输入当作参数传给数据库，而不是直接拼字符串，更安全。</li>
+<li><strong><span class="term" data-term="密码明文">密码明文</span></strong>：密码没有加密或哈希处理，直接以原始文字保存或传输。</li>
+<li><strong><span class="term" data-term="权限校验">权限校验</span></strong>：检查当前用户有没有资格执行某个操作，比如删除、查看、修改数据。</li>
+<li><strong><span class="term" data-term="缓存">缓存</span></strong>：把常用数据临时存起来，避免每次都重新查数据库或重新计算。</li>
+<li><strong><span class="term" data-term="懒加载">懒加载</span></strong>：需要用到时才加载数据，不是一开始就全部加载。</li>
+<li><strong><span class="term" data-term="高内聚低耦合">高内聚低耦合</span></strong>：相关逻辑尽量放在一起，不相关的模块之间少互相依赖，后续更好改。</li>
+<li><strong><span class="term" data-term="依赖注入">依赖注入</span></strong>：把外部依赖传进来，而不是在代码内部写死，方便测试和替换。</li>
+<li><strong><span class="term" data-term="硬编码路径">硬编码路径</span></strong>：把具体路径直接写死在代码里，比如某台电脑上的固定目录，换环境就容易失效。</li>
+<li><strong><span class="term" data-term="环境变量">环境变量</span></strong>：把端口、密钥、数据库地址等配置放到运行环境里，不直接写死在代码中。</li>
+</ul>
+<script>
+  document.querySelectorAll('.term').forEach(function (term) {
+    term.addEventListener('mouseenter', function () {
+      document.querySelectorAll('.term[data-term="' + term.dataset.term + '"]').forEach(function (sameTerm) {
+        sameTerm.classList.add('term-active');
+      });
+    });
+    term.addEventListener('mouseleave', function () {
+      document.querySelectorAll('.term-active').forEach(function (activeTerm) {
+        activeTerm.classList.remove('term-active');
+      });
+    });
+  });
+</script>
+
+<p>简单来说，AI 生成代码后可以先问自己一句：它只是“看起来能跑”，还是在异常情况、安全风险、后续维护上也站得住？</p>
+<h2 id="2026-5-19AI语音转文字demo"><a href="#2026-5-19AI语音转文字demo" class="headerlink" title="2026.5.19AI语音转文字demo"></a>2026.5.19AI语音转文字demo</h2><p>今天下午先是用deepseek帮我生成了一份语音转文字的提示测，之后复制提示词让claude帮我生成了语音转文字的基础网页代码，先是生成了index.html和server.js,之后在文件夹中打开终端 <code>npm install ws</code> 安装了依赖，之后在cscode的终端中使用node server.js启动了服务。</p>
 <p>打开网页之后发现无法实现语音转文字的这个功能，因为一开始只给了Claude百度模型的APP ID，之后经过一番调试之后，在百度智能云创建了API key，Secret key，access_token，并把这些一股脑都给claude之后再次调试就成功了！</p>
-<h3 id="失败原因总结"><a href="#失败原因总结" class="headerlink" title="失败原因总结"></a>失败原因总结</h3><ul>
+<p><strong>失败原因总结</strong></p>
+<ul>
 <li><p><strong>阶段 1</strong></p>
 <ul>
 <li>问题：火山引擎401错误</li>
@@ -235,13 +359,11 @@
 </ul>
 </li>
 </ul>
-<hr>
 <h2 id="2026-5-20-语音转文字功能的改进"><a href="#2026-5-20-语音转文字功能的改进" class="headerlink" title="2026.5.20 语音转文字功能的改进"></a>2026.5.20 语音转文字功能的改进</h2><p><strong>表单重构：</strong> 姓名使用文本输入框；学校使用下拉选择，可切换输入框模式（预设5所名校，选”其他”时变成输入框，带”返回选择”按钮）；班级使用单选按钮（大一1-3班）；兴趣方向使用复选框（前端开发、后端开发、AI&#x2F;机器学习、其他），选”其他”时弹出文本框。</p>
 <p><strong>火山豆包AI集成：</strong> 接入 doubao-seed-2-0-lite 模型，语音识别完成后自动提取信息并填充表单，学校&#x2F;班级&#x2F;兴趣不匹配时智能处理，修复了API返回格式解析问题。</p>
 <p><strong>模拟测试功能：</strong> 左下角绿色”模拟测试”按钮，无需开口就能测试；5个测试用例，包含各种匹配&#x2F;不匹配场景；每次测试自动清空表单，可连续点击无需刷新；10秒超时兜底保护。</p>
 <p><strong>界面优化：</strong> 标签页显示麦克风图标，移除favicon 404报错，移动端响应式布局，玻璃态毛玻璃效果，录音状态脉冲动画。</p>
 <p><strong>保留原有功能：</strong> 右下角录音按钮，WebSocket语音识别，识别结果展示区，状态提示栏。</p>
-<hr>
 <h2 id="博客方面的优化"><a href="#博客方面的优化" class="headerlink" title="博客方面的优化"></a>博客方面的优化</h2><ul>
 <li><p><strong>1. 响应式布局问题</strong></p>
 <p>问题：手机端侧边栏头像、目录卡挡在文章内容前面，无法阅读和点击。</p>
@@ -265,17 +387,16 @@
 </li>
 </ul>
 <p>最终效果：PC 端侧边栏 + 粘性目录，无多余悬浮按钮；移动端左右两个对称悬浮按钮，点击目录弹出侧边面板；加密文章解密后目录正常生成，密码输入可交互。</p>
-<hr>
 <h2 id="2026-5-25-小程序端的问题"><a href="#2026-5-25-小程序端的问题" class="headerlink" title="2026.5.25 小程序端的问题"></a>2026.5.25 小程序端的问题</h2><p><strong>1. 微信开发者工具输入账号密码后一直转圈</strong></p>
 <ul>
 <li>原因之一：前端请求超时时间太长，原来是 <code>200000ms</code>，真机网络异常时会等很久。</li>
 <li>原因之二：<code>fly.lock()</code> 后没有正确 <code>unlock()</code>，一旦接口 401，后续请求可能被锁住，看起来就是一直转圈。</li>
-<li>已处理：<code>shoptour-frontend/src/main.js</code>，请求超时改成 <code>10000ms</code>，修复 token 刷新后没有释放请求锁的问题，修复 401 错误分支里错误引用 <code>response.request</code> 的问题。</li>
+<li>已处理：<code>.../src/main.js</code>，请求超时改成 <code>10000ms</code>，修复 token 刷新后没有释放请求锁的问题，修复 401 错误分支里错误引用 <code>response.request</code> 的问题。</li>
 </ul>
 <p><strong>2. 电脑端有时自动进入首页，不显示登录页</strong></p>
 <ul>
 <li>原因：小程序启动时会执行静默登录 <code>getTokenByCode</code>，后端返回 <code>&quot;bindWx&quot;: 1</code>，所以前端直接跳转首页。</li>
-<li>涉及位置：<code>shoptour-frontend/src/App.vue</code>、<code>shoptour-frontend/src/pages/pageOne/index.vue</code>。</li>
+<li>涉及位置：<code>.../src/App.vue</code>、<code>.../pages/pageOne/index.vue</code>。</li>
 <li>处理过程：临时关闭过静默登录，方便测试账号密码登录；验证登录正常后，已经恢复静默登录逻辑。</li>
 </ul>
 <p><strong>3. 真机不输入密码也能直接进入</strong></p>
@@ -283,14 +404,14 @@
 <li>原因：当前微信 openId 已经和账号绑定在后端数据库里。清微信开发者工具缓存只能清本地 token，不能解除服务端绑定。</li>
 <li>后端返回过：</li>
 </ul>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;openId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;oPY1a7EA-YcapyMPxllM7fmYglpQ&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;userId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1665660508056469505&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;bindWx&quot;</span><span class="punctuation">:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">&quot;openId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;openid示例值&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;userId&quot;</span><span class="punctuation">:</span> <span class="string">&quot;userId示例值&quot;</span><span class="punctuation">,</span></span><br><span class="line"><span class="attr">&quot;bindWx&quot;</span><span class="punctuation">:</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>处理方式：临时关闭静默登录和首屏 token 自动跳转，验证账号密码登录，验证成功后恢复。</li>
 </ul>
 <p><strong>4. 真机访问后端网络问题排查</strong></p>
 <ul>
-<li>测试手机浏览器访问 <code>http://192.168.3.25:9090/app/auth/getTokenByCode?code=test</code>，手机能返回 JSON，说明手机到电脑后端 9090 端口网络是通的，不是 WiFi、防火墙、AP 隔离导致的连接失败。</li>
+<li>测试手机浏览器访问 <code>http://局域网IP:后端端口/app/...</code>，手机能返回 JSON，说明手机到电脑后端端口网络是通的，不是 WiFi、防火墙、AP 隔离导致的连接失败。</li>
 <li>返回乱码是因为后端错误信息编码显示问题，本质是 invalid code，这是正常的，因为 code&#x3D;test 不是微信真实 code。</li>
 </ul>
 <p><strong>5. auth&#x2F;login 曾返回”账号已经被其他微信绑定”</strong></p>
@@ -303,16 +424,16 @@
 <ul>
 <li>报错：<code>无法找到对应的组件，请按文档说明使用组件</code> &#x2F; <code>null is not an object ... handleShow</code></li>
 <li>原因：”我的”页调用了 <code>this.$dialog.toast(...)</code> 但页面模板里没有 <code>&lt;i-toast id=&quot;toast&quot; /&gt;</code>。</li>
-<li>已处理：在 <code>shoptour-frontend/src/pages/home/index.vue</code> 中添加了 <code>&lt;i-toast id=&quot;toast&quot; /&gt;</code>。</li>
+<li>已处理：在 <code>.../pages/home/index.vue</code> 中添加了 <code>&lt;i-toast id=&quot;toast&quot; /&gt;</code>。</li>
 </ul>
 <p><strong>7. 点击”我的”后整屏弹出错误信息</strong></p>
 <ul>
 <li>原因：接口失败时直接把后端完整 <code>res.message</code> 用 toast 弹出来，真机上看起来像整屏报错。</li>
-<li>已处理：将长错误弹窗改成短提示，详细错误保留到 <code>console.log</code>。文件：<code>shoptour-frontend/src/pages/home/index.vue</code>。</li>
+<li>已处理：将长错误弹窗改成短提示，详细错误保留到 <code>console.log</code>。文件：<code>.../pages/home/index.vue</code>。</li>
 </ul>
 <p><strong>8. “我的”页提示 首页统计加载失败</strong></p>
 <ul>
-<li>对应接口 <code>/home/getHomeStatistics</code>，后端 <code>HomeStatisticsController.java</code>，实现位置 <code>shoptour-platform/.../HomeStatisticsImpl.java</code>。</li>
+<li>对应接口 <code>/home/getHomeStatistics</code>，后端 <code>HomeStatisticsController.java</code>，实现位置 <code>.../HomeStatisticsImpl.java</code>。</li>
 <li>这个接口聚合了报告统计、问题处理统计、问题发起统计、审批申请统计、审批审核统计。</li>
 <li>当前处理：因为它不影响登录和”我的”页基础展示，先去掉前端弹窗，只保留控制台日志。后续如果要彻底修，需要继续看后端日志或接口返回，定位是哪条统计 SQL&#x2F;模块报错。</li>
 </ul>
@@ -322,13 +443,12 @@
 <li>原因：小程序端当前核心是巡店、报告、问题、审批流程，没看到特别强的高频长文本输入场景；加语音会引入录音授权、上传、识别失败、隐私合规、网络延迟等复杂度。</li>
 <li>建议：小程序端暂时不做，如果以后 PC 后台有大量文本填报，再考虑加更合适。</li>
 </ul>
-<p><strong>当前代码主要改动文件：</strong> <code>/src/main.js</code>、<code>/src/App.vue</code>、<code>/src/pages/pageOne/index.vue</code>、<code>/src/pages/home/index.vue</code>。</p>
+<p><strong>当前代码主要改动文件：</strong> <code>.../main.js</code>、<code>.../App.vue</code>、<code>.../pageOne/index.vue</code>、<code>.../home/index.vue</code>。</p>
 <p><strong>当前状态：</strong> 电脑端登录不再卡住；真机端账号密码登录已验证可用；静默登录已恢复；”我的”页 toast 组件缺失已修；”首页统计加载失败”弹窗已隐藏，但后端统计接口本身可能仍有问题，后续可继续排查。</p>
-<hr>
 <h2 id="2026-5-26-登录问题"><a href="#2026-5-26-登录问题" class="headerlink" title="2026.5.26 登录问题"></a>2026.5.26 登录问题</h2><p><strong>1. PC 小程序登录提示”网络异常”</strong></p>
-<p>小程序 PC 端输入账号密码后提示”网络异常，请稍后再试”，控制台报 <code>POST https://mountable-juggling-daily.ngrok-free.dev/app/auth/login 502 Bad Gateway</code>。</p>
-<p>原因：一开始前端请求的是 ngrok 地址 <code>https://mountable-juggling-daily.ngrok-free.dev/app/auth/login</code>，但是本地后端 9090 当时没有正常监听，所以 ngrok 转发不到后端，返回 502。</p>
-<p>解决：确认后端启动后，本地接口 <code>curl -i http://127.0.0.1:9090/app/auth/login</code> 返回 <code>&#123;&quot;success&quot;:false,&quot;message&quot;:&quot;Request method &#39;GET&#39; not supported&quot;&#125;</code>（说明后端已跑通，只是 GET 不支持）。之后用 POST 测试 <code>curl -i -X POST &quot;http://127.0.0.1:9090/app/auth/login&quot; -d &quot;username=bxy@jimei.cn&amp;password=xundian123&quot;</code>，ngrok 地址也测试成功，网络链路恢复。</p>
+<p>小程序 PC 端输入账号密码后提示”网络异常，请稍后再试”，控制台报 <code>POST https://xxxx.ngrok-free.dev/app/... 502 Bad Gateway</code>。</p>
+<p>原因：一开始前端请求的是 ngrok 地址 <code>https://xxxx.ngrok-free.dev/app/...</code>，但是本地后端端口当时没有正常监听，所以 ngrok 转发不到后端，返回 502。</p>
+<p>解决：确认后端启动后，本地接口 <code>curl -i http://127.0.0.1:后端端口/app/...</code> 返回 <code>&#123;&quot;success&quot;:false,&quot;message&quot;:&quot;Request method &#39;GET&#39; not supported&quot;&#125;</code>（说明后端已跑通，只是 GET 不支持）。之后用 POST 测试 <code>curl -i -X POST &quot;http://127.0.0.1:后端端口/app/...&quot; -d &quot;username=测试账号&amp;password=测试密码&quot;</code>，ngrok 地址也测试成功，网络链路恢复。</p>
 <p><strong>2. MySQL 提示 No database selected</strong></p>
 <p>执行 SQL 时提示 <code>ERROR 1046 (3D000): No database selected</code>。原因是进入 MySQL 后还没有选择数据库。解决：先执行 <code>USE 数据库名;</code>。</p>
 <p><strong>3. curl 在 MySQL 里执行导致一直换行</strong></p>
@@ -336,51 +456,34 @@
 <p><strong>4. curl 登录成功，但小程序显示”账号不存在”</strong></p>
 <p>curl 返回 <code>&quot;success&quot;: true</code>，但小程序 Network 返回 <code>&#123;success: false, code: 2000, message: &quot;账号不存在&quot;&#125;</code>。</p>
 <p>原因：curl 默认用表单格式 <code>application/x-www-form-urlencoded</code>，而小程序请求可能按 JSON 方式提交。后端登录方法 <code>public R login(@ParameterObject LoginDto loginDto, HttpServletRequest request)</code> 不是 <code>@RequestBody</code>，更适合接收表单参数。</p>
-<p>解决：修改 <code>shoptour-frontend/src/pages/loginPage/index.vue</code>，登录请求增加 <code>headers: &#123; &#39;content-type&#39;: &#39;application/x-www-form-urlencoded&#39; &#125;</code>；同时修改 <code>shoptour-frontend/src/main.js</code>，避免请求拦截器覆盖单个请求自己的 headers。</p>
+<p>解决：修改 <code>.../pages/loginPage/index.vue</code>，登录请求增加 <code>headers: &#123; &#39;content-type&#39;: &#39;application/x-www-form-urlencoded&#39; &#125;</code>；同时修改 <code>.../src/main.js</code>，避免请求拦截器覆盖单个请求自己的 headers。</p>
 <p><strong>5. 本地调试不再使用 ngrok</strong></p>
-<p>因为不需要上传体验版，只做本地调试。把小程序接口地址从 <code>https://mountable-juggling-daily.ngrok-free.dev/app</code> 改成 <code>http://127.0.0.1:9090/app</code>，修改 <code>shoptour-frontend/config/dev.env.js</code> 和 <code>prod.env.js</code>。PC 微信开发者工具模拟器可以正常访问。</p>
+<p>因为不需要上传体验版，只做本地调试。把小程序接口地址从 <code>https://xxxx.ngrok-free.dev/app</code> 改成 <code>http://127.0.0.1:后端端口/app</code>，修改 <code>.../config/dev.env.js</code> 和 <code>.../config/prod.env.js</code>。PC 微信开发者工具模拟器可以正常访问。</p>
 <p><strong>6. 手机真机调试不能用 127.0.0.1</strong></p>
 <p>PC 模拟器正常，但手机真机提示网络异常。原因：电脑上 <code>127.0.0.1</code> 指电脑自己，手机上 <code>127.0.0.1</code> 指手机自己，手机上没有 Java 后端。</p>
-<p>解决：查到电脑局域网 IPv4 为 <code>192.168.3.25</code>，把接口地址改成 <code>http://192.168.3.25:9090/app</code>，修改 dev.env.js 和 prod.env.js 并重新构建。手机浏览器访问 <code>http://192.168.3.25:9090/app/auth/login</code> 能返回后端 JSON，说明链路成功。</p>
-<p><strong>7. 真机调试提示 8001 局域网连接失败</strong></p>
-<p>微信开发者工具提示”连接局域网 192.168.3.25:8001 失败，已切回广域网模式”。8001 是微信开发者工具自己的真机调试通道端口，不是项目后端端口（9090）。手机浏览器能访问 9090，说明项目接口本身没问题。继续使用真机调试即可，后续可检查 Windows 防火墙。</p>
+<p>解决：查到电脑局域网 IPv4 为 <code>局域网IP</code>，把接口地址改成 <code>http://局域网IP:后端端口/app</code>，修改 <code>.../dev.env.js</code> 和 <code>.../prod.env.js</code> 并重新构建。手机浏览器访问 <code>http://局域网IP:后端端口/app/...</code> 能返回后端 JSON，说明链路成功。</p>
+<p><strong>7. 真机调试提示 调试通道端口 局域网连接失败</strong></p>
+<p>微信开发者工具提示”连接局域网 局域网IP:调试通道端口 失败，已切回广域网模式”。调试通道端口 是微信开发者工具自己的真机调试通道端口，不是项目后端端口（项目后端端口）。手机浏览器能访问 后端端口，说明项目接口本身没问题。继续使用真机调试即可，后续可检查 Windows 防火墙。</p>
 <p><strong>8. 临时关闭静默登录</strong></p>
-<p>为了方便手机端直接测试账号密码登录，<code>/src/App.vue</code> 把启动时的 <code>wx.login()</code> → <code>getTokenByCode</code> 静默登录流程去掉，改成启动直接跳转登录页：</p>
+<p>为了方便手机端直接测试账号密码登录，<code>.../App.vue</code> 把启动时的 <code>wx.login()</code> → <code>getTokenByCode</code> 静默登录流程去掉，改成启动直接跳转登录页：</p>
 <blockquote>
-<p>onLaunch: function (option) {<br>  wx.navigateTo({ url : ‘&#x2F;pages&#x2F;loginPage&#x2F;main’ })<br>}</p>
+<p>onLaunch: function (option) {<br>  wx.navigateTo({ url : ‘&#x2F;pages&#x2F;…&#x2F;main’ })<br>}</p>
 </blockquote>
 <p><strong>9. 手机端最终登录成功</strong></p>
 <p>手机端使用另一个未绑定账号成功登录。下面这条链路已经打通：</p>
 <blockquote>
-<p>手机小程序 → <a target="_blank" rel="noopener" href="http://192.168.3.25:9090/app">http://192.168.3.25:9090/app</a> → 本地 Java 后端 → 本地 MySQL 数据库</p>
+<p>手机小程序 → http:&#x2F;&#x2F;局域网IP:后端端口&#x2F;app → 本地 Java 后端 → 本地 MySQL 数据库</p>
 </blockquote>
 <p>本地真机调试环境已经成功跑通。</p>
-<p><strong>本地调试配置备忘：</strong> 后端端口 9090，接口上下文 <code>/app</code>，本地数据库 <code>lyhl_xjsp</code>，Redis 6379。小程序接口地址使用 <code>http://192.168.3.25:9090/app</code>（同时兼容 PC 模拟器和手机真机）。</p>
+<p><strong>本地调试配置备忘：</strong> 后端端口，接口上下文 <code>/app</code>，本地数据库 <code>本地数据库名</code>，Redis 默认端口。小程序接口地址使用 <code>http://局域网IP:后端端口/app</code>（同时兼容 PC 模拟器和手机真机）。</p>
 <p><strong>常见错误判断：</strong></p>
 <ul>
-<li><strong>网络异常，请稍后重试</strong> —— 优先检查：后端 9090 是否启动、手机是否和电脑在同一 Wi-Fi、小程序 BASE_URL 是否是 <code>192.168.3.25:9090</code>、手机浏览器能否访问 <code>http://192.168.3.25:9090/app/auth/login</code>。</li>
+<li><strong>网络异常，请稍后重试</strong> —— 优先检查：后端端口是否启动、手机是否和电脑在同一 Wi-Fi、小程序 BASE_URL 是否是 <code>局域网IP:后端端口</code>、手机浏览器能否访问 <code>http://局域网IP:后端端口/app/...</code>。</li>
 <li><strong>账号不存在</strong> —— 说明 username 没查到，检查是否输错账号、数据库 <code>sys_user.username</code> 是否存在、请求参数是否正确传到后端。</li>
 <li><strong>账号密码错误</strong> —— 账号存在，但密码不对。</li>
-<li><strong>账号已经被其他微信绑定</strong> —— 账号已绑定别的 open_id，可换账号，或本地开发时清绑定：<code>USE lyhl_xjsp; DELETE FROM sys_user_wx WHERE user_id = 用户ID; UPDATE sys_user SET bind_wx = 0 WHERE id = 用户ID;</code></li>
+<li><strong>账号已经被其他微信绑定</strong> —— 账号已绑定别的 open_id，可换账号，或本地开发时清绑定：<code>USE 本地数据库名; DELETE FROM sys_user_wx WHERE user_id = 用户ID; UPDATE sys_user SET bind_wx = 0 WHERE id = 用户ID;</code></li>
 </ul>
-<hr>
-<h2 id="userid、appid和openid的解释"><a href="#userid、appid和openid的解释" class="headerlink" title="userid、appid和openid的解释"></a>userid、appid和openid的解释</h2><p><strong>userId</strong> 是指系统里的用户ID，存在于数据库表中，例如：</p>
-<table>
-<thead>
-<tr>
-<th align="center">id</th>
-<th align="center">username</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">001</td>
-<td align="center"><a href="mailto:&#108;&#117;&#x79;&#105;&#64;&#120;&#120;&#120;&#120;&#46;&#99;&#x6e;">&#108;&#117;&#x79;&#105;&#64;&#120;&#120;&#120;&#120;&#46;&#99;&#x6e;</a></td>
-</tr>
-</tbody></table>
-<p>其中的001就是用户ID，代表的是系统中的某个账号，只要这个系统用户不被删除重建，userId 一般不会变。</p>
-<p><strong>appId</strong> 是微信给每个小程序分配的ID，目前这个项目所用的 wxe612…. 就是appid，相当于微信小程序的身份证。</p>
-<p><strong>openId</strong> 是微信给”某个微信用户在某个小程序下”生成的唯一 ID。代表某个微信用户在这个小程序中的身份，更改微信号、换小程序appId会导致openId的改变。</p>
-<h2 id="2026-5-27-小程序-AI-语音转文字-—-从踩坑到上线"><a href="#2026-5-27-小程序-AI-语音转文字-—-从踩坑到上线" class="headerlink" title="2026.5.27 小程序 AI 语音转文字 — 从踩坑到上线"></a>2026.5.27 小程序 AI 语音转文字 — 从踩坑到上线</h2><p><strong>一、功能定位：第一版只做巡店总结</strong></p>
+<h2 id="2026-5-27-小程序-AI-语音转文字-—-从踩坑到上线"><a href="#2026-5-27-小程序-AI-语音转文字-—-从踩坑到上线" class="headerlink" title="2026.5.27 小程序 AI 语音转文字 — 从踩坑到上线"></a>2026.5.27 小程序 AI 语音转文字 — 从踩坑到上线</h2><p><strong>1. 功能定位：第一版只做巡店总结</strong></p>
 <p>巡检表单里有很多字段：合格&#x2F;不合格、打分、单选、情况说明、签字、巡店总结。起初容易被”AI 控制整张表单”的思路带偏，但逐个分析后发现：</p>
 <ul>
 <li>合格&#x2F;不合格 → 点一下就行，语音反而增加误判风险</li>
@@ -389,60 +492,285 @@
 <li>巡店总结 → 长文本，手动输入成本高，语音收益最大</li>
 </ul>
 <p>收获：第一版功能要克制，选收益最高、风险最低的字段切入，不要一上来就追求”全自动”。</p>
-<p><strong>二、入口问题：找到真正的页面</strong></p>
+<p><strong>2. 入口问题：找到真正的页面</strong></p>
 <p>小程序底部导航是”任务、报告、问题、汇总、我的”，没有”巡检”这个入口。实际流程是：任务列表 → 点某个任务的”巡检”按钮 → 进入巡检详情页。</p>
 <p>收获：页面名称和用户操作入口不一定一一对应，要看代码里的跳转逻辑确认真实页面。</p>
-<p><strong>三、组件 vs 页面内实现</strong></p>
+<p><strong>3. 组件 vs 页面内实现</strong></p>
 <p>一开始想做通用语音组件给其他页面复用，但 mpvue 的组件编译和开发者工具缓存叠加后，容易出现”找不到组件 WXML 文件”的报错。后来把语音按钮直接写在页面里，功能快速跑通。</p>
 <p>收获：复用是方向，但如果框架编译不够稳，先跑通再抽象。源码、构建产物、开发者工具缓存三者可能不一致，清缓存是基本功。</p>
-<p><strong>四、百度云切腾讯云</strong></p>
+<p><strong>4. 百度云切腾讯云</strong></p>
 <p>认证方式完全不同：百度云用 OAuth token（需缓存+续期），腾讯云用 TC3-HMAC-SHA256 签名（每次请求动态计算）。换云服务不只是换 URL。</p>
-<p><strong>五、Network Error 排查</strong></p>
+<p><strong>5. Network Error 排查</strong></p>
 <p>网页端全站报 Network Error，后端服务正常。根因是前端 axios 配置 <code>withCredentials: true</code>，后端 CORS 配置 <code>allowCredentials: false</code>，浏览器检测到不匹配直接拦截。</p>
 <p>收获：后端无日志 + 前端 Network Error → 优先查 CORS credentials。</p>
-<p><strong>六、微信 API 异步陷阱</strong></p>
+<p><strong>6. 微信 API 异步陷阱</strong></p>
 <p><code>wx.showModal</code> 弹提示后代码继续往下执行，弹窗和录音”一起发生”，弹窗被覆盖。弹窗后需要 <code>return</code>，在回调里启动录音。</p>
 <p>收获：微信 API 几乎是全异步的，弹窗不会阻塞代码。</p>
-<p><strong>七、权限按钮的坑</strong></p>
+<p><strong>7. 权限按钮的坑</strong></p>
 <p>加了个删除按钮，按钮不显示。因为用 <code>showBtnFn</code> 做了权限校验，但数据库权限表里没这个 key。新按钮如果配了权限，先确认权限数据有没有。</p>
-<p><strong>八、语音录入的目标选择</strong></p>
+<p><strong>8. 语音录入的目标选择</strong></p>
 <p>每个检查项都有自己的”情况说明”文本框，全局就一个语音按钮，录给谁？</p>
 <p>当前设计：默认录入巡店总结；如果用户先点击打开了某个”情况说明”文本框，则优先录入那个。首次使用弹提示：”语音内容默认录入巡店总结，如需写入情况说明，请先点击对应输入框”。</p>
 <p>收获：UI 简洁比功能强大更重要，一个按钮 + 上下文判断，比到处放按钮体验好。</p>
-<h2 id="2026-5-28-小程序-AI-语音与巡检保存问题整理"><a href="#2026-5-28-小程序-AI-语音与巡检保存问题整理" class="headerlink" title="2026.5.28 小程序 AI 语音与巡检保存问题整理"></a>2026.5.28 小程序 AI 语音与巡检保存问题整理</h2><p><strong>一、AI 语音功能重新收敛</strong></p>
+<h2 id="2026-5-28-小程序-AI-语音与巡检保存问题整理"><a href="#2026-5-28-小程序-AI-语音与巡检保存问题整理" class="headerlink" title="2026.5.28 小程序 AI 语音与巡检保存问题整理"></a>2026.5.28 小程序 AI 语音与巡检保存问题整理</h2><p><strong>1. AI 语音功能重新收敛</strong></p>
 <p>昨天的方向是让 AI 语音尽量智能地匹配检查项，甚至自动判断合格&#x2F;不合格。今天重新梳理后发现，当前最稳定、最适合上线的版本还是“语音转文字录入文本框”：默认录入巡店总结；如果用户先点击某个情况说明输入框，就把语音内容写入对应输入框。</p>
 <p>收获：第一版不要急着做“AI 自动填整张表”。语音识别先解决长文本输入效率，智能判断可以后面再加，而且最好做成“AI 分析结果预览 + 用户确认填入”，避免误填。</p>
-<p><strong>二、录入目标和高亮逻辑</strong></p>
+<p><strong>2. 录入目标和高亮逻辑</strong></p>
 <p>点击 AI 语音按钮时，文本框可能会失焦，如果只依赖焦点状态，语音结果就会错误地回到巡店总结。处理方式是用 <code>voiceTarget</code> 记录最后选中的录入目标，不再依赖真实焦点；同时给当前目标加蓝色高亮，让用户知道语音会写到哪里。</p>
 <p>首次提示也改得更明确：默认录入巡店总结；点击输入框高亮后，可将语音内容录入到对应位置。</p>
-<p><strong>三、模拟和自动判断先撤回</strong></p>
+<p><strong>3. 模拟和自动判断先撤回</strong></p>
 <p>中途尝试过加“模拟”按钮，用手动输入文本模拟语音内容，并用关键词规则自动选择合格&#x2F;不合格，比如“故障、异常、不正常”判为不合格，“正常、合格、没问题”判为合格。</p>
 <p>但关键词规则不是真智能，复杂表达很容易误判，比如“不是不合格”“没有异常但有轻微噪音”。最后决定删除模拟按钮、模拟弹窗、自动匹配合格&#x2F;不合格逻辑，同时删除 <code>index.vue.bak</code>、<code>index.vue.work</code> 这类备份文件，避免旧提示和旧代码干扰判断。</p>
-<p><strong>四、微信开发者工具与导入目录问题</strong></p>
+<p><strong>4. 微信开发者工具与导入目录问题</strong></p>
 <p>开发者工具渲染层出现过 <code>getGlobalStorage fail: too eayly</code>，试过临时关闭静默登录后仍然存在，但功能不受影响，暂时判断是微信开发者工具初始化层面的提示，不继续改业务代码。</p>
 <p>另外，不能直接导入 <code>dist</code> 目录，否则容易出现网络和配置异常。这个项目应该导入 <code>shoptour-frontend</code> 根目录，因为根目录的 <code>project.config.json</code> 已经配置了 <code>miniprogramRoot: &quot;dist/&quot;</code>。</p>
-<p><strong>五、巡检保存失败问题</strong></p>
+<p><strong>5. 巡检保存失败问题</strong></p>
 <p>点击“完成收起”时曾出现“操作失败！null”。后端排查后发现，保存报告时有些字段可能为空：<code>reportItem.getScore()</code>、<code>redline</code>、<code>passline</code> 都可能触发空值问题。</p>
 <p>处理方式：分数为空时按 0 汇总；<code>redline</code> 改成安全判断；<code>passline</code> 为空时按 0 处理；提交报告时，空分数也走空白提交逻辑。</p>
-<p><strong>六、itemId 接收不到问题</strong></p>
+<p><strong>6. itemId 接收不到问题</strong></p>
 <p>保存巡检时还出现过“巡店项目不存在：null”和 <code>Required request parameter &#39;itemId&#39; is not present</code>。原因是前端用 POST 提交时，参数在 body 里，后端一开始没有稳定接收到。</p>
 <p>处理方式：前端保存时把 <code>itemId</code> 转成字符串；后端 <code>/setReport</code> 改成兼容 POST body 和普通参数。这样保存链路更稳，不会因为参数位置不同导致后端拿不到巡店项目。</p>
 <p><strong>当前结论：</strong> AI 语音第一版只保留稳定的语音转文字录入；巡检保存问题重点处理空值和参数接收。后续如果继续做智能化，应该让大模型结合“语音文字 + 当前检查项标题 + 表单结构”返回结构化结果，再让用户确认后填入。</p>
-<h3 id="2026-5-29-自动AI录音与保存体验优化"><a href="#2026-5-29-自动AI录音与保存体验优化" class="headerlink" title="2026.5.29 自动AI录音与保存体验优化"></a>2026.5.29 自动AI录音与保存体验优化</h3><ol>
-<li><p>点击”完成收起”时出现网络超时提示。确认后端可以正常访问后，把前端请求超时时间从 <code>10000ms</code> 调到 <code>30000ms</code>，保存可以成功，但接口响应仍然偏慢，后续还可以继续优化后端保存性能。</p>
-</li>
-<li><p>选择完全不合格时自动调用 AI 语音。实际业务中，部分合格或扣分项也需要说明原因，所以处理成：只要选择非合格或低于满分项，就自动展开对应的”情况说明”，并把 AI 语音录入目标切换到该说明框。</p>
-</li>
-<li><p>为了避免自动录音打扰用户，增加了”自动AI”开关：关闭时只展开说明框，不自动录音；开启时选择非合格项会自动开始录音。开关放在右下角 AI 语音按钮上方的小三角里，点击后展开或收起，比单独放按钮更清爽，也不容易误触。</p>
-</li>
-<li><p>自动AI 第一次触发时，提示曾经到停止录音时才弹出。处理后，自动触发和手动触发统一走首次提示逻辑；录音过程中点击按钮只停止录音，不再弹提示。小三角和 AI 语音按钮功能反了的问题，也通过 <code>data-action</code> 分发点击行为解决。</p>
-</li>
-<li><p>“未识别到语音”的提示一闪而过，用户来不及看清。现在把识别失败和上传失败的提示延长到 <code>3000ms</code>，同时避免和”识别中”的 loading 重叠。</p>
-</li>
-<li><p>自动录音开始时，用户不一定知道已经开始。现在增加了右下角气泡提示”已开始录音，请说明原因”，带淡入淡出效果，自动录音状态更清楚。</p>
-</li>
-</ol>
+<h2 id="2026-5-29-自动AI录音与保存体验优化"><a href="#2026-5-29-自动AI录音与保存体验优化" class="headerlink" title="2026.5.29 自动AI录音与保存体验优化"></a>2026.5.29 自动AI录音与保存体验优化</h2><p><strong>1. 点击”完成收起”时出现网络超时提示</strong></p>
+<p>确认后端可以正常访问后，把前端请求超时时间从 <code>10000ms</code> 调到 <code>30000ms</code>，保存可以成功，但接口响应仍然偏慢，后续还可以继续优化后端保存性能。</p>
+<p><strong>2. 选择完全不合格时自动调用 AI 语音</strong></p>
+<p>实际业务中，部分合格或扣分项也需要说明原因，所以处理成：只要选择非合格或低于满分项，就自动展开对应的”情况说明”，并把 AI 语音录入目标切换到该说明框。</p>
+<p><strong>3. 增加”自动AI”开关</strong></p>
+<p>为了避免自动录音打扰用户，关闭时只展开说明框，不自动录音；开启时选择非合格项会自动开始录音。开关放在右下角 AI 语音按钮上方的小三角里，点击后展开或收起，比单独放按钮更清爽，也不容易误触。</p>
+<p><strong>4. 自动AI 首次提示和按钮点击修正</strong></p>
+<p>自动AI 第一次触发时，提示曾经到停止录音时才弹出。处理后，自动触发和手动触发统一走首次提示逻辑；录音过程中点击按钮只停止录音，不再弹提示。小三角和 AI 语音按钮功能反了的问题，也通过 <code>data-action</code> 分发点击行为解决。</p>
+<p><strong>5. 延长识别失败提示时间</strong></p>
+<p>“未识别到语音”的提示一闪而过，用户来不及看清。现在把识别失败和上传失败的提示延长到 <code>3000ms</code>，同时避免和”识别中”的 loading 重叠。</p>
+<p><strong>6. 增加自动录音状态提示</strong></p>
+<p>自动录音开始时，用户不一定知道已经开始。现在增加了右下角气泡提示”已开始录音，请说明原因”，带淡入淡出效果，自动录音状态更清楚。</p>
 <p><strong>当前结论：</strong> 自动AI 开关让语音录入更灵活，用户可自主选择是否自动触发；按钮交互和提示体验已打磨到位，非合格项自动联动展开说明框的逻辑也已跑通。</p>
+<h2 id="2026-6-1第一版所碰到的问题"><a href="#2026-6-1第一版所碰到的问题" class="headerlink" title="2026.6.1第一版所碰到的问题"></a>2026.6.1第一版所碰到的问题</h2><p>在让claude帮忙增加AI语音转文字的功能时没有对其进行限制，更改了许多的项目配置文件和登录逻辑，主要的原因是当时没有这些安全意识，之后的任务中首要就是让AI不要随意更改项目本身的配置和登录逻辑。另外的问题就是编译代码一定要保证其可读性以及之后的维护简易性，简单来说就是能写全局插件或者复用组件优先。</p>
+<h2 id="2026-6-2-6-4-第二版项目"><a href="#2026-6-2-6-4-第二版项目" class="headerlink" title="2026.6.2~6.4 第二版项目"></a>2026.6.2~6.4 第二版项目</h2><p>巡店系统 AI 语音功能问题总结。</p>
+<p><strong>1. 小程序运行的是 dist，不是 src</strong></p>
+<ul>
+<li>问题：改了 <code>src</code> 代码，但微信开发者工具没有变化。</li>
+<li>原因：mpvue 项目实际运行的是 <code>dist/</code> 目录。</li>
+<li>解决：只改 <code>src</code>，然后运行 <code>npm run dev</code> 重新生成 <code>dist</code>。</li>
+</ul>
+<p><strong>2. npm run build 会生成生产环境包</strong></p>
+<ul>
+<li>问题：本地调试时接口地址突然变成线上地址，甚至出现 <code>Cannot read property &#39;call&#39; of undefined</code>。</li>
+<li>原因：<code>npm run build</code> 会按生产配置生成 <code>dist</code>。</li>
+<li>解决：本地调试使用 <code>npm run dev</code>，不要用 <code>npm run build</code> 调试小程序。</li>
+</ul>
+<p><strong>3. 真机调试不能用 localhost</strong></p>
+<ul>
+<li>问题：模拟器能登录，真机输入账号密码没反应。</li>
+<li>原因：真机里的 <code>localhost</code> 指的是手机自己，不是电脑。</li>
+<li>解决：真机调试要用 <code>http://电脑局域网IP:后端端口/app</code>，或直接使用公司测试环境地址。</li>
+</ul>
+<p><strong>4. 登录状态缓存会掩盖问题</strong></p>
+<ul>
+<li>问题：配置改错了，但页面好像还能打开。</li>
+<li>原因：小程序缓存了 token、用户信息、权限信息。</li>
+<li>解决：排查登录问题时清缓存，重新登录。</li>
+</ul>
+<p><strong>5. AppID &#x2F; AppSecret 一定要恢复</strong></p>
+<ul>
+<li>问题：本地真机调试临时用了个人 AppID，提交前容易忘记恢复。</li>
+<li>影响：会导致同事环境、测试环境微信登录异常。</li>
+<li>解决：提交前检查各项配置文件，确认没有个人 AppID &#x2F; AppSecret。</li>
+</ul>
+<p><strong>6. AI 密钥不能放前端</strong></p>
+<ul>
+<li>问题：腾讯云 SecretId &#x2F; SecretKey 如果写前端会泄露。</li>
+<li>解决：密钥只放后端，推荐通过环境变量 <code>TENCENT_ASR_SECRET_ID</code>、<code>TENCENT_ASR_SECRET_KEY</code> 配置，再由后端读取。</li>
+</ul>
+<p><strong>7. 腾讯云 ASR 不是大模型</strong></p>
+<ul>
+<li>问题：容易误以为接入的是“大模型”。</li>
+<li>实际：本次使用的是腾讯云 ASR 语音识别，SDK 包为 <code>com.tencentcloudapi.asr.v20190614</code>，作用只是语音转文字。</li>
+</ul>
+<p><strong>8. 小程序老项目不适合贸然挂复杂组件</strong></p>
+<ul>
+<li>问题：尝试挂 Vue 语音组件后，mpvue 页面容易异常。</li>
+<li>解决：改成页面级普通按钮，直接在巡检详情页接入语音功能。</li>
+</ul>
+<p><strong>9. “点击不合格自动录音”风险较高</strong></p>
+<ul>
+<li>问题：自动录音涉及权限、误触、重复点击、录音状态管理。</li>
+<li>解决：改成更稳的方案：点击不合格后，自动展开情况说明，记录当前语音填入目标；之后由用户手动点击 AI 语音，识别结果再填入当前情况说明。</li>
+</ul>
+<p><strong>10. 语音默认填入巡店总结</strong></p>
+<ul>
+<li>问题：没有选中具体说明框时，识别结果需要有默认去处。</li>
+<li>解决：默认填入巡店总结；如果当前有非合格项目标，则填入对应情况说明。</li>
+</ul>
+<p><strong>11. “全部合格 &#x2F; 全部不合格”要避免误触发</strong></p>
+<ul>
+<li>问题：如果只说“合格”就全选，容易误操作。</li>
+<li>解决：只有识别到 <code>全部</code>、<code>全都</code>、<code>都</code>、<code>所有</code>、<code>全选</code> 这类关键词时才批量处理，例如“全部合格”“都不合格”。</li>
+</ul>
+<p><strong>12. 巡检项是懒加载的</strong></p>
+<ul>
+<li>问题：未展开的检查项没有子项数据，无法直接全选。</li>
+<li>解决：执行“全部合格&#x2F;不合格”前，先加载所有未展开明细。</li>
+</ul>
+<p><strong>13. 不同题型赋值方式不同</strong></p>
+<ul>
+<li>问题：只改界面选中状态，保存时可能不生效。</li>
+<li>解决：按题型分别处理：对错型改 <code>passName</code> 和 <code>score</code>；打分型改 <code>score</code>；选择型改 <code>ischeck</code>、<code>options[].ischeck</code> 和 <code>score</code>。</li>
+</ul>
+<p><strong>14. 情况说明有 200 字限制</strong></p>
+<ul>
+<li>问题：AI 识别结果过长会超过文本框限制。</li>
+<li>解决：填入情况说明时截断到 200 字。</li>
+</ul>
+<p><strong>15. 后端要分 app 和 admin 两套接口</strong></p>
+<ul>
+<li>问题：小程序和网页管理端不是同一个后端模块。</li>
+<li>解决：两个模块都要加 Controller 和腾讯云 SDK 依赖。</li>
+</ul>
+<p><strong>16. 后台管理端适合做全局组件</strong></p>
+<ul>
+<li>问题：每个表单页面单独改成本太高。</li>
+<li>解决：在 <code>App.vue</code> 全局挂 AI 语音组件，自动识别当前弹窗&#x2F;抽屉表单。</li>
+</ul>
+<p><strong>17. 登录页不要显示 AI 按钮</strong></p>
+<ul>
+<li>问题：全局组件会出现在登录页。</li>
+<li>解决：给组件加路由判断，例如 <code>&lt;ai-voice-to-text v-if=&quot;$route.path !== &#39;/login&#39;&quot; /&gt;</code>。</li>
+</ul>
+<p><strong>18. 提交前必须检查配置文件</strong></p>
+<ul>
+<li>避免提交：本地 IP、个人 AppID、个人 AppSecret、构建产物、开发工具私有配置、无关锁文件变化。</li>
+</ul>
+<p><strong>19. 远程旧分支可用 –force-with-lease 覆盖</strong></p>
+<ul>
+<li>问题：远程 <code>dev2026</code> 有旧的大改动提交，普通 push 会被拒绝。</li>
+<li>解决：确认需要用本地分支覆盖远程旧分支时，可以使用 <code>git push --force-with-lease origin 本地分支:dev2026</code>。它比 <code>--force</code> 更安全，但执行前仍然要确认远程旧提交确实可以被覆盖。</li>
+</ul>
+<p><strong>20. git fetch 不会改本地代码</strong></p>
+<ul>
+<li>问题：担心 <code>git fetch</code> 会拉代码覆盖本地。</li>
+<li>实际：<code>git fetch</code> 只更新远程分支记录，不改工作区；会改代码的是 <code>git pull</code>。</li>
+</ul>
+<p><strong>总结：</strong> 本次问题核心不是 AI 语音本身，而是老项目多端联调：小程序构建产物容易混乱，真机和模拟器地址不同，微信登录依赖 AppID&#x2F;AppSecret，前端、后台、后端三端都要同步，配置文件提交前必须仔细检查。</p>
+<p>最终经验：老项目加新功能，要最小侵入、少改配置，先保证登录和环境稳定，再逐步增强功能。</p>
+<h2 id="2026-6-5-对于意见反馈的功能的方案规划"><a href="#2026-6-5-对于意见反馈的功能的方案规划" class="headerlink" title="2026.6.5 对于意见反馈的功能的方案规划"></a>2026.6.5 对于意见反馈的功能的方案规划</h2><p>下一步就着手于对小程序端的“我的”页面添加意见反馈，意见反馈中包括问题反馈和bug反馈，然后点击这两个入口能跳转到问题填写页面，填写页面的话包括文本、图片上传和联系方式</p>
+<h2 id="2026-6-8-对于小程序和后台管理端的意见反馈的初步开发"><a href="#2026-6-8-对于小程序和后台管理端的意见反馈的初步开发" class="headerlink" title="2026.6.8 对于小程序和后台管理端的意见反馈的初步开发"></a>2026.6.8 对于小程序和后台管理端的意见反馈的初步开发</h2><p>这次任务是给小程序新增“意见反馈”功能，并且在后台管理端提供查看反馈记录的页面。整体功能链路：小程序用户进入“我的”页面，点击意见反馈，选择反馈类型，填写反馈内容、上传图片、填写联系方式后提交。后端接收数据后保存到数据库，同时记录提交人的用户信息。后台管理端再提供一个反馈管理页面，用来查看用户提交的反馈内容。这次功能表面上看只是一个简单的表单提交，但实际涉及了小程序前端、后端接口、数据库表、后台管理端页面、菜单权限、环境配置等多个环节。</p>
+<p><strong>1. 后端为什么要按分层结构实现</strong></p>
+<p>一开始需要为意见反馈新增后端保存接口。这个功能虽然简单，但没有直接在接口里写数据库操作，而是按照项目原有结构拆分为实体类、数据库操作层、业务服务层和接口层。<br>这样做的原因是：</p>
+<ul>
+<li>保持和项目原有代码风格一致；</li>
+<li>后续后台管理端查询反馈时可以复用同一套业务模块；</li>
+<li>如果以后要增加处理状态、回复、删除等功能，扩展会更方便；</li>
+<li>避免把数据库操作直接写在接口层，降低维护成本。<br>虽然文件数量比“只写一个接口”更多，但这是符合项目规范的最小完整实现。</li>
+</ul>
+<p><strong>2. 数据库表的设计</strong></p>
+<p>意见反馈需要单独建表保存用户提交的数据。<br>表里主要保存这些信息：</p>
+<ul>
+<li>反馈类型；</li>
+<li>反馈内容；</li>
+<li>图片地址；</li>
+<li>用户填写的联系方式；</li>
+<li>提交用户 ID；</li>
+<li>提交用户名称；</li>
+<li>创建时间。<br>其中，提交用户 ID 和提交用户名称不是前端传过来的，而是后端从当前登录用户中获取的。<br>这样即使用户在联系方式里填错手机号，系统也仍然能知道是谁提交的反馈。<br>联系方式字段的作用更多是方便后台人员后续联系用户，而不是用来判断用户身份。</li>
+</ul>
+<p><strong>3. 小程序端提交逻辑</strong></p>
+<p>小程序端主要做了三个页面相关的工作：</p>
+<ul>
+<li>在“我的”页面增加意见反馈入口；</li>
+<li>新增反馈类型选择页；</li>
+<li>新增反馈填写页。<br>填写页负责收集用户输入的反馈内容、图片和联系方式，然后调用后端保存接口。<br>最开始提交成功后会立即返回上一页，导致成功提示很容易一闪而过。请求异常时也没有明确提示，用户只会感觉页面加载了一下但不知道发生了什么。<br>后来对提交体验做了优化：</li>
+<li>提交成功后先显示成功提示；</li>
+<li>延迟一小段时间后再返回上一页；</li>
+<li>接口返回失败时显示具体失败原因；</li>
+<li>网络或后端异常时显示统一的失败提示。<br>这个改动范围很小，但明显提升了用户体验，也方便调试问题。</li>
+</ul>
+<p><strong>4. 小程序提交接口 404 问题</strong></p>
+<p>调试时遇到过一个问题：小程序点击提交后提示失败，控制台显示接口 404。<br>一开始容易误以为是接口地址写错，或者前端请求参数有问题。后来排查发现，源码里接口已经写好了，但当前运行中的后端服务并没有加载到新增的接口类。<br>也就是说，代码存在，但运行的服务还是旧的编译结果。<br>解决方式是重新构建并重启后端服务。重启后接口正常生效，小程序提交成功，数据库也能看到新增记录。<br>这个问题说明：后端新增接口后，不仅要看源码有没有，还要确认运行中的服务是否已经加载了最新代码。</p>
+<p><strong>5. 反馈数据入库验证</strong></p>
+<p>提交成功后，通过数据库确认新增反馈记录是否存在。<br>验证时重点看几个字段：</p>
+<ul>
+<li>反馈类型是否正确；</li>
+<li>反馈内容是否正确；</li>
+<li>图片地址是否保存；</li>
+<li>联系方式是否保存；</li>
+<li>提交用户是否自动记录；</li>
+<li>创建时间是否正确。<br>确认这些字段都正常后，说明小程序到后端再到数据库的链路已经跑通。</li>
+</ul>
+<p><strong>6. 维护发版 SQL</strong></p>
+<p>因为这个功能新增了数据库表，所以不能只提交代码，还需要维护数据库变更 SQL。<br>本地开发时数据库已经建好了，但测试环境、正式环境不一定有这张表。后续发版时，需要有人执行建表 SQL，否则代码上线后接口会因为找不到表而报错。<br>因此单独整理了一个变更 SQL 文件，并在数据库变更说明文档里记录这次改动。<br>这一步主要是为了保证后续发版时数据库和代码同步。</p>
+<p><strong>7. 后台管理端查看反馈</strong></p>
+<p>小程序能提交反馈后，数据一开始只能直接查数据库查看。为了让后台人员可以直接查看反馈记录，又新增了后台管理端页面。<br>第一版后台页面只做只读功能，包括：</p>
+<ul>
+<li>反馈列表；</li>
+<li>按反馈类型筛选；</li>
+<li>按反馈用户搜索；</li>
+<li>按联系方式搜索；</li>
+<li>分页；</li>
+<li>查看详情；</li>
+<li>图片预览。<br>没有做删除、回复、处理状态等功能。<br>这样做是为了保持最小范围改动，不修改现有表结构，也避免一次性扩大功能范围。</li>
+</ul>
+<p><strong>8. 后台菜单应该放在哪里</strong></p>
+<p>新增后台页面时，需要考虑菜单放在哪个模块。<br>意见反馈不属于巡店任务、报告或问题处理流程，更偏向系统运营和用户反馈管理。并且数据库表也属于系统类表。<br>所以最终把菜单放在系统管理模块下，和用户管理、角色管理等菜单同级，并放在菜单底部。<br>这样更符合功能定位，也不会影响原有巡店业务模块。</p>
+<p><strong>9. 后台验证码加载失败问题</strong></p>
+<p>调试后台管理端时，遇到登录页验证码加载不出来的问题。<br>排查后发现，本地前端请求的后台地址仍然指向远程环境，而远程验证码接口当时返回异常。<br>解决方式是本地调试时临时把后台前端请求地址切换为本地后端地址。<br>前端页面虽然是在本地打开，但它请求的后端不一定是本地，需要确认环境配置实际指向哪里。</p>
+<p><strong>10. 后台菜单不显示问题</strong></p>
+<p>后台新增菜单后，重启服务并重新登录，菜单仍然没有显示。<br>这个问题排查过程比较典型，最后发现不是单一原因，而是多个因素叠加：</p>
+<ul>
+<li>原因一：菜单版本号不一致。系统获取菜单时会按照当前公司版本过滤权限，新增菜单的版本号一开始和其他系统管理菜单不一致，因此被过滤掉了。解决方式是把新菜单的版本号调整成和同级菜单一致。</li>
+<li>原因二：当前角色没有分配新菜单权限。虽然测试账号所属角色名称叫“超级管理员”，但系统权限逻辑里它并不是自动拥有全部权限的账号。新菜单添加到权限表后，还需要分配给当前角色，分配后这个角色才有权限看到菜单。</li>
+<li>原因三：后台服务连接的是远程数据库。本地后台前端虽然请求的是本地后端，但本地后台后端服务连接的仍然是远程数据库和远程缓存，而新增菜单和反馈数据是在本地数据库中添加的。解决方式是把本地后台服务的数据库和缓存配置也临时切换到本地。<br>最终前端、本地后台服务、本地数据库统一后，菜单正常显示。</li>
+</ul>
+<p><strong>11. 本地调试环境要统一</strong></p>
+<p>这次调试中最容易混淆的点，就是前端、后端、数据库不一定连的是同一套环境。<br>最终需要保证：</p>
+<ul>
+<li>小程序前端请求本地小程序后端；</li>
+<li>小程序后端连接本地数据库；</li>
+<li>后台管理端前端请求本地后台后端；</li>
+<li>后台后端也连接本地数据库；</li>
+<li>本地缓存也保持一致。<br>只有这样，小程序提交的数据才能在后台管理端看到。<br>如果其中任何一环连到了远程环境，就可能出现“明明本地数据库有数据，但页面看不到”的情况。</li>
+</ul>
+<p><strong>12. 图标资源处理问题</strong></p>
+<p>小程序意见反馈入口需要新增图标。<br>过程中曾经使用过 SVG 转 PNG，但项目中直接放 SVG 文件可能导致构建或运行异常。最终删除了不再使用的 SVG 文件，只保留 PNG 图片资源。<br>同时对 PNG 图标做了几次视觉调整，让它和原有“我的”页面图标风格更接近，包括大小、圆形背景、内部图形居中和线条风格。<br>这个问题说明：新增资源时不只是能显示就行，还要考虑项目对资源格式的兼容性和整体视觉一致性。</p>
+<p><strong>13. 提交前需要注意的配置回退</strong></p>
+<p>本地调试过程中，为了让功能跑通，临时修改了多个环境配置。<br>这些配置包括：</p>
+<ul>
+<li>小程序请求地址；</li>
+<li>后台管理端请求地址；</li>
+<li>后端数据库地址；</li>
+<li>后端缓存地址；</li>
+<li>小程序 AppID；</li>
+<li>本地开发工具配置。<br>这些都只是本地调试用，不能直接提交到代码仓库。<br>提交前必须检查并恢复为公司原来的远程配置，否则可能影响同事环境或正式测试环境。</li>
+</ul>
+<p><strong>总结</strong></p>
+<p>这次意见反馈功能从小程序提交到后台查看，完整打通了前端、后端、数据库和后台管理端。</p>
+<h2 id="2026-6-9-对管理后台的问题处理"><a href="#2026-6-9-对管理后台的问题处理" class="headerlink" title="2026.6.9 对管理后台的问题处理"></a>2026.6.9 对管理后台的问题处理</h2><p><strong>1. 反馈类型枚举值不统一</strong></p>
+<p>开发过程中，前后端对“反馈类型”的取值没有一开始就统一。最初设计是：<code>1 = 问题反馈</code>、<code>2 = bug反馈</code>；后来为了和项目里其他下拉选项的习惯保持一致，调整为：<code>0 = 问题反馈</code>、<code>1 = bug反馈</code>。但小程序端没有及时重新构建，导致仍然提交旧值，结果后台显示时出现“问题反馈被显示成 bug反馈”和“bug反馈显示成 -”。</p>
+<p>最终解决：小程序提交值改为 <code>0 / 1</code>；后台管理端展示逻辑同步改为 <code>0 / 1</code>；数据库字段注释和变更 SQL 同步更新；修正本地测试数据中的旧枚举值。</p>
+<p><strong>2. 后台删除按钮不显示</strong></p>
+<p>后台页面已经加了删除按钮和权限判断 <code>showBtnFn(&#39;system:feedback:remove&#39;)</code>，数据库中也插入了权限记录，但页面仍然看不到删除按钮。</p>
+<ul>
+<li>原因一：权限类型字段配置错误。权限表中用于区分“菜单”和“按钮”的字段配置错误，原本删除权限被配置成菜单类型 <code>menu_sort = 0</code>，正确应该是按钮类型 <code>menu_sort = 1</code>。修正后，删除权限才能作为按钮权限返回给前端。</li>
+<li>原因二：权限缓存未刷新。项目后端会把用户权限缓存到 Redis 中，缓存有效期较长，即使数据库权限已经修正，前端重新登录时仍可能拿到旧的权限树。</li>
+<li>最终解决：修正删除权限的类型字段；清理 Redis 中对应的权限缓存；重新登录后台。</li>
+</ul>
+<p><strong>3. 测试图片上传到了远程文件服务</strong></p>
+<p>小程序端上传图片时，请求的是本地后端接口，但后端文件上传配置指向的是远程测试文件服务，因此测试过程中上传的图片实际被上传到了远程对象存储。</p>
+<p>最终处理：查询本地反馈记录中保存的图片 URL；删除本地测试反馈记录；使用项目已有删除接口，只删除本次测试上传的两张图片；通过访问图片 URL 确认返回 <code>404 / NoSuchKey</code>，确保图片已删除。</p>
+<p>这个问题提醒：本地后端不一定代表所有资源都在本地，文件服务、Redis、数据库等配置需要分别确认。</p>
+<p><strong>4. 查看详情样式不统一</strong></p>
+<p>一开始后台详情页使用普通文本展示，后来改成 disabled 输入框，但样式仍然和项目已有页面不一致。对比项目中已有的“组织结构查看页”后，发现公司已有查看页通常是：复用表单结构，使用 <code>el-form</code>，使用 disabled 的 <code>el-input / el-select</code>，保持和新增&#x2F;编辑页面相同的表单样式，只是不允许操作。</p>
+<p>最终调整：反馈类型使用 disabled 下拉框；普通信息使用 disabled 输入框；反馈内容使用 disabled 多行文本框；图片使用预览组件；详情抽屉布局参考已有查看页。</p>
+<p><strong>5. 提交前恢复本地配置</strong></p>
+<p>开发过程中，为了本地调试修改过一些配置，例如小程序 AppID、前端接口地址、后端数据库地址、Redis 地址、微信相关配置。这些配置只适合本地开发，不能提交到远程仓库。最终提交前统一检查三个项目的 Git 状态，只保留功能代码，回退所有本地环境配置。</p>
+<p><strong>6. 最终提交情况</strong></p>
+<p>本次功能涉及三个项目：</p>
+<ul>
+<li><strong>小程序端：</strong> 新增意见反馈入口；新增反馈类型选择页；新增反馈填写页；支持图片上传、预览、删除；提交反馈到后端接口。</li>
+<li><strong>后台管理端：</strong> 新增意见反馈管理页面；支持列表展示、筛选、分页；支持查看详情；支持图片预览；支持删除反馈；接入按钮权限控制。</li>
+<li><strong>后端：</strong> 新增反馈表实体；新增 Mapper &#x2F; Service &#x2F; ServiceImpl；新增小程序端保存接口；新增后台管理端分页查询接口；新增后台管理端删除接口；新增数据库变更 SQL。</li>
+</ul>
+<p>最终三个项目均提交到远程开发分支，没有影响主分支。</p>
+<p><strong>总结：</strong> 这次问题主要集中在前后端枚举值不统一、权限字段配置错误、权限缓存没有刷新、本地环境和远程文件服务混用、查看样式需要和已有页面保持一致，以及提交前需要严格排查本地配置。</p>
 
                 </div>
 
@@ -460,13 +788,19 @@
                 <!-- Post Navigation -->
                 <nav class="post-navigation">
                     
+                    
                     <a href="/project/2026/05/28/%E4%BB%8E%E9%9B%B6%E9%85%8D%E7%BD%AE%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%85%A8%E6%8C%87%E5%8D%97/" class="nav-item">
+                        <span class="nav-bg" style="background-image: url('/project/images/scenery8.jpg');"></span>
+                        <span class="nav-mask"></span>
                         <div class="nav-label">← 上一篇</div>
                         <div class="nav-title">从零配置开发环境全指南</div>
                     </a>
                     
                     
+                    
                     <a href="/project/2026/05/06/%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/" class="nav-item" style="text-align: right;">
+                        <span class="nav-bg" style="background-image: url('/project/images/scenery6.png');"></span>
+                        <span class="nav-mask"></span>
                         <div class="nav-label">下一篇 →</div>
                         <div class="nav-title">代码学习规划</div>
                     </a>
@@ -491,7 +825,7 @@
                     <ul>
                         
                             <li>
-                                <a href="/project/2026/05/30/%E4%BC%9A%E5%B1%95%E5%8F%8A%E8%AE%BA%E5%9D%9B%E6%80%BB%E7%BB%93/">会展及论坛总结</a>
+                                <a href="/project/2026/05/30/%E4%BC%9A%E5%B1%95%E5%8F%8A%E8%AE%BA%E5%9D%9B%E6%80%BB%E7%BB%93/">会展及论坛总结&amp;及后续项目发展</a>
                             </li>
                         
                             <li>
@@ -598,7 +932,37 @@
 
     <!-- After footer scripts -->
     
-<!-- jQuery -->
+
+<!-- Theme (Day/Night) Toggle -->
+<script type="text/javascript">
+(function() {
+    var STORAGE_KEY = 'blog-theme';
+    function applyTheme(theme) {
+        var isDark = theme === 'dark';
+        document.body.classList.toggle('dark-mode', isDark);
+        var icon = document.querySelector('#themeToggleBtn .theme-toggle-icon');
+        if (icon) icon.textContent = isDark ? '☾' : '☀';
+    }
+    try {
+        var saved = localStorage.getItem(STORAGE_KEY);
+        if (saved === 'dark') applyTheme('dark');
+    } catch (e) {}
+
+    document.addEventListener('DOMContentLoaded', function() {
+        applyTheme(document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        var btn = document.getElementById('themeToggleBtn');
+        if (!btn) return;
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+            applyTheme(next);
+            try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+            btn.blur();
+        });
+    });
+})();
+</script>
+
 <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 
 <!-- Bootstrap -->
@@ -755,6 +1119,122 @@
             });
         }
     });
+</script>
+
+<!-- Knowledge Floating Window -->
+<script type="text/javascript">
+    (function() {
+        function initKnowledgeWindow() {
+            var article = document.querySelector('.article-content');
+            if (!article || document.querySelector('.knowledge-window')) return;
+
+            var headings = article.querySelectorAll('h2');
+            var knowledgeHeading = null;
+            for (var i = 0; i < headings.length; i++) {
+                if (headings[i].textContent.trim() === '知识点') {
+                    knowledgeHeading = headings[i];
+                    break;
+                }
+            }
+            if (!knowledgeHeading) return;
+
+            var content = document.createElement('div');
+            var node = knowledgeHeading.nextElementSibling;
+            while (node && node.tagName !== 'H2') {
+                content.appendChild(node.cloneNode(true));
+                node = node.nextElementSibling;
+            }
+            if (!content.children.length) return;
+
+            var windowEl = document.createElement('div');
+            windowEl.className = 'knowledge-window';
+            windowEl.innerHTML = '<div class="knowledge-window-header"><span>知识点速查</span><button type="button" class="knowledge-window-close" aria-label="关闭知识点浮窗">×</button></div><div class="knowledge-window-body"></div>';
+            windowEl.querySelector('.knowledge-window-body').appendChild(content);
+            document.body.appendChild(windowEl);
+
+            var toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'knowledge-window-toggle hide';
+            toggleBtn.textContent = '知识点';
+            document.body.appendChild(toggleBtn);
+
+            var header = windowEl.querySelector('.knowledge-window-header');
+            var closeBtn = windowEl.querySelector('.knowledge-window-close');
+            var isDragging = false;
+            var startX = 0;
+            var startY = 0;
+            var startLeft = 0;
+            var startTop = 0;
+
+            function startDrag(clientX, clientY) {
+                if (window.innerWidth <= 768) return;
+                isDragging = true;
+                startX = clientX;
+                startY = clientY;
+                var rect = windowEl.getBoundingClientRect();
+                startLeft = rect.left;
+                startTop = rect.top;
+                windowEl.classList.add('dragging');
+            }
+
+            function moveDrag(clientX, clientY) {
+                if (!isDragging) return;
+                var left = startLeft + clientX - startX;
+                var top = startTop + clientY - startY;
+                var maxLeft = window.innerWidth - windowEl.offsetWidth - 12;
+                var maxTop = window.innerHeight - windowEl.offsetHeight - 12;
+                windowEl.style.left = Math.max(12, Math.min(left, maxLeft)) + 'px';
+                windowEl.style.top = Math.max(12, Math.min(top, maxTop)) + 'px';
+                windowEl.style.right = 'auto';
+                windowEl.style.bottom = 'auto';
+            }
+
+            function stopDrag() {
+                isDragging = false;
+                windowEl.classList.remove('dragging');
+            }
+
+            header.addEventListener('mousedown', function(e) {
+                if (e.target === closeBtn) return;
+                startDrag(e.clientX, e.clientY);
+            });
+            document.addEventListener('mousemove', function(e) {
+                moveDrag(e.clientX, e.clientY);
+            });
+            document.addEventListener('mouseup', stopDrag);
+
+            header.addEventListener('touchstart', function(e) {
+                if (e.target === closeBtn || !e.touches.length) return;
+                startDrag(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            document.addEventListener('touchmove', function(e) {
+                if (!e.touches.length) return;
+                moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            document.addEventListener('touchend', stopDrag);
+
+            closeBtn.addEventListener('click', function() {
+                windowEl.classList.add('hide');
+                toggleBtn.classList.remove('hide');
+            });
+
+            toggleBtn.addEventListener('click', function() {
+                windowEl.classList.remove('hide');
+                toggleBtn.classList.add('hide');
+            });
+        }
+
+        $(function() {
+            initKnowledgeWindow();
+
+            if ($('#hexo-blog-encrypt').length) {
+                $(document).on('click', '.hbe-button', function() {
+                    setTimeout(initKnowledgeWindow, 1000);
+                    setTimeout(initKnowledgeWindow, 3000);
+                });
+            }
+        });
+    })();
 </script>
 
 <!-- Typing Animation -->

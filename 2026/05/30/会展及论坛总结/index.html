@@ -23,7 +23,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="会展及论坛总结"/>
+        <meta property="og:title" content="会展及论坛总结&amp;及后续项目发展"/>
     
 
     <!--Open Graph Description-->
@@ -55,7 +55,7 @@
 
     <!-- Title -->
     
-    <title>会展及论坛总结 - 路毅的博客</title>
+    <title>会展及论坛总结&amp;及后续项目发展 - 路毅的博客</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
@@ -112,6 +112,11 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" id="themeToggleBtn" class="theme-toggle" title="切换白天/黑夜">
+                        <span class="theme-toggle-icon">☀</span>
+                    </a>
+                </li>
                 
                     <li>
                         <a href="/project/archives">
@@ -153,7 +158,7 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <div class="post-heading">
-                    <h1 class="typing-title" data-text="会展及论坛总结"><span class="typing-text">会展及论坛总结</span><span class="typing-cursor"></span></h1>
+                    <h1 class="typing-title" data-text="会展及论坛总结&及后续项目发展"><span class="typing-text">会展及论坛总结&及后续项目发展</span><span class="typing-cursor"></span></h1>
                     
                     <span class="meta">
                         <!-- Date and Author -->
@@ -220,20 +225,15 @@
 <li><strong>真机调试：</strong> 遇到主包超限（2.01MB），后续可以通过将图片移入云存储、压缩图片或启用分包加载解决。</li>
 </ul>
 <hr>
-<h2 id="今日主要问题与解决方案"><a href="#今日主要问题与解决方案" class="headerlink" title="今日主要问题与解决方案"></a>今日主要问题与解决方案</h2><ul>
-<li><p><strong>1. 帮拿员端看不到订单</strong></p>
+<h2 id="今日主要问题与解决方案"><a href="#今日主要问题与解决方案" class="headerlink" title="今日主要问题与解决方案"></a>今日主要问题与解决方案</h2><p><strong>1. 帮拿员端看不到订单</strong></p>
 <p>问题：云数据库默认权限为“仅创建者可读写”，普通帮拿员无法通过 <code>db.collection(&#39;orders&#39;).get()</code> 直接查询其他用户的订单。</p>
 <p>解决：新建 <code>getOrders</code> 云函数，在云函数中统一查询订单；前端三个页面（帮拿员大厅、帮拿员订单、用户订单）都改用该云函数获取订单数据。</p>
-</li>
-<li><p><strong>2. 数据库集合名称不一致</strong></p>
+<p><strong>2. 数据库集合名称不一致</strong></p>
 <p>问题：代码中使用的是 <code>orders</code>，但控制台中创建的是 <code>order</code>，导致查询不到对应数据。</p>
 <p>解决：统一集合名称，推荐使用复数形式，并确保大小写完全一致。</p>
-</li>
-<li><p><strong>3. 真机调试主包超限</strong></p>
+<p><strong>3. 真机调试主包超限</strong></p>
 <p>问题：代码包大小超过 2MB，导致真机调试失败。</p>
 <p>解决：将图片上传到云存储，或压缩图片，必要时启用分包加载。</p>
-</li>
-</ul>
 <hr>
 <h2 id="云开发部署要点总结"><a href="#云开发部署要点总结" class="headerlink" title="云开发部署要点总结"></a>云开发部署要点总结</h2><ul>
 <li>云函数修改后，必须重新右键选择“上传并部署：云端安装依赖”。</li>
@@ -248,7 +248,185 @@
 <li>登录流程逻辑已设计完成，待后续开发实现。</li>
 <li>云开发环境、数据库、云函数均已部署并验证可用。</li>
 </ul>
-<p>目前仍存在一个问题：小程序端点击“微信登录”后主页面会消失，但点击“暂不登录”可以看到主页面，并且能够正常使用。当前目标是让未登录用户无法使用项目功能，但目前效果更像是只做了“未登录提示”，后续需要继续完善登录拦截和页面跳转逻辑。后续功能还待调整。</p>
+<p>目前仍存在一个问题：小程序端点击“微信登录”后再次点击主页按钮又会回到登录页面，但点击“暂不登录”可以看到主页面，并且能够正常使用。当前目标是让未登录用户无法使用项目功能，但目前效果更像是只做了“未登录提示”，后续需要继续完善登录拦截和页面跳转逻辑。后续功能还待调整。</p>
+<h2 id="2026-6-10-再三思考之后还是决定更换项目方向"><a href="#2026-6-10-再三思考之后还是决定更换项目方向" class="headerlink" title="2026.6.10 再三思考之后还是决定更换项目方向"></a>2026.6.10 再三思考之后还是决定更换项目方向</h2><p>了解到小程序一旦涉及金额交易，上线门槛就会比较高。不过不涉及金额交易的小程序，可以通过后续广告接入来收取广告费，所以项目目前改版为校园墙小程序。</p>
+<p><strong>1. 广场页面</strong></p>
+<ul>
+<li>帖子列表展示，支持“最新”和“最热”排序。</li>
+<li>支持下拉刷新、上拉加载更多。</li>
+<li>点击帖子可进入详情页。</li>
+</ul>
+<p><strong>2. 帖子卡片组件</strong></p>
+<ul>
+<li>展示头像、昵称、时间、正文和图片九宫格。</li>
+<li>显示点赞数和评论数。</li>
+<li>支持点赞 &#x2F; 取消点赞，并带有动画效果。</li>
+</ul>
+<p><strong>3. 发帖功能</strong></p>
+<ul>
+<li>支持文本输入，最多上传 9 张图片。</li>
+<li>支持匿名发布。</li>
+<li>发布后自动返回广场并刷新列表。</li>
+</ul>
+<p><strong>4. 帖子详情页</strong></p>
+<ul>
+<li>查看完整内容，支持图片放大预览。</li>
+<li>支持点赞和发表评论。</li>
+<li>评论列表支持分页展示。</li>
+</ul>
+<p><strong>5. 我的页面</strong></p>
+<ul>
+<li>支持微信授权登录，并同步用户信息。</li>
+<li>支持查看我的帖子列表，复用帖子卡片组件。</li>
+<li>我的收藏和设置目前为占位入口。</li>
+</ul>
+<p><strong>6. 数据存储</strong></p>
+<ul>
+<li>使用云开发，包含 <code>users</code>、<code>posts</code>、<code>comments</code>、<code>likes</code> 四个集合。</li>
+<li>帖子、评论、点赞均关联用户身份。</li>
+<li>匿名帖子前台展示匿名标识，后台仍可追溯真实用户。</li>
+</ul>
+<p><strong>7. 云函数</strong></p>
+<ul>
+<li><code>getPosts</code>：获取帖子列表 &#x2F; 详情。</li>
+<li><code>publishPost</code>：发布帖子。</li>
+<li><code>likePost</code>：点赞 &#x2F; 取消点赞。</li>
+<li><code>getComments</code>：获取评论列表。</li>
+<li><code>addComment</code>：发表评论。</li>
+<li><code>upsertUser</code>：同步用户资料。</li>
+<li><code>migrateLegacyLikes</code>：迁移旧点赞数据。</li>
+</ul>
+<p><strong>8. 工具函数</strong></p>
+<ul>
+<li><code>formatTime</code>：时间格式化。</li>
+<li><code>uploadImage</code>：图片上传至云存储。</li>
+<li><code>normalizePost</code>：统一帖子数据格式。</li>
+</ul>
+<p><strong>当前状态：</strong> 小程序已经完成核心闭环，用户可以浏览帖子、发布内容，并进行评论和点赞互动。</p>
+<h2 id="2026-6-11-对校园墙小程序的进一步改动"><a href="#2026-6-11-对校园墙小程序的进一步改动" class="headerlink" title="2026.6.11 对校园墙小程序的进一步改动"></a>2026.6.11 对校园墙小程序的进一步改动</h2><ul>
+<li>完善通知红点逻辑：进入“我的帖子”看新增，离开后清零，后续从 0 重新计数。</li>
+<li>云函数改名更清晰：如 getUnread、markRead、createTestNotice。</li>
+<li>package.json 描述改成中文。</li>
+<li>爱心图标换成 SVG，真机显示更自然。</li>
+<li>新增删除自己帖子的功能：<ul>
+<li>“我的帖子”可删除</li>
+<li>详情页自己的帖子可删除</li>
+<li>别人的帖子不显示删除</li>
+</ul>
+</li>
+<li>详情页新增三点菜单，当前展开项是“评论”。</li>
+<li>广场大厅恢复普通展示，不显示详情页专用操作。</li>
+</ul>
+<h2 id="2026-6-12-分类、评论与界面细节调整"><a href="#2026-6-12-分类、评论与界面细节调整" class="headerlink" title="2026.6.12 分类、评论与界面细节调整"></a>2026.6.12 分类、评论与界面细节调整</h2><p><strong>1. 广场分类功能</strong><br>把原来的 <strong>最新 &#x2F; 最热</strong> 改成了分类筛选：<strong>全部 &#x2F; 失物招领 &#x2F; 求助</strong>。</p>
+<p>现在广场右下角有一个固定分类按钮，点击后分类菜单从下往上展开。相关逻辑：<code>category: this.data.activeCategory</code>。云函数 <code>getPosts</code> 根据 <code>category</code> 筛选帖子。如果当前分类没有帖子，会显示：<strong>这个分类目前还没有帖子，快来发布吧</strong></p>
+<p><strong>2. 发布页增加分类</strong><br>发布帖子时可以选择：<strong>普通 &#x2F; 失物招领 &#x2F; 求助</strong>。</p>
+<p>新帖子会写入字段：<code>category: &#39;normal&#39; | &#39;lost_found&#39; | &#39;help&#39;</code>。普通帖子不显示标签，失物招领和求助会显示标签。</p>
+<p><strong>3. 帖子卡片分类标签</strong><br>帖子卡片会显示类似 <strong>失物招领</strong>、<strong>求助</strong>。对应代码里生成了：<code>categoryLabel</code>。普通帖子不显示分类标签，避免首页太乱。</p>
+<p><strong>4. 下拉刷新提示</strong><br>广场下拉刷新后会显示 <strong>刷新成功</strong> 或 <strong>刷新失败</strong>，不再只是默默刷新。</p>
+<p><strong>5. 评论“楼主”徽章</strong><br>详情页评论区，如果楼主本人评论，会在昵称旁显示 <strong>楼主</strong>。判断逻辑是：<code>评论用户 ID === 帖子作者 ID</code></p>
+<p><strong>6. 删除评论功能</strong><br>新增了云函数：<code>deleteComment</code><br>功能：</p>
+<ul>
+<li>只能删除自己的评论；</li>
+<li>删除后 <code>comments</code> 集合里对应评论会被删；</li>
+<li>帖子的评论数会 <code>-1</code>；</li>
+<li>对应评论通知也会删除。</li>
+</ul>
+<p>前端交互改成：<strong>长按自己的评论 → 底部弹出操作面板 → 删除 &#x2F; 取消</strong>。行内“删除”文字已经去掉了。</p>
+<p><strong>7. 详情页三点菜单调整</strong><br>详情页帖子右下角三点菜单里原来的 <strong>评论</strong> 改成了 <strong>收藏</strong>。</p>
+<p>目前收藏功能还没真正开发，只是预留了入口，点击会提示：<strong>收藏功能开发中</strong></p>
+<p><strong>8. UI 微调</strong><br>今天还做了一些界面细节：</p>
+<ul>
+<li>详情页评论发送按钮变小，让输入框占更多空间；</li>
+<li>底部 tab 中间加号按钮稍微下移；</li>
+<li>广场分类按钮固定到右下角；</li>
+<li>分类菜单改成向上展开；</li>
+<li>评论长按操作面板从底部向上弹出。</li>
+</ul>
+<h2 id="2026-6-15-收藏、搜索、资料与设置完善"><a href="#2026-6-15-收藏、搜索、资料与设置完善" class="headerlink" title="2026.6.15 收藏、搜索、资料与设置完善"></a>2026.6.15 收藏、搜索、资料与设置完善</h2><p><strong>1. 收藏功能完善</strong><br>本次补齐了收藏功能的完整闭环：<strong>帖子详情页 → 点击收藏 → 写入收藏记录 → 我的收藏展示</strong></p>
+<p>主要实现内容：</p>
+<ul>
+<li>新增收藏 &#x2F; 取消收藏逻辑；</li>
+<li>帖子详情页支持收藏和取消收藏；</li>
+<li>帖子加载时返回当前用户是否已收藏；</li>
+<li>“我的”页面新增“我的收藏”入口；</li>
+<li>“我的收藏”页面复用已有帖子列表页面；</li>
+<li>收藏为空时只显示文字提示，不显示多余占位符号。</li>
+</ul>
+<p>涉及模块：</p>
+<ul>
+<li>云函数：收藏 &#x2F; 获取帖子</li>
+<li>页面：帖子详情页、我的页面、我的帖子 &#x2F; 收藏列表页</li>
+<li>组件：帖子卡片组件</li>
+</ul>
+<p>这个功能让我第一次比较完整地理解了 <strong>前端点击事件 → 云函数 → 数据库 → 页面状态刷新</strong> 这一类小程序功能闭环。</p>
+<p><strong>2. 广场搜索功能</strong><br>广场页新增了搜索能力。<br>支持功能：</p>
+<ul>
+<li>输入关键词搜索帖子内容；</li>
+<li>搜索结果支持分页；</li>
+<li>下拉刷新时保持当前搜索条件；</li>
+<li>分类筛选和关键词搜索可以同时生效；</li>
+<li>搜索无结果时显示“没有找到相关帖子”；</li>
+<li>新增“返回广场”按钮，点击后清空搜索并恢复广场主列表。</li>
+</ul>
+<p>这个功能的重点不是单独写一套搜索页面，而是复用了原来的广场帖子加载逻辑，只是在请求参数里增加了关键词条件。这样做的好处是：</p>
+<ul>
+<li>代码更精简</li>
+<li>分页和刷新逻辑不用重复写</li>
+<li>后续维护成本更低</li>
+</ul>
+<p><strong>3. 编辑个人资料功能</strong><br>“我的”页面顶部用户信息区域支持点击进入编辑资料页。<br>支持功能：</p>
+<ul>
+<li>修改昵称；</li>
+<li>修改头像；</li>
+<li>头像上传到云存储；</li>
+<li>保存个人资料；</li>
+<li>返回“我的”页面后自动刷新头像和昵称。</li>
+</ul>
+<p>实现思路：<strong>我的页面 → 编辑资料页 → 保存用户信息 → 更新本地缓存 → 返回后刷新展示</strong>。</p>
+<p>同时，编辑资料入口没有额外保留“编辑”按钮，而是直接让用户点击资料栏进入编辑页面，减少页面视觉负担。</p>
+<p><strong>4. 历史帖子和评论资料同步</strong><br>开发过程中发现一个问题：<strong>修改头像和昵称后，之前发布过的帖子仍然显示旧昵称和旧头像</strong>。</p>
+<p>原因是帖子和评论里保存的是发布当时的昵称和头像副本，而不是每次都动态读取用户表。<br>解决方式：</p>
+<ul>
+<li>保存个人资料时，同步更新当前用户以前发布的非匿名帖子；</li>
+<li>同步更新当前用户以前发表的非匿名评论；</li>
+<li>匿名帖子和匿名评论不更新，保持匿名逻辑。</li>
+</ul>
+<p>这个点让我理解到一个重要概念：<strong>冗余字段 &#x2F; 数据副本</strong>。</p>
+<p>也就是为了页面展示方便，帖子里会保存一份昵称头像，但这样也会带来资料更新后的同步问题。</p>
+<p><strong>5. 设置页功能</strong><br>新增了设置页第一版。目前包括三个功能：</p>
+<ul>
+<li>默认匿名发布</li>
+<li>清除缓存</li>
+<li>关于校园墙</li>
+</ul>
+<p><strong>默认匿名发布</strong><br>用户可以在设置页开启默认匿名发布。<br>效果：</p>
+<ul>
+<li>开启后，进入发布页时默认勾选匿名；</li>
+<li>用户仍然可以在发布页手动关闭；</li>
+<li>发布成功后会恢复到用户设置的默认状态。</li>
+</ul>
+<p><strong>清除缓存</strong><br>清除缓存功能经过调整后，只清理临时缓存，不再一键清除用户设置和个人资料。<br>目前不会清除：</p>
+<ul>
+<li>个人资料</li>
+<li>默认匿名设置</li>
+<li>云端帖子</li>
+<li>评论</li>
+<li>收藏</li>
+<li>通知</li>
+</ul>
+<p>这样更符合用户直觉，避免误删用户已经配置好的内容。</p>
+<p><strong>关于校园墙</strong><br>“关于校园墙”从设置页中的静态说明，改成了一个单独页面。<br>特点：</p>
+<ul>
+<li>点击设置页的“关于校园墙”进入；</li>
+<li>页面只读；</li>
+<li>只保留版本模块；</li>
+<li>后续每次版本更新，可以新增一个独立版本模块。</li>
+</ul>
+<p>目前版本模块示例：</p>
+<ul>
+<li><strong>版本 1.0.0</strong></li>
+<li>完成广场、发布、详情、点赞、评论、收藏、搜索、个人资料和基础设置功能。</li>
+</ul>
 
                 </div>
 
@@ -267,7 +445,10 @@
                 <nav class="post-navigation">
                     
                     
+                    
                     <a href="/project/2026/05/28/%E4%BB%8E%E9%9B%B6%E9%85%8D%E7%BD%AE%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E5%85%A8%E6%8C%87%E5%8D%97/" class="nav-item" style="text-align: right;">
+                        <span class="nav-bg" style="background-image: url('/project/images/scenery8.jpg');"></span>
+                        <span class="nav-mask"></span>
                         <div class="nav-label">下一篇 →</div>
                         <div class="nav-title">从零配置开发环境全指南</div>
                     </a>
@@ -292,7 +473,7 @@
                     <ul>
                         
                             <li>
-                                <a href="/project/2026/05/30/%E4%BC%9A%E5%B1%95%E5%8F%8A%E8%AE%BA%E5%9D%9B%E6%80%BB%E7%BB%93/">会展及论坛总结</a>
+                                <a href="/project/2026/05/30/%E4%BC%9A%E5%B1%95%E5%8F%8A%E8%AE%BA%E5%9D%9B%E6%80%BB%E7%BB%93/">会展及论坛总结&amp;及后续项目发展</a>
                             </li>
                         
                             <li>
@@ -399,7 +580,37 @@
 
     <!-- After footer scripts -->
     
-<!-- jQuery -->
+
+<!-- Theme (Day/Night) Toggle -->
+<script type="text/javascript">
+(function() {
+    var STORAGE_KEY = 'blog-theme';
+    function applyTheme(theme) {
+        var isDark = theme === 'dark';
+        document.body.classList.toggle('dark-mode', isDark);
+        var icon = document.querySelector('#themeToggleBtn .theme-toggle-icon');
+        if (icon) icon.textContent = isDark ? '☾' : '☀';
+    }
+    try {
+        var saved = localStorage.getItem(STORAGE_KEY);
+        if (saved === 'dark') applyTheme('dark');
+    } catch (e) {}
+
+    document.addEventListener('DOMContentLoaded', function() {
+        applyTheme(document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+        var btn = document.getElementById('themeToggleBtn');
+        if (!btn) return;
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            var next = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+            applyTheme(next);
+            try { localStorage.setItem(STORAGE_KEY, next); } catch (e) {}
+            btn.blur();
+        });
+    });
+})();
+</script>
+
 <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
 
 <!-- Bootstrap -->
@@ -556,6 +767,122 @@
             });
         }
     });
+</script>
+
+<!-- Knowledge Floating Window -->
+<script type="text/javascript">
+    (function() {
+        function initKnowledgeWindow() {
+            var article = document.querySelector('.article-content');
+            if (!article || document.querySelector('.knowledge-window')) return;
+
+            var headings = article.querySelectorAll('h2');
+            var knowledgeHeading = null;
+            for (var i = 0; i < headings.length; i++) {
+                if (headings[i].textContent.trim() === '知识点') {
+                    knowledgeHeading = headings[i];
+                    break;
+                }
+            }
+            if (!knowledgeHeading) return;
+
+            var content = document.createElement('div');
+            var node = knowledgeHeading.nextElementSibling;
+            while (node && node.tagName !== 'H2') {
+                content.appendChild(node.cloneNode(true));
+                node = node.nextElementSibling;
+            }
+            if (!content.children.length) return;
+
+            var windowEl = document.createElement('div');
+            windowEl.className = 'knowledge-window';
+            windowEl.innerHTML = '<div class="knowledge-window-header"><span>知识点速查</span><button type="button" class="knowledge-window-close" aria-label="关闭知识点浮窗">×</button></div><div class="knowledge-window-body"></div>';
+            windowEl.querySelector('.knowledge-window-body').appendChild(content);
+            document.body.appendChild(windowEl);
+
+            var toggleBtn = document.createElement('button');
+            toggleBtn.type = 'button';
+            toggleBtn.className = 'knowledge-window-toggle hide';
+            toggleBtn.textContent = '知识点';
+            document.body.appendChild(toggleBtn);
+
+            var header = windowEl.querySelector('.knowledge-window-header');
+            var closeBtn = windowEl.querySelector('.knowledge-window-close');
+            var isDragging = false;
+            var startX = 0;
+            var startY = 0;
+            var startLeft = 0;
+            var startTop = 0;
+
+            function startDrag(clientX, clientY) {
+                if (window.innerWidth <= 768) return;
+                isDragging = true;
+                startX = clientX;
+                startY = clientY;
+                var rect = windowEl.getBoundingClientRect();
+                startLeft = rect.left;
+                startTop = rect.top;
+                windowEl.classList.add('dragging');
+            }
+
+            function moveDrag(clientX, clientY) {
+                if (!isDragging) return;
+                var left = startLeft + clientX - startX;
+                var top = startTop + clientY - startY;
+                var maxLeft = window.innerWidth - windowEl.offsetWidth - 12;
+                var maxTop = window.innerHeight - windowEl.offsetHeight - 12;
+                windowEl.style.left = Math.max(12, Math.min(left, maxLeft)) + 'px';
+                windowEl.style.top = Math.max(12, Math.min(top, maxTop)) + 'px';
+                windowEl.style.right = 'auto';
+                windowEl.style.bottom = 'auto';
+            }
+
+            function stopDrag() {
+                isDragging = false;
+                windowEl.classList.remove('dragging');
+            }
+
+            header.addEventListener('mousedown', function(e) {
+                if (e.target === closeBtn) return;
+                startDrag(e.clientX, e.clientY);
+            });
+            document.addEventListener('mousemove', function(e) {
+                moveDrag(e.clientX, e.clientY);
+            });
+            document.addEventListener('mouseup', stopDrag);
+
+            header.addEventListener('touchstart', function(e) {
+                if (e.target === closeBtn || !e.touches.length) return;
+                startDrag(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            document.addEventListener('touchmove', function(e) {
+                if (!e.touches.length) return;
+                moveDrag(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            document.addEventListener('touchend', stopDrag);
+
+            closeBtn.addEventListener('click', function() {
+                windowEl.classList.add('hide');
+                toggleBtn.classList.remove('hide');
+            });
+
+            toggleBtn.addEventListener('click', function() {
+                windowEl.classList.remove('hide');
+                toggleBtn.classList.add('hide');
+            });
+        }
+
+        $(function() {
+            initKnowledgeWindow();
+
+            if ($('#hexo-blog-encrypt').length) {
+                $(document).on('click', '.hbe-button', function() {
+                    setTimeout(initKnowledgeWindow, 1000);
+                    setTimeout(initKnowledgeWindow, 3000);
+                });
+            }
+        });
+    })();
 </script>
 
 <!-- Typing Animation -->

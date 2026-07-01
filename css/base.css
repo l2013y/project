@@ -35,9 +35,6 @@ body {
   font-size: 18px;
   color: #404040;
   background-color: #f8f9fa;
-  background-image: radial-gradient(#e9ecef 1px, transparent 1px);
-  background-size: 20px 20px;
-  background-attachment: fixed;
 }
 p {
   line-height: 1.5;
@@ -102,6 +99,7 @@ hr.small {
   .navbar-custom .navbar-brand {
     color: #fff;
     padding: 20px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.85), 0 0 3px rgba(0,0,0,0.9);
   }
   .navbar-custom .navbar-brand:hover,
   .navbar-custom .navbar-brand:focus {
@@ -110,6 +108,7 @@ hr.small {
   .navbar-custom .nav li a {
     color: #fff;
     padding: 20px;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.85), 0 0 3px rgba(0,0,0,0.9);
   }
   .navbar-custom .nav li a:hover,
   .navbar-custom .nav li a:focus {
@@ -208,6 +207,30 @@ hr.small {
   .intro-header .site-heading h1,
   .intro-header .page-heading h1 {
     font-size: 80px;
+  }
+}
+.intro-header.index-header {
+  margin-bottom: 0;
+  border-bottom-left-radius: 24px;
+  border-bottom-right-radius: 24px;
+  overflow: hidden;
+}
+.intro-header.index-header .site-heading {
+  padding: 130px 0 80px;
+}
+@media only screen and (min-width: 768px) {
+  .intro-header.index-header .site-heading {
+    padding: 190px 0;
+  }
+}
+.intro-header.index-header + .container {
+  position: relative;
+  z-index: 2;
+  margin-top: -40px;
+}
+@media only screen and (min-width: 768px) {
+  .intro-header.index-header + .container {
+    margin-top: -60px;
   }
 }
 .typing-title .typing-cursor {
