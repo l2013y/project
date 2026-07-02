@@ -283,49 +283,174 @@ hr.small {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
 }
-.post-preview > a {
+.post-card {
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+}
+.post-card:hover .post-card-cover-img {
+  transform: scale(1.06);
+}
+.post-card:hover .post-title {
+  color: #0085a1;
+}
+.post-card > .post-card-link {
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+  color: inherit;
+}
+.post-card > .post-card-link:hover,
+.post-card > .post-card-link:focus {
+  text-decoration: none;
+}
+.post-card .post-card-cover {
+  flex: 0 0 240px;
+  min-height: 190px;
+  overflow: hidden;
+  position: relative;
+}
+.post-card .post-card-cover:after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0) 70%, rgba(255,255,255,0.6) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+.post-card .post-card-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+  transform-origin: center center;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+.post-card .post-card-body {
+  flex: 1;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+.post-card .post-card-body .post-title {
+  font-size: 24px;
+  margin: 0 0 8px;
+  font-weight: 700;
+  color: #404040;
+  transition: color 0.25s ease;
+}
+.post-card .post-card-body .post-subtitle {
+  font-size: 15px;
+  color: #5d5d5d;
+  margin: 0 0 10px;
+  font-weight: 300;
+}
+.post-card .post-card-body .post-card-excerpt {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 0 0 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.post-card .post-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 13px;
+  color: #8892a0;
+  align-items: center;
+}
+.post-card .post-card-meta .meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.post-card .post-card-meta .meta-item i {
+  opacity: 0.75;
+}
+.post-card .post-card-meta .meta-tags {
+  gap: 6px;
+}
+.post-card .post-card-meta .meta-tag {
+  background: rgba(102,126,234,0.08);
+  color: #667eea;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+.post-card .post-card-meta .meta-tag-more {
+  background: rgba(102,126,234,0.15);
+  cursor: help;
+}
+.post-card .post-card-meta .meta-updated {
+  margin-left: auto;
+}
+@media only screen and (max-width: 767px) {
+  .post-card > .post-card-link {
+    flex-direction: column;
+  }
+  .post-card .post-card-cover {
+    flex: none;
+    width: 100%;
+    height: 160px;
+  }
+  .post-card .post-card-body {
+    padding: 18px 20px;
+  }
+  .post-card .post-card-body .post-title {
+    font-size: 20px;
+  }
+}
+.post-card > a {
   color: #404040;
 }
-.post-preview > a:hover,
-.post-preview > a:focus {
+.post-card > a:hover,
+.post-card > a:focus {
   text-decoration: none;
   color: #0085a1;
 }
-.post-preview > a > .post-title {
+.post-card > a > .post-title {
   font-size: 26px;
   margin-top: 0;
   margin-bottom: 12px;
 }
-.post-preview > a > .post-title.archive {
+.post-card > a > .post-title.archive {
   font-size: 22px;
 }
-.post-preview > a > .post-subtitle {
+.post-card > a > .post-subtitle {
   margin: 0;
   font-weight: 300;
   margin-bottom: 10px;
   color: #535353;
 }
-.post-preview > .post-meta {
+.post-card > .post-meta {
   color: #808080;
   font-size: 16px;
   font-style: italic;
   margin-top: 15px;
   margin-bottom: 0;
 }
-.post-preview > .post-meta.archive {
+.post-card > .post-meta.archive {
   font-size: 16px;
 }
-.post-preview > .post-meta > a {
+.post-card > .post-meta > a {
   text-decoration: none;
   color: #404040;
 }
-.post-preview > .post-meta > a:hover,
-.post-preview > .post-meta > a:focus {
+.post-card > .post-meta > a:hover,
+.post-card > .post-meta > a:focus {
   color: #0085a1;
   text-decoration: underline;
 }
 @media only screen and (min-width: 768px) {
-  .post-preview > a > .post-title {
+  .post-card > a > .post-title {
     font-size: 32px;
   }
 }
@@ -1490,6 +1615,28 @@ body.dark-mode .post-preview > .post-meta > a {
 }
 body.dark-mode .post-preview > .post-meta > a:hover,
 body.dark-mode .post-preview > .post-meta > a:focus {
+  color: #a5b4fc;
+}
+body.dark-mode .post-card .post-card-body .post-title {
+  color: #fff;
+}
+body.dark-mode .post-card .post-card-body .post-subtitle {
+  color: #cfd2d8;
+}
+body.dark-mode .post-card .post-card-body .post-card-excerpt {
+  color: #b0b3ba;
+}
+body.dark-mode .post-card:hover .post-title {
+  color: #a5b4fc;
+}
+body.dark-mode .post-card .post-card-cover:after {
+  background: linear-gradient(90deg, rgba(0,0,0,0) 70%, rgba(30,30,30,0.6) 100%);
+}
+body.dark-mode .post-card .post-card-meta {
+  color: #9ba1ab;
+}
+body.dark-mode .post-card .post-card-meta .meta-tag {
+  background: rgba(165,180,252,0.12);
   color: #a5b4fc;
 }
 body.dark-mode .stat-card {
