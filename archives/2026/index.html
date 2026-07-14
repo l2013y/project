@@ -182,6 +182,32 @@
             <div class="tag-timeline">
                 
                     <div class="timeline-group">
+                        <div class="timeline-month">2026年07月</div>
+                        <div class="timeline-items">
+                            
+                                <a class="timeline-item" href="/project/2026/07/04/AI辅助学JS/">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-card">
+                                        <div class="timeline-date">07-04</div>
+                                        <h3 class="timeline-title">AI辅助学JS</h3>
+                                        
+                                            <p class="timeline-excerpt">知识点return 是关键字，不是函数。关键字后面跟反引号，就只是普通模板字符串，没有”标签模板”这个魔法机制。而 console.log 是函数，函数名后面直接跟反引号（没有括号…</p>
+                                        
+                                        <div class="timeline-meta">
+                                            
+                                            
+                                                
+                                                    <span class="timeline-tag">#学习</span>
+                                                
+                                            
+                                        </div>
+                                    </div>
+                                </a>
+                            
+                        </div>
+                    </div>
+                
+                    <div class="timeline-group">
                         <div class="timeline-month">2026年05月</div>
                         <div class="timeline-items">
                             
@@ -363,25 +389,6 @@
                                     </div>
                                 </a>
                             
-                                <a class="timeline-item" href="/project/2026/04/24/markdown学习历程/">
-                                    <div class="timeline-dot"></div>
-                                    <div class="timeline-card">
-                                        <div class="timeline-date">04-24</div>
-                                        <h3 class="timeline-title">markdown学习历程</h3>
-                                        
-                                            <p class="timeline-excerpt">基本入门语法 注意！：使用这种方法#与文本之间要加空格使用方法：#一级标题 二级标题使用方法：##二级方法，三级四级的方法都是##的增加，以此类推；不过还有其他的标题写法：一级标题…</p>
-                                        
-                                        <div class="timeline-meta">
-                                            
-                                            
-                                                
-                                                    <span class="timeline-tag">#学习</span>
-                                                
-                                            
-                                        </div>
-                                    </div>
-                                </a>
-                            
                         </div>
                     </div>
                 
@@ -389,6 +396,30 @@
 
             <div class="archive-before-pagination"></div>
             
+<nav class="pagination-nav" aria-label="pagination">
+    
+        <span class="page-btn page-arrow disabled" aria-hidden="true">
+            <i class="fa fa-angle-left"></i>
+        </span>
+    
+
+    
+        
+            <span class="page-number current">1</span>
+        
+    
+        
+            <a class="page-number" href="/project/archives/2026/page/2/">2</a>
+        
+    
+
+    
+        <a class="page-btn page-arrow" href="/project/archives/2026/page/2/" aria-label="下一页">
+            <i class="fa fa-angle-right"></i>
+        </a>
+    
+</nav>
+
 
         </div>
     </div>
@@ -502,7 +533,7 @@
             return;
         }
 
-        var headings = $('.article-content h1, .article-content h2, .article-content h3');
+        var headings = $('.article-content h1, .article-content h2');
 
         // PC 端目录
         if (tocContainer.length) {
@@ -603,7 +634,7 @@
             var tocPollCount = 0;
             var tocPollInterval = setInterval(function() {
                 tocPollCount++;
-                var hasHeadings = $('.article-content h2, .article-content h3').length > 0;
+                var hasHeadings = $('.article-content h2').length > 0;
 
                 if (hasHeadings) {
                     generateToc();

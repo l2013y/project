@@ -179,17 +179,17 @@
 </div>
                 
                     <div class="post-preview">
-    <a href="/project/tags/学习/">
+    <a href="/project/tags/开发环境/">
         <h1 class="post-title archive">
-            学习
+            开发环境
         </h1>
     </a>
 </div>
                 
                     <div class="post-preview">
-    <a href="/project/tags/开发环境/">
+    <a href="/project/tags/学习/">
         <h1 class="post-title archive">
-            开发环境
+            学习
         </h1>
     </a>
 </div>
@@ -327,7 +327,7 @@
             return;
         }
 
-        var headings = $('.article-content h1, .article-content h2, .article-content h3');
+        var headings = $('.article-content h1, .article-content h2');
 
         // PC 端目录
         if (tocContainer.length) {
@@ -428,7 +428,7 @@
             var tocPollCount = 0;
             var tocPollInterval = setInterval(function() {
                 tocPollCount++;
-                var hasHeadings = $('.article-content h2, .article-content h3').length > 0;
+                var hasHeadings = $('.article-content h2').length > 0;
 
                 if (hasHeadings) {
                     generateToc();

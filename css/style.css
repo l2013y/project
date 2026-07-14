@@ -882,16 +882,17 @@ form .row:first-child .floating-label-form-group {
 .pagination-nav a.extend:focus,
 .pagination-nav .page-btn:focus {
   color: #fff;
-  background: #0085a1;
-  border-color: #0085a1;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: transparent;
   text-decoration: none;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0,133,161,0.25);
+  box-shadow: 0 4px 12px rgba(102,126,234,0.25);
 }
 .pagination-nav .current {
-  color: #fff;
-  background: #0085a1;
-  border-color: #0085a1;
+  color: #667eea;
+  background: #fff;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102,126,234,0.25);
   cursor: default;
 }
 .pagination-nav .space {

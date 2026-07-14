@@ -206,8 +206,39 @@
  th,td {
     border: solid 1px ;
  }
+ .word-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 8px 0;
+ }
+ .word-toolbar em {
+    margin: 0;
+ }
+ #word-search {
+    padding: 6px 10px;
+    width: 240px;
+    max-width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+ }
+ #word-search:focus {
+    border-color: #409eff;
+ }
+ #word-search-count {
+    color: #888;
+    font-size: 13px;
+ }
 </style>
-<p><em>点击单词可跳转网易有道词典</em></p>
+<div class="word-toolbar">
+  <em>点击单词可跳转网易有道词典</em>
+  <input id="word-search" type="text" placeholder="搜索单词或释义..." />
+  <span id="word-search-count"></span>
+</div>
+
 <table>
 <thead>
 <tr>
@@ -299,6 +330,30 @@
 <td align="center">filter</td>
 <td align="center">n.过滤器，分流指示灯;v.过滤，筛选</td>
 </tr>
+<tr>
+<td align="center">inventory</td>
+<td align="center">n.清单，存货，库存v.开清单</td>
+</tr>
+<tr>
+<td align="center">cart</td>
+<td align="center">n.购物车，手推车；v.用车装载，运送</td>
+</tr>
+<tr>
+<td align="center">qualified</td>
+<td align="center">adj.合格的，有资格的，有限制的；v.使具备资格</td>
+</tr>
+<tr>
+<td align="center">straightforward</td>
+<td align="center">adj.简单的，易懂的adv.坦率地</td>
+</tr>
+<tr>
+<td align="center">pending</td>
+<td align="center">adj.待定的，将发生的prep.直到…为止v.等待判定</td>
+</tr>
+<tr>
+<td align="center">canva</td>
+<td align="center">n.帆布，画布</td>
+</tr>
 </tbody></table>
 <script>
 (function(){
@@ -311,6 +366,22 @@
     var word = cell.textContent.trim();
     cell.innerHTML = '<a href="https://www.youdao.com/result?word=' + encodeURIComponent(word) + '&lang=en" target="_blank">' + word + '</a>';
   }
+  var input = document.getElementById('word-search');
+  var countEl = document.getElementById('word-search-count');
+  var total = rows.length - 1;
+  if (countEl) countEl.textContent = '共 ' + total + ' 个';
+  if (!input) return;
+  input.addEventListener('input', function(){
+    var q = input.value.trim().toLowerCase();
+    var shown = 0;
+    for (var i = 1; i < rows.length; i++) {
+      var text = rows[i].textContent.toLowerCase();
+      var match = !q || text.indexOf(q) !== -1;
+      rows[i].style.display = match ? '' : 'none';
+      if (match) shown++;
+    }
+    if (countEl) countEl.textContent = q ? ('匹配 ' + shown + ' / ' + total) : ('共 ' + total + ' 个');
+  });
 })();
 </script>
                 </div>
@@ -366,6 +437,10 @@
                     <ul>
                         
                             <li>
+                                <a href="/project/2026/07/04/AI%E8%BE%85%E5%8A%A9%E5%AD%A6JS/">AI辅助学JS</a>
+                            </li>
+                        
+                            <li>
                                 <a href="/project/2026/05/30/%E4%BC%9A%E5%B1%95%E5%8F%8A%E8%AE%BA%E5%9D%9B%E6%80%BB%E7%BB%93/">会展及论坛总结&amp;及后续项目发展</a>
                             </li>
                         
@@ -379,10 +454,6 @@
                         
                             <li>
                                 <a href="/project/2026/05/06/%E4%BB%A3%E7%A0%81%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/">代码学习规划</a>
-                            </li>
-                        
-                            <li>
-                                <a href="/project/2026/05/06/%E5%8D%95%E8%AF%8D/">单词</a>
                             </li>
                         
                     </ul>
@@ -540,7 +611,7 @@
             return;
         }
 
-        var headings = $('.article-content h1, .article-content h2, .article-content h3');
+        var headings = $('.article-content h1, .article-content h2');
 
         // PC 端目录
         if (tocContainer.length) {
@@ -641,7 +712,7 @@
             var tocPollCount = 0;
             var tocPollInterval = setInterval(function() {
                 tocPollCount++;
-                var hasHeadings = $('.article-content h2, .article-content h3').length > 0;
+                var hasHeadings = $('.article-content h2').length > 0;
 
                 if (hasHeadings) {
                     generateToc();

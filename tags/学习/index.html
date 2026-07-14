@@ -162,9 +162,9 @@
                     <h1 class="tag-namecard-title">#学习</h1>
                     
                         <div class="tag-namecard-stats">
-                            <span class="stat-item"><i class="fa fa-file-text-o"></i> 5 篇</span>
+                            <span class="stat-item"><i class="fa fa-file-text-o"></i> 6 篇</span>
                             
-                                <span class="stat-item"><i class="fa fa-calendar"></i> 2026.04 — 2026.05</span>
+                                <span class="stat-item"><i class="fa fa-calendar"></i> 2026.04 — 2026.07</span>
                             
                         </div>
                     
@@ -182,6 +182,30 @@
             
 
             <div class="tag-timeline">
+                
+                    <div class="timeline-group">
+                        <div class="timeline-month">2026年07月</div>
+                        <div class="timeline-items">
+                            
+                                <a class="timeline-item" href="/project/2026/07/04/AI辅助学JS/">
+                                    <div class="timeline-dot"></div>
+                                    <div class="timeline-card">
+                                        <div class="timeline-date">07-04</div>
+                                        <h3 class="timeline-title">AI辅助学JS</h3>
+                                        
+                                            <p class="timeline-excerpt">知识点return 是关键字，不是函数。关键字后面跟反引号，就只是普通模板字符串，没有”标签模板”这个魔法机制。而 console.log 是函数，函数名后面直接跟反引号（没有括号…</p>
+                                        
+                                        <div class="timeline-meta">
+                                            
+                                            
+                                                
+                                            
+                                        </div>
+                                    </div>
+                                </a>
+                            
+                        </div>
+                    </div>
                 
                     <div class="timeline-group">
                         <div class="timeline-month">2026年05月</div>
@@ -399,7 +423,7 @@
             return;
         }
 
-        var headings = $('.article-content h1, .article-content h2, .article-content h3');
+        var headings = $('.article-content h1, .article-content h2');
 
         // PC 端目录
         if (tocContainer.length) {
@@ -500,7 +524,7 @@
             var tocPollCount = 0;
             var tocPollInterval = setInterval(function() {
                 tocPollCount++;
-                var hasHeadings = $('.article-content h2, .article-content h3').length > 0;
+                var hasHeadings = $('.article-content h2').length > 0;
 
                 if (hasHeadings) {
                     generateToc();
