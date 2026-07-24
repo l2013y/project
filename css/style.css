@@ -1886,6 +1886,17 @@ body.dark-mode .article-content h6 {
 body.dark-mode .article-content h2 {
   border-top-color: #2a2a2a;
 }
+body.dark-mode .article-content blockquote {
+  background: #2a2a2a;
+  border-left-color: #a5b4fc;
+  color: #e6e6e6;
+}
+body.dark-mode .article-content blockquote footer {
+  color: #b0b3ba;
+}
+body.dark-mode .article-content blockquote footer cite:before {
+  color: #666;
+}
 body.dark-mode .post-preview {
   background: #1e1e1e;
   color: #fff;

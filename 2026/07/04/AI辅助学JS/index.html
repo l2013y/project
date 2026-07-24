@@ -202,7 +202,12 @@
                 
 
                 <div class="article-content">
-                    <h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p><code>return</code> 是关键字，不是函数。关键字后面跟反引号，就只是普通模板字符串，没有”标签模板”这个魔法机制。而 <code>console.log</code> 是函数，函数名后面直接跟反引号（没有括号），就触发标签模板了。</p>
+                    <style>
+th,td {
+    border: solid 1px ;
+ }
+</style>
+<h2 id="知识点"><a href="#知识点" class="headerlink" title="知识点"></a>知识点</h2><p><code>return</code> 是关键字，不是函数。关键字后面跟反引号，就只是普通模板字符串，没有”标签模板”这个魔法机制。而 <code>console.log</code> 是函数，函数名后面直接跟反引号（没有括号），就触发标签模板了。</p>
 <p>示例数据：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> products = [</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">&#x27;苹果&#x27;</span>, <span class="attr">price</span>: <span class="number">5</span>, <span class="attr">stock</span>: <span class="number">12</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">&#x27;香蕉&#x27;</span>, <span class="attr">price</span>: <span class="number">3</span>, <span class="attr">stock</span>: <span class="number">0</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">&#x27;橘子&#x27;</span>, <span class="attr">price</span>: <span class="number">4</span>, <span class="attr">stock</span>: <span class="number">8</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">&#x27;西瓜&#x27;</span>, <span class="attr">price</span>: <span class="number">20</span>, <span class="attr">stock</span>: <span class="number">3</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">name</span>: <span class="string">&#x27;草莓&#x27;</span>, <span class="attr">price</span>: <span class="number">15</span>, <span class="attr">stock</span>: <span class="number">0</span> &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 
@@ -329,6 +334,191 @@
 <li>判空要在渲染<strong>之前</strong> + <code>return</code> 提前退出——顺序反了 <code>return</code> 就白写。</li>
 <li>空数组 <code>map</code> &#x2F; <code>filter</code> &#x2F; <code>join</code> 都不报错，反而必须主动判空 + 显示”暂无数据”，否则用户分不清”没数据”和”页面挂了”。</li>
 </ul>
+<p><strong>JS 数据类型全景</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">JS 数据类型</span><br><span class="line">├── 原始类型（Primitive）— 7 种，&quot;箱子里就一个东西&quot;</span><br><span class="line">│   ├── string     字符串</span><br><span class="line">│   ├── number     数字</span><br><span class="line">│   ├── boolean    布尔</span><br><span class="line">│   ├── undefined  未定义</span><br><span class="line">│   ├── null       空</span><br><span class="line">│   ├── bigint     大整数（很少用）</span><br><span class="line">│   └── symbol     符号（进阶，很少用）</span><br><span class="line">│</span><br><span class="line">└── 引用类型（Reference）— 统称 Object，&quot;箱子里可以装很多东西&quot;</span><br><span class="line">    ├── Object     普通对象 &#123;&#125;</span><br><span class="line">    ├── Array      数组 [] （本质是特殊对象）</span><br><span class="line">    ├── Function   函数（本质也是特殊对象）</span><br><span class="line">    ├── Date       日期对象</span><br><span class="line">    ├── RegExp     正则表达式</span><br><span class="line">    └── Map / Set  进阶集合类型</span><br></pre></td></tr></table></figure>
+
+<p>补充：<code>typeof null === &#39;object&#39;</code>（历史 bug）→ 判 <code>null</code> 用 <code>x === null</code>；<code>typeof [] === &#39;object&#39;</code> → 判数组用 <code>Array.isArray(x)</code>。6 个假值：<code>false</code> &#x2F; <code>0</code> &#x2F; <code>&#39;&#39;</code> &#x2F; <code>null</code> &#x2F; <code>undefined</code> &#x2F; <code>NaN</code>。原始类型按值传递，引用类型按”指向”传递——<code>const b = a</code> 如果 <code>a</code> 是数组，改 <code>b</code> 会牵连 <code>a</code>。</p>
+<p><strong>箭头函数</strong></p>
+<ul>
+<li>三步简化：去 <code>function</code>、加 <code>=&gt;</code>、能省的都省。</li>
+<li><code>&#123;&#125;</code> 和 <code>return</code> 捆绑：要么都写要么都省。<code>n =&gt; &#123; n * n &#125;</code> 会返回 <code>undefined</code>。</li>
+<li>返回对象必须用 <code>()</code> 包裹：<code>id =&gt; (&#123; id, name &#125;)</code>，否则 <code>&#123;</code> 被当成函数体。</li>
+<li>参数括号：只有 1 个光秃秃参数才能省；0 个 &#x2F; 多个 &#x2F; 带默认值 &#x2F; 解构 &#x2F; rest 都必须写。</li>
+<li>键名与变量名同名时可简写：<code>&#123; id: id &#125;</code> → <code>&#123; id &#125;</code>。</li>
+</ul>
+<p><strong>事件系统</strong></p>
+<ul>
+<li><code>e.target</code>（被点的，跨监听器动态变）vs <code>e.currentTarget</code>（绑监听的，同一监听器固定）。</li>
+<li><code>e.preventDefault()</code> 阻止默认行为；<code>e.stopPropagation()</code> 阻止冒泡。</li>
+<li>冒泡三阶段：捕获（外→内）→ 目标 → 冒泡（内→外），默认监听器都在冒泡阶段响应。</li>
+<li>事件委托靠冒泡实现：父容器 1 个监听 + <code>e.target</code> 判断 + <code>classList.contains</code> 或 <code>dataset</code>。</li>
+<li>委托内层嵌套元素：<code>e.target.closest(&#39;.delBtn&#39;)</code> 或 CSS <code>pointer-events: none</code>。</li>
+<li><code>dataset</code> 读出来永远是字符串，要数字必须 <code>Number(e.target.dataset.id)</code>。</li>
+<li><code>tagName</code> 返回大写（<code>&#39;BUTTON&#39;</code>），判断要写大写。</li>
+<li><code>oninput</code> 每敲一字都触发（看过程，实时字数统计、实时搜索）；<code>onchange</code> 失焦<strong>且</strong>值变化才触发（看结果盖章，表单最终校验、下拉选择）。只失焦不改内容 <code>change</code> 不触发。</li>
+<li><code>.onclick</code>（点击）&#x2F; <code>.oninput</code>（输入变化）&#x2F; <code>.onchange</code>（值改变且失焦）&#x2F; <code>.onmouseover</code>（鼠标移入）&#x2F; <code>.onkeydown</code>（按键按下）&#x2F; <code>.onsubmit</code>（表单提交）——命名规律是 <code>on</code> + 事件动词，想绑什么事件先猜英文动词加 <code>on</code>，<code>scroll</code> &#x2F; <code>focus</code> &#x2F; <code>blur</code> &#x2F; <code>load</code> 全对。</li>
+<li><code>el.onXxx = fn</code> vs <code>el.addEventListener(&#39;xxx&#39;, fn)</code> 三个真实差异：前者只能绑一个（后绑覆盖前绑）、事件名带 <code>on</code> 前缀、解绑 <code>el.onclick = null</code>；后者能绑无限个、事件名<strong>不带</strong> <code>on</code> 前缀（写 <code>&#39;onclick&#39;</code> 无效）、解绑要 <code>removeEventListener(&#39;click&#39;, 那个函数引用)</code>。现代主流用 <code>addEventListener</code>——React &#x2F; Vue &#x2F; 所有框架内部都用它。</li>
+<li><code>removeEventListener</code> 靠函数引用找监听器——匿名函数解不了绑（每次写出来的匿名函数在内存里都是不同的函数）。想以后解绑就得先存变量。不解绑的后果是内存泄漏：组件走了监听器还在，堆积多了页面越用越卡。这也是 React <code>useEffect</code> <code>return cleanup</code> 存在的原因之一。</li>
+</ul>
+<p><strong>变量声明 <code>const</code> &#x2F; <code>let</code> &#x2F; <code>var</code></strong></p>
+<ul>
+<li><code>const</code> 锁”变量指向”，不锁”数据内容”——<code>const arr = []; arr.push(4)</code> 合法，<code>arr = [新数组]</code> 不合法。</li>
+<li>判断依据：<code>=</code> 左边只有变量名 → 报错；带 <code>.属性</code> 或 <code>[索引]</code> → 合法。</li>
+<li>默认写 <code>const</code>，需要重新赋值才改 <code>let</code>；<code>var</code> 不用。</li>
+<li><strong><code>const</code> &#x2F; <code>let</code> 没有变量提升</strong>——存在暂时性死区，必须先定义再使用。写在下面用、写在上面死。</li>
+<li><strong>链式赋值 <code>a = b.属性 = 函数</code> 是陷阱</strong>：<code>=</code> 从右往左结算，且赋值语句本身也是表达式，<code>b = 值</code> 的值就是”值”本身。<code>const btn = document.getElementById(&#39;id&#39;).onclick = fn</code> 会让 <code>btn</code> 装的是 <code>fn</code> 不是按钮。别一行同时做”绑事件”和”存变量”两件事。</li>
+<li><strong>JS 不检查拼写</strong>：变量名对 JS 只是一串字符，<code>suqareOutput</code> 拼错两遍照样运行。能跑 ≠ 写对了。养成用 F2 重命名的习惯，别手打两遍希望没错。这也是 TypeScript 存在的核心动机——把”变量名&#x2F;类型错误”从”运行时崩溃”提前到”写代码时红波浪线”。</li>
+</ul>
+<p><strong>数据 vs 视图</strong></p>
+<ul>
+<li>DOM 是数据的一次投影：改 DOM 不改数据，后续依赖数据的逻辑（渲染、判空、统计）全错。</li>
+<li><code>.remove()</code> 只删 DOM；<code>filter</code> &#x2F; <code>splice</code> 才是删数据。</li>
+<li>刷新丢数据 ≠ 数据没删干净，那是”持久化”（<code>localStorage</code>）的另一个话题。</li>
+<li>现代前端主流是”数据驱动”：只改数据，视图自动重画（React &#x2F; Vue &#x2F; 小程序）。</li>
+</ul>
+<p><strong>表单读值 <code>input.value</code></strong></p>
+<ul>
+<li>可读可写：<code>input.value</code> 能读也能写，<code>input.value = &#39;&#39;</code> 可以清空输入框。只属于 <code>&lt;input&gt;</code> &#x2F; <code>&lt;textarea&gt;</code> &#x2F; <code>&lt;select&gt;</code> 这类”用户能输入”的元素。</li>
+<li><strong>永远是字符串</strong>：<code>&lt;input type=&quot;number&quot;&gt;</code> 读出来也是 <code>&quot;22&quot;</code> 不是 <code>22</code>——参与数学运算前必须 <code>Number()</code> 强转。</li>
+<li>读取时机：必须在”用户已经输完”的信号里读（<code>onclick</code> &#x2F; <code>oninput</code> &#x2F; <code>onchange</code> 内部），文件最外层读到的是空串。</li>
+<li>边界消毒原则：从 <code>&lt;input&gt;</code> 读出来的 <code>.value</code> 是”脏数据”，一读进来就 <code>Number()</code> 转掉，别让它污染后续代码——这个原则以后接收 API 参数、读数据库、处理用户输入都适用。</li>
+</ul>
+<p><strong>表单提交与多控件</strong></p>
+<ul>
+<li><code>&lt;form&gt;</code> 里的 <code>&lt;button&gt;</code> 默认 <code>type=&quot;submit&quot;</code>——放 form 里点了就会提交（页面刷新），想只当普通按钮必须显式写 <code>type=&quot;button&quot;</code>。</li>
+<li>表单提交监听 <code>form</code> 的 <code>submit</code>，不是 <code>button</code> 的 <code>click</code>——<code>submit</code> 同时覆盖鼠标点击 + 回车键；<code>click</code> 只覆盖鼠标。浏览器有条隐藏规则：焦点在 form 里的 input 时，回车会自动模拟点击第一个 <code>type=&quot;submit&quot;</code> 按钮。</li>
+<li><code>e.preventDefault()</code> 阻止事件默认行为——表单场景就是阻止刷新页面。</li>
+<li><code>.value</code> 永远是字符串（<code>type=&quot;number&quot;</code> 也一样）；判空用 <code>value.trim() === &#39;&#39;</code> 或 <code>.length === 0</code>，不要 <code>=== 0</code>——字符串跟数字 <code>0</code> 永远不 <code>===</code>。</li>
+<li><code>&lt;select&gt;</code> 读被选中项的中文：<code>select.selectedOptions[0].textContent</code>（复数别漏 <code>s</code>——即使单选模式也叫 <code>selectedOptions</code>，因为 <code>select</code> 本身支持多选）。别用 <code>for</code> 循环遍历。</li>
+<li><code>checkbox</code> 读勾选状态用 <code>.checked</code>（布尔值），不是 <code>.value</code>。<code>.value</code> 在 checkbox 上永远是 <code>&quot;on&quot;</code>（历史遗留，别用）。</li>
+<li>一组 DOM 元素的处理 &#x3D; 数组家族的思路：<code>querySelectorAll</code> 拿一组 → <code>Array.from</code> 转真数组 → <code>filter</code> &#x2F; <code>map</code> &#x2F; <code>join</code> 想筛就筛想变形就变形。<code>filter</code> &#x2F; <code>map</code> 不只是”处理数据的”，是”处理任何可遍历东西的”，DOM 组也算。</li>
+<li>checkbox 组读被勾选项的完整链条：<code>Array.from(querySelectorAll(&#39;input[name=&quot;xxx&quot;]&#39;)).filter(el =&gt; el.checked).map(el =&gt; el.value).join(&#39;、&#39;)</code>。关键是<strong>手里一路握着元素本身</strong>，直到最后一步才 <code>map</code> 成字符串——一开始就 <code>map(el =&gt; el.checked)</code> 把元素压扁成布尔值，后面就退不回去了。</li>
+</ul>
+<p><strong>DOM 元素查找 querySelector 家族</strong></p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>能按什么找</th>
+<th>返回</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>getElementById(&#39;x&#39;)</code></td>
+<td>只能 <code>id</code></td>
+<td>一个元素或 <code>null</code></td>
+<td>独一无二的元素</td>
+</tr>
+<tr>
+<td><code>querySelector(&#39;...&#39;)</code></td>
+<td>任何 CSS 选择器</td>
+<td>第一个匹配或 <code>null</code></td>
+<td>单个但没 <code>id</code></td>
+</tr>
+<tr>
+<td><code>querySelectorAll(&#39;...&#39;)</code></td>
+<td>任何 CSS 选择器</td>
+<td><code>NodeList</code>（类数组）</td>
+<td>一组元素</td>
+</tr>
+</tbody></table>
+<ul>
+<li>CSS 选择器常用三种：<code>#id</code> &#x2F; <code>.class</code> &#x2F; <code>[属性=&quot;值&quot;]</code>（如 <code>input[name=&quot;hobby&quot;]</code>）；可组合，<code>input[name=&quot;regGender&quot;]:checked</code> &#x3D; 所有 <code>name=&quot;regGender&quot;</code> 且被选中的 input。</li>
+<li>radio 组读值一句话：<code>document.querySelector(&#39;input[name=&quot;xxx&quot;]:checked&#39;)</code>——选中就返回那个元素、未选返回 <code>null</code>。</li>
+<li><code>querySelectorAll</code> 返回的是 <code>NodeList</code>，不是真数组，要 <code>Array.from(...)</code> 转真数组才能用完整的 <code>map</code> &#x2F; <code>filter</code> &#x2F; <code>reduce</code>。</li>
+<li>一组元素永远用 <code>querySelectorAll</code>——不要给一组元素都加 <code>id</code>（<code>id</code> 必须唯一），也不要给外层容器加 <code>id</code> 再钻进去遍历（那是在用蛮力重新发明 <code>querySelector</code>）。</li>
+<li><strong>CSS 选择器只描述”选什么元素”，判断（<code>.length === 0</code> &#x2F; <code>&gt; 3</code>）必须写在字符串外面</strong>：<code>querySelectorAll(&#39;input[name=&quot;hobby&quot;]:checked===0&#39;)</code> 里的 <code>===0</code> 会被当成选择器语法崩掉。</li>
+<li>**NodeList 直接跟数字比永远 <code>false</code>**——<code>querySelectorAll(...) === 0</code> 是拿对象跟数字比，勾 0 个也过、勾 4 个也过。要先 <code>.length</code> 拿数字：<code>querySelectorAll(&#39;input[name=&quot;hobby&quot;]:checked&#39;).length</code>——直接数勾了几个，不用 <code>Array.from + map</code> 绕一圈。</li>
+</ul>
+<p><strong>变量命名带类型提示</strong></p>
+<ul>
+<li>复数 → 数组：<code>hobbies</code> &#x2F; <code>checkedElements</code>。</li>
+<li><code>Count</code> 后缀 → 数字：<code>checkedCount</code>。</li>
+<li><code>Text</code> 后缀 → 字符串：<code>checkedText</code>。</li>
+<li><code>Info</code> &#x2F; <code>Data</code> 后缀 → 对象：<code>userInfo</code>。</li>
+<li>参数名说”它是什么”（<code>item</code> &#x2F; <code>order</code>），变量名说”它装的是什么形状的东西”。看名字就能猜出下一步能对它调什么方法。</li>
+</ul>
+<p><strong>类型流意识</strong></p>
+<ul>
+<li>链式方法每一步在心里”贴新标签”：<code>querySelector(...)</code> → DOM 或 <code>null</code>；<code>querySelectorAll(...)</code> → NodeList；<code>.value</code> → 字符串（永远是！）；<code>.value.length</code> → 数字；<code>.checked</code> → 布尔；<code>Array.from(NodeList)</code> → 真数组；<code>.filter</code> → 数组（元素类型不变）；<code>.map</code> → 数组（元素可能变类型）；<code>.join(分隔符)</code> → 字符串。</li>
+<li><strong><code>Array.from</code> 只对”复数”用</strong>：NodeList 转真数组合法；对单个 DOM 或 <code>null</code> 用会崩或得到空数组。</li>
+<li><strong>模板字符串里 <code>$&#123;&#125;</code> 必须走到最终类型</strong>：<code>$&#123;input&#125;</code> 得到 <code>&quot;[object HTMLInputElement]&quot;</code>，要写 <code>$&#123;input.value.trim()&#125;</code>。写链式方法之前先把每一步”贴什么标签”想清楚，比写完再调试快很多。</li>
+<li><strong>表单校验通用骨架</strong>：清空 → 变量准备 → 一串 <code>if...return</code> 校验 → <strong>成功动作放在 <code>if</code> 结构外</strong>（不是又一个分支，是所有校验没触发的自然结果）。<code>e.preventDefault()</code> 阻止浏览器默认提交，<code>return</code> 阻止你自己写的提交代码——两个搭配才是完全停止。</li>
+</ul>
+<p><strong>逻辑运算符 <code>||</code> &#x2F; <code>&amp;&amp;</code></strong></p>
+<ul>
+<li><code>||</code> 一真则真、<code>&amp;&amp;</code> 一假则假——不只是判断规则，还是”短路”机制：见到定型的值立刻停、右边不执行。</li>
+<li>中文”和”很暧昧，有时候是”且”有时候是”或”。写代码前先问：”两个条件全都成立才动，还是只要一个成立就动？”全都要 <code>&amp;&amp;</code>、任一 <code>||</code>。想说”长度 &lt; 2 或 &gt; 10 就报错”写成 <code>&amp;&amp;</code>，就变成”既 &lt; 2 又 &gt; 10”，一个数字永远不可能同时成立，条件永远 <code>false</code>。</li>
+<li>由短路衍生的三种简写：<code>a || 默认值</code>（兜底）&#x2F; <code>对象 &amp;&amp; 对象.属性</code>(安全访问) &#x2F; <code>条件 &amp;&amp; 动作()</code>（简版 if）。</li>
+</ul>
+<p><strong>报错解读：<code>Cannot read properties of XXX (reading &#39;YYY&#39;)</code></strong></p>
+<ul>
+<li>翻译：你在 XXX（<code>null</code> &#x2F; <code>undefined</code>）上读 <code>.YYY</code>。</li>
+<li>排查套路：找 <code>reading &#39;YYY&#39;</code> → 定位代码里读 <code>.YYY</code> 那行 → 那行点号左边就是空的那货。</li>
+<li>前端 90% 的运行时报错都长这样——搞懂这一句能省一大堆调试时间。</li>
+</ul>
+<p><strong>编码心法：早退 &amp; 校验前置</strong></p>
+<ul>
+<li><strong>提前返回（early return）</strong>：函数开头先用 <code>if...return</code> 把不合规情况挡掉，主逻辑无缩进写在最后。收益：省性能（未通过就不做无用功）+ 主逻辑显眼 + 加校验只是加一行不动主体。反例是 <code>if / else if / else</code> 层层嵌套，主逻辑埋在洋葱最里层。</li>
+<li><strong>校验前置、读值后置</strong>：先挡门再读值——挡住的情况不做无用读值。</li>
+<li><strong>一个业务 &#x3D; 一个事件回调</strong>，别在回调里再嵌 <code>addEventListener</code>。<code>addEventListener</code> 是叠加绑定（不像 <code>onclick=</code> 会覆盖），嵌一层每触发一次就多绑一个监听器,第二次点触发两个、第三次三个，渐进式变卡——典型的事件泄漏。</li>
+<li><strong><code>else if</code> 长条 &#x3D; 学生代码</strong>：每个分支都 <code>return</code> 时，<code>else</code> 是废话——独立 <code>if</code> 即可。更工程化的做法：<code>const errors = []</code> 收集所有错误，一次 push 一次显示 → 用户能一次看清所有毛病。判断代码”专不专业”的一个信号：想到”用户填错怎么办”是学生思维；想到”用户会填错几个、怎么让他一次改完”是工程师思维。</li>
+<li><strong><code>return</code> 管函数不管块</strong>：<code>return</code> 无视 <code>if / for / while</code> 这些”块”，抬头找最近的 <code>function</code> 或 <code>() =&gt;</code>，找到就把整个函数从这里截断。所以校验段结尾 <code>if (errors.length &gt; 0) &#123; ...; return &#125;</code> 拦的不是错误，是<strong>错误发生时不该跑的正常流程</strong>——快照、按钮变化、<code>setTimeout</code>、卡片渲染，一整段全冻结。</li>
+<li><strong>重复代码结构一致 &#x3D; 抽成数据</strong>：一串 <code>if</code> 每条都是”如果[某条件]成立，就报[某消息]”——变化不多 → 塌缩成 <code>const rules = [&#123; check, message &#125;, ...]</code> + <code>forEach</code> 遍历。antd &#x2F; Element &#x2F; React Hook Form &#x2F; Zod 这些校验库底层都是这个心智，只是套了更多壳子。</li>
+<li><strong>存值 vs 存动作（惰性求值）</strong>：<code>check: 表达式</code> 在对象创建那一刻就被算成固定的 <code>true</code> &#x2F; <code>false</code>——之后用户改输入框追不上。<code>check: () =&gt; 表达式</code> 存的不是”立刻算出的结果”，而是”待命的一段代码”，只有 <code>rule.check()</code>（加括号调用）时才执行。<strong>变量存值、函数存动作</strong>——这也是 React <code>useEffect</code> 依赖数组”stale closure”坑的同一原理：箭头函数被创建那一刻，外部变量就被冻在闭包里。</li>
+<li><strong>词法作用域</strong>：函数抬头找变量只顺着”自己写在哪”往外找，不看”调用时刻有没有同名变量”。<code>const pfGender = ...</code> 声明在 submit 函数体内就只活在那个函数里，顶层的箭头函数看不见——把箭头函数改成自己读 DOM（<code>() =&gt; !document.querySelector(...)</code>）就能跨房间取物。</li>
+<li><strong><code>forEach</code> 里操作形参不操作数组名</strong>：<code>rules.forEach(rule =&gt; rule.check)</code>——<code>rules</code> 是整个数组（袋子），<code>rule</code> 是循环里当前那颗。写成 <code>rules.check</code> 会拿到 <code>undefined</code>；对象没有 <code>.push()</code>，<code>rules.push(...)</code> 直接崩。数组用复数、元素用单数不是玄学。</li>
+</ul>
+<p><strong>异步交互三个”绑定时机”辨析</strong></p>
+<ul>
+<li><code>按钮.onclick = fn</code> → 存起来，<strong>下次点才跑</strong>。</li>
+<li>事件回调里直接写 <code>按钮.textContent = &#39;...&#39;</code> → 这次点击立刻执行。</li>
+<li>想响应”本次点击”，用不着再绑 <code>onclick</code>——已经在这次点击的回调里了，顺着往下写就行。</li>
+<li>渲染代码放哪里由”什么时候显示”决定：立刻显示 → 事件回调同步位置；N 毫秒后 → <code>setTimeout</code> 回调里面；页面加载就显示 → <code>addEventListener</code> 外面的顶层。位置一错，要么秒执行、要么根本没执行、要么变量没定义就报错。</li>
+</ul>
+<p><strong>拍快照心法（异步表单必备）</strong></p>
+<ul>
+<li>异步的两条铁律：<strong>什么时候跑</strong>（Event Loop）+ <strong>跑的时候读的是哪个时刻的数据</strong>（快照）。前者是排队规则，后者是数据保鲜——两个都得懂。</li>
+<li>判断依据：变量装的是”字符串本身”（快照）还是”通往 DOM 的引用”（不是快照）。</li>
+<li><code>.map(el =&gt; el.value)</code> 出来的数组是快照（值已复制）；<code>pfName</code> 这种 DOM 引用不是——<code>pfName.value</code> 每次都是”现问”，用户 1.5 秒内改了输入框，读到的就是改后的。</li>
+<li>想拿”点击那一刻的数据” → 同步阶段先 <code>const snapshot = &#123; name: pfName.value, age: pfAge.value &#125;</code> 打包好，异步回调里只用 <code>snapshot.name</code>。</li>
+<li>场景：发消息、点赞、下单、上传——凡是”点击后有异步延迟 + 用户可继续操作 UI”的都得拍。</li>
+<li>底层原理：原始类型（字符串&#x2F;数字）存进变量 &#x3D; 复制一份，冻住；引用类型（DOM&#x2F;对象&#x2F;数组）存进变量 &#x3D; 存的是指针，<code>.value</code> 每次都现问。</li>
+</ul>
+<p><strong>运算符对字符串的行为</strong></p>
+<ul>
+<li><code>+</code>：只要有一边是字符串就走拼接 → <code>&quot;22&quot; + 1 = &quot;221&quot;</code>。</li>
+<li><code>-</code> <code>*</code> <code>/</code> <code>%</code>：自动强转数字再算 → <code>&quot;22&quot; * 2 = 44</code>。</li>
+<li>写 <code>price * count</code> 巧合能对，但一旦某处出现 <code>+</code>（比如加运费）整条数据链就崩——<code>+</code> 是叛徒。别靠 <code>*</code> 碰运气，源头 <code>Number()</code> 消毒。</li>
+</ul>
+<p><strong>函数是一种”值”（两句总纲）</strong></p>
+<ul>
+<li><code>const 名字 = function()&#123;&#125;</code> &#x3D; 给函数起名，自己以后调用（第①类：定义函数）。</li>
+<li><code>xxx.事件名 = function()&#123;&#125;</code> &#x3D; 把函数挂到对象属性上，等系统在特定时机自动调用（第②类：绑定事件监听器）。</li>
+<li>右边都是函数（因为函数是”值”，和数字&#x2F;字符串同级），但左边完全是两件事：起名备用 vs 挂钩子。</li>
+<li>匿名函数：<code>filter</code> &#x2F; <code>map</code> &#x2F; <code>onclick</code> 回调不需要名字，因为没人需要”通过名字找到它”，直接作为参数传出去就行——箭头函数就是为这种”一次性回调”设计的简写。</li>
+</ul>
+<p><strong><code>return</code> 判断口诀</strong></p>
+<ul>
+<li><code>return</code> 是函数把值”交出去”的唯一通道。</li>
+<li>有人接才 <code>return</code>，没人接就别写。</li>
+<li><code>filter</code> &#x2F; <code>map</code> &#x2F; <code>find</code> &#x2F; <code>sort</code> &#x2F; <code>reduce</code> &#x2F; <code>.then</code> 的回调 → <strong>必须</strong> <code>return</code>（这些方法在等你的返回值）。</li>
+<li><code>onclick</code> &#x2F; <code>oninput</code> &#x2F; <code>setTimeout</code> 里的 <code>fn</code> &#x2F; 末端 <code>.then</code> 打印 → <strong>不要</strong> <code>return</code>（浏览器 &#x2F; 系统不看返回值）。</li>
+<li>写 <code>return</code> 之前先问自己一句：”谁在接？”</li>
+</ul>
+<p><strong>函数抽象与重构</strong></p>
+<ul>
+<li><strong>抽函数三步走</strong>：先建空壳 <code>function xxx() &#123;&#125;</code>，再搬代码进壳里，最后原地叫一声 <code>xxx()</code>。只搬代码不建壳，代码会直接在顶层执行，还读不到未定义的变量。</li>
+<li><strong>函数间沟通只靠三样</strong>：参数进、<code>return</code> 出、词法作用域可见的外部变量。函数抬头找变量按”写在哪”找，不按”何时调用”找——变量声明在函数体内，函数外的箭头函数看不见。</li>
+<li><strong><code>return</code> 只跳出自己所在的函数</strong>，跳不出外层回调。校验函数里 <code>return</code> 拦不住外层 submit 后续代码——把结果用返回值告诉外面（<code>if (!validate()) return</code>）。这跟”守卫子句”是同一个 pattern：<code>!validate()</code>将上面返回的布尔值取反，<code>if () return</code> 表示if语句正确的话就停止之后的代码”。</li>
+<li><strong>布尔方向别反</strong>：<code>true</code> &#x3D; 通过、<code>false</code> &#x3D; 没通过（按英文单词字面意思用）。有错 <code>return false</code>，没错 <code>return true</code>。</li>
+<li><strong>形参 vs 实参</strong>：定义时括号里是形参（占位标签），调用时是实参（实际的货）。形参已经是函数私有变量，函数体里再 <code>const 同名</code> 会报错。抽通用函数要”形参写了就要用”——函数体里出现具体名字（<code>loginError</code>、<code>pfError</code>）就说明没抽干净。</li>
+<li><strong>布尔 vs 数组返回值</strong>：布尔只告诉”过没过”，数组能告诉”过没过 + 具体错在哪 + 有几条”，信息量差一个数量级。工程上优先返回数据，判断留给调用者——同一个 <code>validate</code> 能给不同表单复用，因为它只算错误、不管怎么显示。</li>
+<li><strong>单一职责</strong>：一个函数只做一件事。<code>validate</code> 只算错误，不管怎么显示——显示是调用者的自由。想通用就要把”显示错误”从函数里搬出来，放回调用者身边。</li>
+<li><strong>函数命名约定</strong>：<code>validate</code>（校验）&#x2F; <code>render</code>（渲染）&#x2F; <code>handleXxx</code>（事件处理）&#x2F; <code>getXxx</code> &#x2F; <code>fetchXxx</code>（获取）&#x2F; <code>isXxx</code>（布尔状态）。名字对代码运行毫无影响，但决定别人（和三个月后的自己）能不能秒读。</li>
+<li><strong>对象字面量键值用冒号</strong>：<code>&#123; check: () =&gt; ..., message: &#39;...&#39; &#125;</code>——键值之间是冒号，等号是变量赋值。</li>
+</ul>
 <h2 id="2026-7-4-从模板字符串到数据驱动视图"><a href="#2026-7-4-从模板字符串到数据驱动视图" class="headerlink" title="2026.7.4 从模板字符串到数据驱动视图"></a>2026.7.4 从模板字符串到数据驱动视图</h2><p>跟 AI 学 JS 的第一阶段：从 <code>console.log</code> 的标签模板小坑起步，用「文章收藏列表」这道综合题拆成 5 关基础（map、回调参数、模板字符串、DOM 操作、条件渲染），再进阶到 <code>render()</code> 里调 <code>render()</code> 的数据驱动视图，最后独立换场景写完 TODO 列表，顺手把 DOM 到底是什么这件事想透。</p>
 <h3 id="起点"><a href="#起点" class="headerlink" title="起点"></a>起点</h3><p>从一道「文章收藏列表」的题开始 —— 要把数组渲染到页面，加个按钮点了切换收藏状态。我用 AI 辅助学习，它把这道综合题拆成了 5 关，一关只练一个知识点。</p>
 <h3 id="5-关基础"><a href="#5-关基础" class="headerlink" title="5 关基础"></a>5 关基础</h3><p><strong>第 1 关：map 数组方法</strong></p>
@@ -431,6 +621,75 @@
 <p><strong>坑 5：命名把用途当成本体</strong></p>
 <p>写过 <code>carts.reduce((acc, sum) =&gt; ...)</code>——把 <code>current</code> 参数命名为 <code>sum</code>。但 <code>sum</code> 让人以为是”总和”，实际它是”当前商品”，读代码时会短暂困惑。</p>
 <p>规则：参数名说”它是什么”（<code>item</code> &#x2F; <code>order</code> &#x2F; <code>user</code>），不说”你要用它做什么”。变量名带后缀暗示类型（<code>Count</code> &#x2F; <code>Total</code> &#x2F; <code>Sum</code>）。</p>
+<h3 id="数组方法家族一览"><a href="#数组方法家族一览" class="headerlink" title="数组方法家族一览"></a>数组方法家族一览</h3><p>学完 reduce 就把数组方法家族的主力都摸过一遍了，横向对比一下更清晰：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>进（原数组）</th>
+<th>出（返回值）</th>
+<th>会改原数组吗？</th>
+<th>一句话记忆</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>map</code></td>
+<td>任何数组</td>
+<td>数组（长度不变）</td>
+<td>不改</td>
+<td>一对一变形</td>
+</tr>
+<tr>
+<td><code>filter</code></td>
+<td>任何数组</td>
+<td>数组（长度 ≤ 原来）</td>
+<td>不改</td>
+<td>筛选，元素不变</td>
+</tr>
+<tr>
+<td><code>find</code></td>
+<td>任何数组</td>
+<td>单个元素 或 <code>undefined</code></td>
+<td>不改</td>
+<td>找第一个</td>
+</tr>
+<tr>
+<td><code>reduce</code></td>
+<td>任何数组</td>
+<td>任何类型（看初始值）</td>
+<td>不改</td>
+<td>折叠成一个</td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td>任何数组</td>
+<td>原数组本身（改过的）</td>
+<td><strong>改！</strong></td>
+<td>原地排序</td>
+</tr>
+<tr>
+<td><code>forEach</code></td>
+<td>任何数组</td>
+<td><code>undefined</code>（没返回值）</td>
+<td>不改</td>
+<td>只是走一遍</td>
+</tr>
+<tr>
+<td><code>join</code></td>
+<td>任何数组</td>
+<td>字符串</td>
+<td>不改</td>
+<td>拼接成字符串</td>
+</tr>
+<tr>
+<td><code>push</code> &#x2F; <code>splice</code></td>
+<td>任何数组</td>
+<td>数字 &#x2F; 数组</td>
+<td><strong>改！</strong></td>
+<td>原地操作</td>
+</tr>
+</tbody></table>
+<p>两条规律值得记住：<strong>返回新数组的都不改原数组</strong>（<code>map</code> &#x2F; <code>filter</code>），<strong>原地操作的返回值往往不是你想要的那个东西</strong>（<code>sort</code> 返回自身、<code>push</code> 返回新长度）。<code>forEach</code> 是异类——它什么都不返回，纯粹走一遍。</p>
 <h2 id="2026-7-13-第一次踏进异步世界：从-setTimeout-到-Promise"><a href="#2026-7-13-第一次踏进异步世界：从-setTimeout-到-Promise" class="headerlink" title="2026.7.13 第一次踏进异步世界：从 setTimeout 到 Promise"></a>2026.7.13 第一次踏进异步世界：从 setTimeout 到 Promise</h2><p>背景：之前学的所有代码——变量、数组家族、<code>reduce</code>、DOM——全都是同步。今天第一次踏进异步的世界。从 <code>setTimeout</code> 开始理解异步的本质，一路走到回调地狱、Promise 三态、链式调用。</p>
 <h3 id="异步的本质"><a href="#异步的本质" class="headerlink" title="异步的本质"></a>异步的本质</h3><p>某些操作会”挂起等未来时机”，主线不停下来等它，继续跑；等时机到了，被挂起的代码才回来执行。核心铁律是：<strong>同步代码不跑完，任何异步都不能插队</strong>——哪怕 <code>setTimeout(fn, 0)</code> 也一样。这条规则叫 Event Loop（事件循环）。</p>
 <h3 id="回调地狱"><a href="#回调地狱" class="headerlink" title="回调地狱"></a>回调地狱</h3><p>要写”顺序依赖”的异步流程（下单 → 支付 → 发货 → 收货），只能用 <code>setTimeout</code> 层层嵌套——代码往右下”倒”成一个金字塔。真实业务里嵌套 8-10 层的历史遗留代码非常多，读起来眼睛跟不上层级、加逻辑要挪一堆括号、每层都要单独处理错误。</p>
@@ -478,6 +737,206 @@
 <li>判空放在 <code>map</code> 渲染之后——先渲染成空字符串再判空盖上”暂无数据”,把 <code>return</code> 注释掉也不会崩,因为判空一直在后面兜底。真正的坑是顺序错了</li>
 <li>花括号包多了导致 <code>map</code> 卡在 <code>if</code> 里——修完前两个 bug 后不小心把渲染 <code>map</code> 的代码留在了 <code>if</code> 块里,被 <code>return</code> 拦住不执行,页面永远停留在”加载中…”</li>
 </ul>
+<h2 id="2026-7-15-箭头函数-事件系统入门"><a href="#2026-7-15-箭头函数-事件系统入门" class="headerlink" title="2026.7.15 箭头函数 + 事件系统入门"></a>2026.7.15 箭头函数 + 事件系统入门</h2><p>背景：JS 复习进入语法简化和交互两个模块。上半场把 <code>function</code> 一路简化成箭头函数，把三条简写规则和三种参数场景摸清；下半场从事件对象、冒泡、委托、<code>dataset</code> 一路串到”数据 vs 视图”的老问题，顺手把 <code>const</code> &#x2F; <code>let</code> 到底锁什么、JS 数据类型全景又深化了一层。</p>
+<h3 id="上半场：箭头函数"><a href="#上半场：箭头函数" class="headerlink" title="上半场：箭头函数"></a>上半场：箭头函数</h3><p>从 <code>function(x)&#123; return x*2 &#125;</code> 到 <code>x =&gt; x*2</code> 的三步简化：去掉 <code>function</code>、加 <code>=&gt;</code>、能省的都省。三条简写规则：</p>
+<ul>
+<li><strong>单参数省括号</strong>：<code>(x) =&gt; ...</code> 简写成 <code>x =&gt; ...</code>。</li>
+<li>**单行 <code>return</code> 省 <code>&#123;&#125;</code> 和 <code>return</code>**：<code>x =&gt; &#123; return x*2 &#125;</code> 简写成 <code>x =&gt; x*2</code>。这里 <code>&#123;&#125;</code> 和 <code>return</code> 是捆绑的，要么都写要么都省——写了 <code>n =&gt; &#123; n * n &#125;</code> 会返回 <code>undefined</code>，因为大括号被当成函数体，里面没 <code>return</code>。</li>
+<li><strong>返回对象要用 <code>()</code> 包裹</strong>：<code>id =&gt; (&#123; id, name &#125;)</code>，否则 <code>&#123;</code> 会被当成函数体的开始。</li>
+</ul>
+<p>参数括号规则：<strong>只有”1 个光秃秃参数”才能省</strong>。0 个 &#x2F; 多个 &#x2F; 带默认值 &#x2F; 解构 &#x2F; rest 都必须写括号——只要参数写法稍微复杂一点，规则就退回”必须有括号”。</p>
+<h3 id="下半场：事件系统入门"><a href="#下半场：事件系统入门" class="headerlink" title="下半场：事件系统入门"></a>下半场：事件系统入门</h3><p><strong>事件对象 <code>e</code>：</strong> <code>e.target</code> 是”被点的那个元素”，跨监听器动态变；<code>e.currentTarget</code> 是”绑监听的那个元素”，在同一监听器里固定。<code>e.preventDefault()</code> 阻止默认行为（比如表单提交），<code>e.stopPropagation()</code> 阻止事件继续冒泡。</p>
+<p><strong>冒泡三阶段：</strong> 捕获（外→内）→ 目标 → 冒泡（内→外）。默认监听器都在冒泡阶段响应——事件从最内层往外一层层传，路上绑了监听的都会触发一次。</p>
+<p><strong>事件委托：</strong> 只在父容器上绑一个监听器，靠 <code>e.target</code> + <code>classList.contains()</code> 判断具体点的是谁。省事件监听、动态元素也能自动生效。委托的实现原理就是冒泡——内层元素被点，事件冒到父容器时被统一处理。</p>
+<p><strong>内层嵌套的坑：</strong> 按钮里嵌了 <code>&lt;span&gt;</code>，点到 span 时 <code>e.target</code> 是 span 而不是按钮，<code>classList.contains(&#39;delBtn&#39;)</code> 判不到。修法两选一：<code>e.target.closest(&#39;.delBtn&#39;)</code> 往上找最近的匹配元素，或者给 span 加 <code>pointer-events: none</code> 让它对点击透明。</p>
+<p><strong><code>dataset</code> 属性：</strong> HTML 里写 <code>data-id=&quot;1&quot;</code>，JS 里 <code>element.dataset.id</code> 读取。<strong>值永远是字符串</strong>——要数字必须 <code>Number(e.target.dataset.id)</code>。另外 <code>e.target.tagName</code> 返回大写（<code>&#39;BUTTON&#39;</code>），判断要写大写。</p>
+<h3 id="穿插补的：变量声明-数据类型-数据-vs-视图"><a href="#穿插补的：变量声明-数据类型-数据-vs-视图" class="headerlink" title="穿插补的：变量声明 + 数据类型 + 数据 vs 视图"></a>穿插补的：变量声明 + 数据类型 + 数据 vs 视图</h3><p><strong><code>let</code> vs <code>const</code>：</strong> <code>let</code> 是能重新赋值的变量声明；<code>const</code> **只锁”变量指向”，不锁”数据内容”**。判断依据是等号左边：只有变量名 → 重新赋值 → 报错；带 <code>.属性</code> 或 <code>[索引]</code> → 改内容 → 合法。所以 <code>const arr = []</code> 之后 <code>arr.push(4)</code> 完全合法，只是 <code>arr = [新数组]</code> 不合法。默认写 <code>const</code>，需要重新赋值才改 <code>let</code>，<code>var</code> 不用。</p>
+<p><strong>JS 数据类型全景：</strong> 7 种原始类型（<code>string</code> &#x2F; <code>number</code> &#x2F; <code>boolean</code> &#x2F; <code>undefined</code> &#x2F; <code>null</code> &#x2F; <code>bigint</code> &#x2F; <code>symbol</code>）+ 引用类型（<code>Object</code> &#x2F; <code>Array</code> &#x2F; <code>Function</code> 等）。原始类型按值传递，引用类型按”指向”传递——<code>const b = a</code> 如果 <code>a</code> 是数组，改 <code>b</code> 会牵连 <code>a</code>。</p>
+<p><strong>数据 vs 视图（再深化一层）：</strong> <code>li.remove()</code> 只删 DOM 不删数据，<code>todoArray.length</code> 还是原来的数字。状态与视图一旦脱钩，后续依赖数据的逻辑（渲染、判空、统计）就会连锁出错。现代前端主流是”数据驱动”——只改数据，视图自动重画（React &#x2F; Vue &#x2F; 小程序）。刷新丢数据是另一个话题（<code>localStorage</code>），跟”数据没删干净”不是一回事。</p>
+<h3 id="踩坑清单-3"><a href="#踩坑清单-3" class="headerlink" title="踩坑清单"></a>踩坑清单</h3><p><strong>坑 1：HTML 属性写错位置</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;button&gt;删除&lt;/button class=&quot;delBtn&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p><code>class</code> 挂到闭合标签上了，实际按钮身上没有这个 <code>class</code>，事件委托里 <code>classList.contains(&#39;delBtn&#39;)</code> 永远为假。属性只能写在开标签里。</p>
+<p><strong>坑 2：变量名大小写不一致</strong></p>
+<p>声明的是 <code>todoArrays</code>（大 A），赋值时手抖写成 <code>todoarrays</code>（小 a）——JS 不报错，而是创建了个新变量，原数组永远没被改过。JS 严格区分大小写，<code>todoArrays</code> 和 <code>todoarrays</code> 是两个完全不同的变量。</p>
+<p><strong>坑 3：以为 <code>const</code> 就是”不可变”</strong></p>
+<p>以为 <code>const</code> 声明的东西一动不了，结果 <code>arr.push(4)</code> &#x2F; <code>user.name = &#39;小红&#39;</code> 都合法。<code>const</code> 锁的是”变量指向哪个仓库”，不锁”仓库里放什么”。想真正锁住内容要用 <code>Object.freeze()</code>。</p>
+<p><strong>坑 4：箭头函数返回对象忘加括号</strong></p>
+<p><code>id =&gt; &#123; id, name &#125;</code> 会被 JS 当成函数体大括号，里面 <code>id, name</code> 是逗号表达式，最后没 <code>return</code>，返回 <code>undefined</code>。返回对象必须写 <code>id =&gt; (&#123; id, name &#125;)</code>。</p>
+<p><strong>坑 5：<code>&#123;&#125;</code> 和 <code>return</code> 只省了一半</strong></p>
+<p><code>n =&gt; &#123; n * n &#125;</code> 返回 <code>undefined</code>——大括号被当成函数体，里面缺 <code>return</code>。简写规则里 <code>&#123;&#125;</code> 和 <code>return</code> 是捆绑的，要么都写（<code>n =&gt; &#123; return n * n &#125;</code>）要么都省（<code>n =&gt; n * n</code>）。</p>
+<p><strong>坑 6：DOM 删除 ≠ 数据删除</strong></p>
+<p><code>li.remove()</code> 后 <code>todoArray.length</code> 还是原来的数字。DOM 只是数据的一次投影，改投影不影响原本。要真删数据得靠 <code>filter</code> &#x2F; <code>splice</code>。</p>
+<h2 id="2026-7-16-表单读值三小步：从-value-到-type-number-陷阱"><a href="#2026-7-16-表单读值三小步：从-value-到-type-number-陷阱" class="headerlink" title="2026.7.16 表单读值三小步：从 .value 到 type&#x3D;number 陷阱"></a>2026.7.16 表单读值三小步：从 <code>.value</code> 到 type&#x3D;number 陷阱</h2><p>背景：主线是 7.4 表单读值，分三小步走完——基础读写、<code>input</code> vs <code>change</code> 事件、<code>type=number</code> 陷阱。主线之外顺手把”代码冗余（单一事实来源）”、”函数是一种值”、”事件系统的深入（<code>addEventListener</code> vs <code>onXxx =</code>、解绑、内存泄漏）”这几个大知识点铺垫进去。</p>
+<h3 id="7-4-1-基础读写"><a href="#7-4-1-基础读写" class="headerlink" title="7.4.1 基础读写"></a>7.4.1 基础读写</h3><p>学了 <code>input.value</code> 是啥、可读可写、只属于 <code>&lt;input&gt;</code> &#x2F; <code>&lt;textarea&gt;</code> &#x2F; <code>&lt;select&gt;</code> 这类”用户能输入”的元素。写了一个”点按钮把输入框内容显示到 <code>&lt;p&gt;</code>“的小 demo，用 <code>.textContent</code> 把内容塞进 <code>&lt;p&gt;</code>。</p>
+<h3 id="7-4-2-input-vs-change-事件"><a href="#7-4-2-input-vs-change-事件" class="headerlink" title="7.4.2 input vs change 事件"></a>7.4.2 input vs change 事件</h3><p>扩展 demo：新加一个 <code>&lt;p&gt;</code>，一个绑 <code>input</code> 事件（每敲一字都触发）、另一个绑 <code>change</code> 事件（失焦<strong>且</strong>值变化才触发）。亲眼看到两个 <code>&lt;p&gt;</code> 的更新节奏差异——一个跟着打字实时变，另一个要等我点别的地方才更新。用”打字 → 失焦”、”失焦 → 再点回来不改内容失焦”等场景验证了 <code>change</code> 的双条件。</p>
+<h3 id="7-4-3-type-number-陷阱"><a href="#7-4-3-type-number-陷阱" class="headerlink" title="7.4.3 type&#x3D;number 陷阱"></a>7.4.3 type&#x3D;number 陷阱</h3><p>写”输入数字算平方”，用 <code>numInput.value * numInput.value</code> 居然能跑，本以为没事。老师让我加了 <code>typeof</code> 打印，控制台输出 <code>type: string</code>——<strong>震撼时刻</strong>：明明 <code>&lt;input type=&quot;number&quot;&gt;</code>，读出来还是字符串。<code>*</code> <code>/</code> <code>-</code> <code>%</code> 会自动帮你转数字，只有 <code>+</code> 是叛徒会去拼字符串。教训：源头（读 <code>.value</code> 那一刻）就要 <code>Number()</code> 消毒，别靠 <code>*</code> 碰运气。</p>
+<h3 id="主线之外的意外收获"><a href="#主线之外的意外收获" class="headerlink" title="主线之外的意外收获"></a>主线之外的意外收获</h3><ul>
+<li><strong>7.3 代码冗余讨论</strong>：之前我写 <code>filter</code> 改数据后又手动 <code>map</code> + <code>innerHTML</code> 又调 <code>render()</code>，等于画了两遍。老师讲了**”函数抽出来了就不要在别处再手写它干的活”<strong>、</strong>“单一事实来源”<strong>、</strong>“改数据 → render → 结束”**——数据驱动视图的心智模型第一次落地。</li>
+<li><strong>一个问题打开一整个知识点</strong>：我问”<code>return</code> 什么时候用什么时候不用”，扯出函数本质——JS 里函数就是一种”值”，可以装进变量、可以塞进对象属性；由此引出两句总纲和”匿名函数”概念。</li>
+<li><strong>事件系统的深入</strong>：<code>addEventListener</code> 和 <code>onXxx =</code> 的三个真实差异（多绑 &#x2F; 解绑 &#x2F; on 前缀）、<code>on</code> + 事件动词的命名规律、”解绑 &#x2F; 内存泄漏 &#x2F; React <code>useEffect</code> cleanup 动机”这一整条为将来学框架埋伏的知识点。</li>
+</ul>
+<h3 id="踩坑清单-4"><a href="#踩坑清单-4" class="headerlink" title="踩坑清单"></a>踩坑清单</h3><p><strong>坑 1：<code>document.getElementById</code> 漏写 <code>document.</code></strong></p>
+<p>第一次自己写时写成 <code>getElementById(&#39;nameInput&#39;)</code>，控制台报”未定义”。原因是它不是全局函数，是 <code>document</code> 对象的方法。类比 <code>arr.push()</code> 不能只写 <code>push()</code>，前面必须挂着对象。</p>
+<p><strong>坑 2：<code>const</code> &#x2F; <code>let</code> 没有变量提升</strong></p>
+<p>把 <code>const nameOutput = ...</code> 放在了下面，前面就用了它，页面报”未定义”。<code>const</code> &#x2F; <code>let</code> 存在暂时性死区，必须先定义再使用。</p>
+<p><strong>坑 3：链式赋值 <code>const a = b.属性 = 函数</code> 的语义陷阱</strong></p>
+<p>图省事把 <code>const showName = document.getElementById(&#39;showName&#39;).onclick = () =&gt; &#123;...&#125;</code> 写成一行。结果 <code>showName</code> 变量装的是那个箭头函数，不是我以为的按钮。因为 <code>=</code> 从右往左结算、且赋值语句本身也是表达式，<code>b = 值</code> 的值就是”值”本身。以后再也不敢一行同时做”绑事件”和”存变量”两件事。</p>
+<p><strong>坑 4：<code>return</code> 的滥用</strong></p>
+<p><code>onclick</code> 里写了 <code>return nameOutput.textContent = ...</code>，能跑但完全多余——事件回调是”末端函数”，浏览器不看返回值。口诀是：”<code>return</code> 谁在接？没人接就别写。”数组家族（<code>filter</code> &#x2F; <code>map</code> &#x2F; <code>sort</code> &#x2F; <code>reduce</code>）的回调必须 <code>return</code>（因为函数本身在等）；事件回调、<code>setTimeout</code> 里的 <code>fn</code>、末端 <code>.then</code> 打印都不该 <code>return</code>。</p>
+<p><strong>坑 5：拼错的变量名居然能跑</strong></p>
+<p>把 <code>squareOutput</code> 拼成 <code>suqareOutput</code>（<code>q</code> 和 <code>u</code> 交换位置），两处一致地错，代码正常运行、肉眼还看不出来。原因是 JS 只把变量名当一串字符，不做拼写检查、不做类型检查——“能跑 ≠ 写对了”。JS 是”最不较真”的语言，它替你放行的错，最后会以更贵的方式还回来（大型项目为什么转 TypeScript 的核心动机）。</p>
+<p><strong>坑 6：<code>type=&quot;number&quot;</code> 也是字符串</strong></p>
+<p>标了 <code>type=&quot;number&quot;</code> 的输入框，读 <code>.value</code> 依然是 <code>&quot;22&quot;</code> 这种字符串。<code>*</code> <code>-</code> <code>/</code> <code>%</code> 会自动转数字所以看起来没事，只有 <code>+</code> 是叛徒会去做字符串拼接。写 <code>price * count</code> 巧合能对，但一旦某处出现 <code>+</code>（比如加运费）整条数据链就崩——边界处必须 <code>Number()</code> 消毒。</p>
+<p><strong>坑 7（心理坑）：以为老师应该先讲清楚再让我写</strong></p>
+<p>提过一次”你以后出新题的时候先说明一下代码”。老师没同意，反过来讲：”卡壳 → 查资料 → 找到答案”的循环产生的记忆最牢固（desirable difficulty）。后来老师有一次自己没忍住提前透底（<code>type=number</code> 的坑），我立刻反馈”你这样直接说完我就没有试错的过程了”——之后严格按”只给需求 + 方向，不给答案”的方式出题。</p>
+<h2 id="2026-7-17-表单校验-多控件读值：一场七连坑的实战"><a href="#2026-7-17-表单校验-多控件读值：一场七连坑的实战" class="headerlink" title="2026.7.17 表单校验 + 多控件读值：一场七连坑的实战"></a>2026.7.17 表单校验 + 多控件读值：一场七连坑的实战</h2><p>背景：昨天停在 7.4「表单基础读值」，今天推进 7.5 系列——表单校验 + 表单控件读值。整个主线是”用户点提交时怎么校验、出错怎么提示、其他控件（<code>select</code> &#x2F; <code>checkbox</code>）怎么读值”。看起来 3 行代码的事，一路踩下来前后冒了七八个坑，反而让好几个之前学过但没内化的知识点真正落地了。</p>
+<h3 id="上半场：input-button-提交小-demo-的七连坑"><a href="#上半场：input-button-提交小-demo-的七连坑" class="headerlink" title="上半场：input + button 提交小 demo 的七连坑"></a>上半场：input + button 提交小 demo 的七连坑</h3><p>原本以为很简单：输入框填字、点提交、把内容显示到 <code>&lt;p&gt;</code> 里。真正下手写才发现每一步都在踩坑。</p>
+<p><strong>坑 1：HTML 里 <code>id</code> 重复</strong></p>
+<p>两个输入框共用一个 <code>id</code>，JS 永远只能读到第一个——<code>getElementById</code> 顾名思义”By Id”，同名的只返回第一个匹配。以后写 HTML 前先扫一遍所有 <code>id</code>，就当自己有 <code>id</code> 洁癖。</p>
+<p><strong>坑 2：<code>&lt;button&gt;</code> 放进 <code>&lt;form&gt;</code> 里默认 <code>type=&quot;submit&quot;</code></strong></p>
+<p>点击就会触发表单提交，页面刷新，控制台的 <code>console.log</code> 一闪而过。不想触发提交必须显式写 <code>type=&quot;button&quot;</code>——或者索性顺水推舟，走 <code>form</code> 的 <code>submit</code> 事件。</p>
+<p><strong>坑 3：给按钮绑 <code>click</code> 而不是给 form 绑 <code>submit</code></strong></p>
+<p>最开始给按钮 <code>click</code>——能跑，但把逻辑拆成”按钮 click + form submit”两半，思路散且不覆盖”回车提交”这种触发方式。查清楚后发现浏览器有条隐藏规则：焦点在 form 里的 input 时，回车会自动模拟点击第一个 <code>type=&quot;submit&quot;</code> 按钮。所以按钮 <code>click</code> 场景下回车能跑，是浏览器帮我”翻译”的，不是我的代码严密。正确姿势：直接监听 <code>&lt;form&gt;</code> 的 <code>submit</code> 事件——点击也好、回车也好，都是同一个入口。</p>
+<p><strong>坑 4：<code>&amp;&amp;</code> 和 <code>||</code> 的中文语感陷阱</strong></p>
+<p>自己脑子里想的是”长度小于 2 或大于 10 就报错”，但看到”和”字下意识写了 <code>&amp;&amp;</code>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (value.<span class="property">length</span> &lt; <span class="number">2</span> &amp;&amp; value.<span class="property">length</span> &gt; <span class="number">10</span>) &#123; ... &#125;</span><br></pre></td></tr></table></figure>
+
+<p>一跑发现无论输什么都进不去 <code>if</code> 分支。根本原因：中文里”和”很暧昧，有时候是”且”有时候是”或”。翻译成代码前必须先问自己一句：”我是要两个条件全都成立才动，还是只要一个成立就动？”——一个数字永远不可能同时 <code>&lt; 2</code> 又 <code>&gt; 10</code>，条件永远为 <code>false</code>。全都要 <code>&amp;&amp;</code>、任一 <code>||</code>。</p>
+<p><strong>坑 5：判”输入为空”写成 <code>value === 0</code></strong></p>
+<p><code>.value</code> 永远是字符串，<code>=== 0</code> 是拿字符串跟数字 <code>0</code> 比，永远不成立。空输入框读出来是空字符串 <code>&quot;&quot;</code>，判空要写 <code>value.trim() === &#39;&#39;</code> 或者 <code>.value.length === 0</code>。7.4 学的东西刚学完就忘。</p>
+<p><strong>坑 6：<code>preventDefault</code> 忘了它在哪</strong></p>
+<p><code>preventDefault()</code> 是事件对象 <code>e</code> 身上的方法，不是全局函数、也不是 form 身上的。写成 <code>preventDefault()</code> 或者 <code>form.preventDefault()</code> 都不对，必须 <code>e.preventDefault()</code>。</p>
+<p><strong>坑 7：在 <code>submit</code> 回调里又嵌了一个 <code>addEventListener(&#39;click&#39;, ...)</code></strong></p>
+<p>想着”提交时再给按钮绑个反馈”，写成：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">form.<span class="title function_">addEventListener</span>(<span class="string">&#x27;submit&#x27;</span>, <span class="keyword">function</span>(<span class="params">e</span>) &#123;</span><br><span class="line">    e.<span class="title function_">preventDefault</span>()</span><br><span class="line">    button.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) &#123; ... &#125;)  <span class="comment">// ← 每次提交都新增一个</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>每提交一次就多一个监听器，第二次触发两个、第三次三个——渐进式变卡。<code>addEventListener</code> 是叠加绑定，不像 <code>onclick=</code> 是覆盖。这个特性我 7.4 学过但没内化，被现实撞了一次才真正记住。<strong>一个业务 &#x3D; 一个事件回调，别嵌套监听</strong>。</p>
+<h3 id="下半场：-下拉框-多选"><a href="#下半场：-下拉框-多选" class="headerlink" title="下半场：&lt;select&gt; 下拉框 + &lt;input type=&quot;checkbox&quot;&gt; 多选"></a>下半场：<code>&lt;select&gt;</code> 下拉框 + <code>&lt;input type=&quot;checkbox&quot;&gt;</code> 多选</h3><p>思路上有个大突破：<strong>处理一组 DOM 元素 &#x3D; 数组家族的思路</strong>。<code>querySelectorAll</code> 拿一组元素、<code>Array.from</code> 转真数组、然后 <code>filter</code> &#x2F; <code>map</code> 想筛就筛想变形就变形。之前学 <code>filter</code> &#x2F; <code>map</code> 一直觉得是”处理数据的”，今天才意识到它是”处理任何可遍历东西的”，DOM 组也算。</p>
+<p>这一路又踩了几个：</p>
+<p><strong>坑 8：报错 <code>Cannot read properties of undefined (reading &#39;0&#39;)</code></strong></p>
+<p>看不懂在说什么，看了一次拆解后学到：这句话在说”你在 undefined 上读 <code>[0]</code>“，反推回去就是 <code>xxx[0]</code> 里的 <code>xxx</code> 是 undefined。前端 90% 的运行时报错都长这样——<code>Cannot read properties of XXX (reading &#39;YYY&#39;)</code> &#x3D; 你想读 XXX 身上的 YYY 属性，但 XXX 是空的（null &#x2F; undefined）。排查套路：找 <code>reading &#39;YYY&#39;</code> → 定位代码里读 <code>.YYY</code> 那行 → 那行点号左边就是空的那货。</p>
+<p><strong>坑 9：<code>selectedOption</code> 少了 <code>s</code></strong></p>
+<p><code>&lt;select&gt;</code> 元素上读被选中项的属性名是 <code>selectedOptions</code>（复数）——即使是单选也是复数，因为 <code>select</code> 本身支持多选模式。少一个 <code>s</code> → 拿到 undefined → 后面 <code>[0]</code> 崩溃，正好触发坑 8 那句报错。这是”HTML API 命名跟中文直觉不符”的经典坑。</p>
+<p><strong>坑 10：读了值没用 &#x2F; 用了没读</strong></p>
+<p>改到最后代码里同时存在 <code>selectValue</code>（英文 code）和 <code>selectedText</code>（中文名），本来想显示中文，但拼字符串时随手用了 <code>selectValue</code>——读了 <code>selectedText</code> 白读、页面显示的还是英文。心法：<strong>变量名说清楚”这是干嘛的”，用的时候多看一眼名字</strong>。</p>
+<p><strong>坑 11：拼错的变量名 JS 不报错</strong></p>
+<p><code>selectedOption</code> 少 <code>s</code>、<code>rightext</code> 少 <code>h</code>，一天连着犯了两次。JS 不查拼写：一处对一处错就崩，能跑 ≠ 写对了。以后一律 F2 重命名，别手改两遍寄希望于没错。这也是大型项目转 TypeScript 的核心动机——把”变量名错误”从运行时崩溃提前到”红波浪线”。</p>
+<h3 id="一个小心法：报错信息不是敌人，是最有耐心的老师"><a href="#一个小心法：报错信息不是敌人，是最有耐心的老师" class="headerlink" title="一个小心法：报错信息不是敌人，是最有耐心的老师"></a>一个小心法：报错信息不是敌人，是最有耐心的老师</h3><p>以前看到红字就慌。今天真正学会拆一次报错之后，反而觉得报错是最直接的沟通——它已经告诉你”我在哪一行、读什么、发现什么是空的”，只是要习惯读它的语法。看懂报错 &#x3D; 看懂 JS 在想什么，这句话越来越有体感。</p>
+<h2 id="2026-7-20-checkbox-收尾-querySelector-家族-注册表单综合"><a href="#2026-7-20-checkbox-收尾-querySelector-家族-注册表单综合" class="headerlink" title="2026.7.20 checkbox 收尾 + querySelector 家族 + 注册表单综合"></a>2026.7.20 checkbox 收尾 + querySelector 家族 + 注册表单综合</h2><p>背景：7.5.4 上次留了个尾巴——checkbox 组只拿到”勾了几个”（数量），没拿到”勾了哪些”（内容）。今天补完这段链条，顺手把 <code>querySelector</code> 家族对比清楚，最后开进 7.6 综合注册表单又踩了 8 个坑（未收尾，续接明天）。</p>
+<h3 id="7-5-4-checkbox-组多选读值收尾"><a href="#7-5-4-checkbox-组多选读值收尾" class="headerlink" title="7.5.4 checkbox 组多选读值收尾"></a>7.5.4 checkbox 组多选读值收尾</h3><p>完整链条：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;input[name=&quot;hobby&quot;]&#x27;</span>))</span><br><span class="line">    .<span class="title function_">filter</span>(<span class="function"><span class="params">el</span> =&gt;</span> el.<span class="property">checked</span>)</span><br><span class="line">    .<span class="title function_">map</span>(<span class="function"><span class="params">el</span> =&gt;</span> el.<span class="property">value</span>)</span><br><span class="line">    .<span class="title function_">join</span>(<span class="string">&#x27;、&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p>关键点：<code>filter</code> 直接作用在 DOM 元素数组上，让手里始终握着元素本身，直到最后一步 <code>map</code> 才把它压成字符串。之前的错法是一开始就 <code>map(el =&gt; el.checked)</code> 把元素压扁成布尔值，之后再也退不回来。</p>
+<p>顺手抽象了一层：数据的 4 种”形状”——原始值 &#x2F; 数组 &#x2F; 对象 &#x2F; DOM 元素。DOM 元素本质是对象，只不过 JS 给它加了浏览器专属属性（<code>.value</code> &#x2F; <code>.checked</code> &#x2F; <code>.textContent</code>）。所以数组家族的方法链能作用在 DOM 元素数组上，也就顺理成章了。</p>
+<h3 id="querySelector-家族"><a href="#querySelector-家族" class="headerlink" title="querySelector 家族"></a>querySelector 家族</h3><p>之前一直用 <code>getElementById</code>，第一次系统性对比 <code>querySelector</code> 家族三个方法的差别，加 CSS 选择器语法（<code>#id</code> &#x2F; <code>.class</code> &#x2F; <code>[属性=&quot;值&quot;]</code> &#x2F; <code>:checked</code> 伪类）。学到一个爽姿势——radio 组读值只要一句：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> genderEl = <span class="variable language_">document</span>.<span class="title function_">querySelector</span>(<span class="string">&#x27;input[name=&quot;regGender&quot;]:checked&#x27;</span>)</span><br><span class="line"><span class="comment">// 选中 → genderEl.value；未选 → null</span></span><br></pre></td></tr></table></figure>
+
+<p>组合选择器直接把”筛选”下沉到 DOM 层，比 <code>filter</code> 还省事——因为浏览器自己就懂 CSS。</p>
+<h3 id="7-6-综合注册表单：8-连坑"><a href="#7-6-综合注册表单：8-连坑" class="headerlink" title="7.6 综合注册表单：8 连坑"></a>7.6 综合注册表单：8 连坑</h3><p>尝试把 7.4-7.5 全串起来（用户名 + 年龄 + 城市 + 爱好 + 性别）。一测崩了，重头戏在这一段：</p>
+<p><strong>坑 1：用过 ≠ 内化。</strong> 7.5.4 我明明写过 <code>document.querySelectorAll(&#39;input[name=&quot;hobby&quot;]&#39;)</code>，到 7.6 第一反应仍然是 <code>getElementById</code>——甚至想给外层 div 加 id 再钻进去遍历。写过一个 API 不代表下次能主动想起。<strong>内化的标准是新场景第一时间就能想到这个工具。</strong></p>
+<p><strong>坑 2：给外层容器加 id 硬撬。</strong> 拿到 div 只是拿到”装 checkbox 的箱子”，还需要开箱子。<code>querySelectorAll</code> 就是直接把箱子里的东西递给你——上一坑的具体表现。</p>
+<p><strong>坑 3：<code>&amp;&amp;</code> 和 <code>||</code> 又用反。</strong> <code>if (name.length &lt; 2 &amp;&amp; name.length &gt; 10)</code> 永远不成立。校验里”违规条件（不在合法范围内）”永远用 <code>||</code>。这个坑 7.5 踩过一次，7.6 又踩——中文”和”太暧昧。</p>
+<p><strong>坑 4：<code>=</code> 和 <code>===</code> 又混。</strong> <code>else if (regCity.value = &#39;&#39;)</code>——这不是判断是清空 select，然后返回 <code>&#39;&#39;</code>（假值）永远进不去。</p>
+<p><strong>坑 5：<code>.value</code> 是字符串，数字比较前忘 <code>Number()</code>。</strong> <code>if (regAge.value &lt;= 18)</code> 靠隐式转换，不可靠。边界消毒原则从表单读值那节就学过，还是掉进去了。</p>
+<p><strong>坑 6：<code>querySelector</code>（单数）不能 <code>Array.from</code>。</strong> 单数版本返回一个元素或 <code>null</code>，不是可迭代对象，<code>Array.from</code> 直接崩。radio 组根本不需要”拿一组再筛”，<code>:checked</code> 伪类一步到位。</p>
+<p><strong>坑 7：挡门校验缺 <code>return</code>，欢迎信息位置错。</strong> 缺 <code>return</code> 后面校验会继续跑、覆盖错误提示；欢迎信息应该放在所有校验之后（走到函数末尾才说明全通过）。挡门本质是一路 <code>return</code> 直到末尾——走到末尾还没 <code>return</code>，说明没门被拦。</p>
+<p><strong>坑 8：<code>id</code> 拼错但 JS 不查。</strong> <code>const regAge = document.getElementById(&#39;regName&#39;)</code> 拿到的是名字输入框，后续所有 <code>regAge.value</code> 全错但看不出。这个坑我在这个文档里已经吐槽过好几遍了，还是踩——F2 重命名的习惯必须养起来。</p>
+<h3 id="一个心得"><a href="#一个心得" class="headerlink" title="一个心得"></a>一个心得</h3><p>这一天最大的收获不是学了多少新东西，而是<strong>看到自己”学过但没内化”的部分</strong>——checkbox 一小时前刚写的 <code>querySelectorAll</code> 一转场景就想不起来、<code>&amp;&amp;</code>&#x2F;<code>||</code> 反复用反、<code>.value</code> 消毒每次都忘。API 用过一次 ≠ 挂上标签；下次能不能想起来，才是学没学会的分水岭。</p>
+<h2 id="2026-7-21-注册表单综合练习：类型流与九连坑"><a href="#2026-7-21-注册表单综合练习：类型流与九连坑" class="headerlink" title="2026.7.21 注册表单综合练习：类型流与九连坑"></a>2026.7.21 注册表单综合练习：类型流与九连坑</h2><p>背景：接着 7.20 的 7.6 综合注册表单，目前完成 6 字段读值和 6 条独立 <code>if</code> 校验，异步提交 + 加载态 + 渲染卡片留到下次。九个坑串起来最大的收获是<strong>类型流意识</strong>——每写一步，心里给这个值贴什么标签？贴错了后面全崩。</p>
+<h3 id="踩坑清单-5"><a href="#踩坑清单-5" class="headerlink" title="踩坑清单"></a>踩坑清单</h3><p><strong>坑 1：<code>querySelector(&#39;regGender&#39;)</code> 什么都选不到</strong></p>
+<p>选择器字符串里，光秃秃的名字被当成标签去找。想按 <code>name</code> 找必须 <code>[name=&quot;regGender&quot;]</code>，按 <code>id</code> 找加 <code>#</code>，按 <code>class</code> 加 <code>.</code>。这是 CSS 选择器语法，不是 JS 特色——但学 JS 时容易忘。</p>
+<p><strong>坑 2：<code>querySelectorAll</code> 出来的 NodeList 不能直接 <code>.filter</code></strong></p>
+<p>NodeList 是”类数组”，能 <code>.length</code> 但没有数组家族方法。必须先套 <code>Array.from(...)</code> 转成真数组，才能 <code>filter</code> &#x2F; <code>map</code>。反过来 <code>querySelector</code> 返回单个元素或 <code>null</code>，套 <code>Array.from</code> 就崩（<code>null</code>）或返空数组（单元素）——<code>Array.from</code> 只对”复数”用。</p>
+<p><strong>坑 3：<code>if (regCity.value.length = &#39;&#39;)</code> 校验彻底失效</strong></p>
+<p>一个 <code>=</code> 是赋值，不是比较。JS 把 <code>&#39;&#39;</code> 塞给左边，然后返回 <code>&#39;&#39;</code>——空字符串是假值，<code>if</code> 分支永远进不去。这条老师前面反复强调过，但实战中还是漏了。以后打相等符号手指停半秒：要赋值还是要比较？</p>
+<p><strong>坑 4：<code>else if (checkedHobby.length &gt; 0)</code> 塞进 <code>else if</code> 链显示欢迎</strong></p>
+<p>“成功动作”不是”又一个条件分支”，而是所有校验都没触发时的自然结果——应该放在整个 <code>if</code> 结构外面，不在链里。这个结构错误让代码看起来能跑，但逻辑很绕，以后写表单校验要先画骨架再填肉。</p>
+<p><strong>坑 5：<code>const checkedHobbyValues</code> 声明两次 → SyntaxError</strong></p>
+<p><code>const</code> &#x2F; <code>let</code> 在同一作用域不允许重名。第一次用 <code>const</code> 创造，后面直接用变量名，不用再加声明关键字。<code>const</code> 只用在”第一次创造这个变量”时：<code>const arr = [1,2,3]</code> 创造 ✅；<code>arr.push(4)</code> 用变量，不加 <code>const</code> ✅；<code>const arr = [4,5,6]</code> 报错 ❌；<code>let obj.prop = x</code> 改属性不用 <code>let</code> ❌。</p>
+<p><strong>坑 6：<code>if (genderSelect)</code> 逻辑反了</strong></p>
+<p><code>querySelector(&#39;:checked&#39;)</code> 有人选返回 DOM（真值），没人选返回 <code>null</code>（假值）。所以 <code>if (genderSelect)</code> 意思是”有人选就报错”——完全反了，应该 <code>if (!genderSelect)</code>。布尔条件表达式一定要在心里念出中文再确认。</p>
+<p><strong>坑 7：<code>pfSubmit.onclick = fn</code> 套在 submit 回调里</strong></p>
+<p><code>submit</code> 回调已经是”用户点提交的那一刻”要跑的代码，再套一层 <code>onclick</code> 意思是”以后再点才执行”——这次点击啥都不干。想让”提交后发生什么”，在校验通过后顺着写下去就行，不要再绑事件。这个坑 7.17 已经踩过一次，又踩。</p>
+<p><strong>坑 8：<code>let pfCard.textContent = CardShow</code></strong></p>
+<p><code>let</code> &#x2F; <code>const</code> 只能创造新变量，不能给已存在对象改属性。改属性直接写 <code>obj.prop = x</code>，不加声明关键字。对应 7.15 内化过的”左边只有变量名才用 <code>let</code>“。</p>
+<p><strong>坑 9：模板字符串里塞 DOM 元素</strong></p>
+<p><code>$&#123;pfName&#125;</code> 得到 <code>[object HTMLInputElement]</code> —— 类型流没走到”值”，应该是 <code>$&#123;pfName.value.trim()&#125;</code>。类型流意识必须精确到每一个 <code>$&#123;&#125;</code>。</p>
+<h3 id="一个心得-1"><a href="#一个心得-1" class="headerlink" title="一个心得"></a>一个心得</h3><p>这一天九个坑里，有 5 个是<strong>类型流没走完</strong>（<code>.value</code> 忘了、DOM 直接塞模板、NodeList 当数组用、单数当复数、赋值当比较），3 个是<strong>结构写反</strong>（成功动作塞进 <code>else if</code>、<code>if</code> 判反、<code>onclick</code> 套在 submit 里），1 个是<strong>声明冗余</strong>。类型流每一步在心里贴标签是这次最大的收获——写完一行不确认自己现在手里握的是啥，后面基本崩。JS 不会替你检查这个，只能自己养。</p>
+<h2 id="2026-7-22-异步表单收尾：绑定时机、快照心法与五个新坑"><a href="#2026-7-22-异步表单收尾：绑定时机、快照心法与五个新坑" class="headerlink" title="2026.7.22 异步表单收尾：绑定时机、快照心法与五个新坑"></a>2026.7.22 异步表单收尾：绑定时机、快照心法与五个新坑</h2><p>背景：7.6 综合注册表单的收尾——异步提交 + 加载态 + 卡片渲染。看起来只剩个 <code>setTimeout</code> 包一包的事，五个坑连着踩下来，异步的两条铁律（<strong>什么时候跑</strong> vs <strong>跑的时候读什么</strong>）第一次真正分开了。</p>
+<h3 id="坑-1-·-把”立刻要做的事”绑到了-onclick-上"><a href="#坑-1-·-把”立刻要做的事”绑到了-onclick-上" class="headerlink" title="坑 1 · 把”立刻要做的事”绑到了 onclick 上"></a>坑 1 · 把”立刻要做的事”绑到了 <code>onclick</code> 上</h3><p>第一版写成：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">pfSubmit.<span class="property">onclick</span> = <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    pfSubmit.<span class="property">textContent</span> = <span class="string">&#x27;保存中...&#x27;</span></span><br><span class="line">    <span class="built_in">setTimeout</span>(...)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>点保存后完全没反应。原因：<code>按钮.onclick = fn</code> 是”把 <code>fn</code> 存起来，下次点击才跑”——但用户这一次点击已经在 <code>submit</code> 回调里了，<code>onclick</code> 里的代码要再点一次才执行。响应本次点击应该顺着往下写，不再绑事件。</p>
+<h3 id="坑-2-·-游离在-addEventListener-外的-innerHTML"><a href="#坑-2-·-游离在-addEventListener-外的-innerHTML" class="headerlink" title="坑 2 · 游离在 addEventListener 外的 innerHTML"></a>坑 2 · 游离在 <code>addEventListener</code> 外的 <code>innerHTML</code></h3><p>第二版把 <code>pfCard.innerHTML = pfCardShow.join(&#39;&#39;)</code> 写在了 <code>addEventListener</code> 大括号外面。这一行是页面加载时从上往下扫就执行的，此时用户还没点、<code>setTimeout</code> 还没起、变量根本不存在 → 报错 <code>pfCardShow is not defined</code> → 整段 JS 挂掉。</p>
+<p>修法：把渲染代码搬进 <code>setTimeout</code> 回调里，因为”1.5 秒后才显示” &#x3D; “1.5 秒后浏览器捡起来跑的那个回调里做的事”。</p>
+<h3 id="坑-3-·-pfHobby-vs-hobbyCheckedValue-类型漂移"><a href="#坑-3-·-pfHobby-vs-hobbyCheckedValue-类型漂移" class="headerlink" title="坑 3 · pfHobby vs hobbyCheckedValue 类型漂移"></a>坑 3 · <code>pfHobby</code> vs <code>hobbyCheckedValue</code> 类型漂移</h3><p><code>$&#123;pfHobby&#125;</code> 在页面上显示成 <code>[object HTMLInputElement],[object HTMLInputElement]</code>。</p>
+<ul>
+<li><code>pfHobby</code> &#x3D; 一组 <strong>DOM 元素</strong>（<code>Array.from(querySelectorAll(...))</code> 的结果）</li>
+<li><code>hobbyCheckedValue</code> &#x3D; 一组 <strong>字符串</strong>（<code>.map(el =&gt; el.value)</code> 转过一次）</li>
+</ul>
+<p>想在模板字符串里显示的是文字，就得用字符串数组那个。命名其实自己写对了，取用时没跟着名字走。</p>
+<h3 id="坑-4-·-拼写错误-gengder-两处一致地错"><a href="#坑-4-·-拼写错误-gengder-两处一致地错" class="headerlink" title="坑 4 · 拼写错误 gengder 两处一致地错"></a>坑 4 · 拼写错误 <code>gengder</code> 两处一致地错</h3><p><code>snapshot.gengder</code> 声明和引用两处都拼错，能跑通。JS 不查拼写。用 VSCode 的 F2 重命名，别手动改两遍。</p>
+<h3 id="坑-5-·-1-5-秒内改姓名，卡片显示新的"><a href="#坑-5-·-1-5-秒内改姓名，卡片显示新的" class="headerlink" title="坑 5 · 1.5 秒内改姓名，卡片显示新的"></a>坑 5 · 1.5 秒内改姓名，卡片显示新的</h3><p><code>setTimeout</code> 回调里的 <code>pfName.value</code> **不是”注册 <code>setTimeout</code> 那一刻的值”，是”1.5 秒后回调执行时的当前值”**。用户在这 1.5 秒里改了输入框，卡片显示的就是改后的。</p>
+<p>这是新坑，跟 Event Loop 那条”同步没跑完异步不插队”不是一回事——那是”什么时候跑”，这个是”跑的时候读的是哪个时刻的数据”。</p>
+<p>修法：同步阶段先把值读出来存到变量里（打包成 <code>snapshot</code> 对象）。变量装的是字符串本身，字符串是原始类型，冻住了；DOM 的 <code>.value</code> 是每次现问，会漂。</p>
+<h3 id="一个心得-2"><a href="#一个心得-2" class="headerlink" title="一个心得"></a>一个心得</h3><p>异步的坑之前只知道”同步没跑完异步不插队”这一条，今天把”跑的时候读的是哪个时刻的数据”这条也剥出来了。前者管<strong>排队</strong>，后者管<strong>保鲜</strong>——两个是独立的问题，得分开想。以后但凡写”点击后延迟 + 用户还能改 UI”的场景，第一步就是同步阶段拍快照，别再让异步回调去 DOM 上现问。</p>
+<h2 id="2026-7-23-表单校验重构：从-else-if-到规则表"><a href="#2026-7-23-表单校验重构：从-else-if-到规则表" class="headerlink" title="2026.7.23 表单校验重构：从 else if 到规则表"></a>2026.7.23 表单校验重构：从 else if 到规则表</h2><p>背景：7.6 注册表单的功能已经跑通，这次不是加功能，是<strong>把已有代码越写越像工程代码</strong>。三小步走完，每一步把心智模型往前推一层——从”一个一个抓”到”全部收集一起显示”、从”重复的 if”到”数据 + 遍历”、从”立刻算的值”到”待命的动作”。</p>
+<h3 id="第一步（7-8）·-else-if-拆成独立-if-错误收集"><a href="#第一步（7-8）·-else-if-拆成独立-if-错误收集" class="headerlink" title="第一步（7.8）· else if 拆成独立 if + 错误收集"></a>第一步（7.8）· else if 拆成独立 if + 错误收集</h3><p>把一串 <code>else if</code> 全拆成独立 <code>if</code>，每个 <code>if</code> 只做一件事：<code>errors.push(&#39;...&#39;)</code>。所有 <code>if</code> 跑完之后一次性 <code>pfError.innerHTML = errors.join(&#39;&lt;br&gt;&#39;)</code>。用到的 API 全是旧的（数组、<code>push</code>、<code>length</code>、<code>join</code>），变的是心智模型。</p>
+<p>顺手搞明白 <code>return</code> 的作用域。以为 <code>return</code> 只结束”最近的 <code>&#123;&#125;</code>“，实际它无视 <code>if / for / while</code> 这些”块”，抬头找最近的 <code>function</code> 或 <code>() =&gt;</code>。校验段结尾那个 <code>if (errors.length &gt; 0) &#123; ...; return &#125;</code>——<code>return</code> 拦的不是错误，是<strong>错误发生时不该跑的正常流程</strong>：快照、按钮变化、<code>setTimeout</code>、卡片渲染，一整段全冻结。</p>
+<h3 id="第二步（7-9）·-8-个-if-塌缩成规则表"><a href="#第二步（7-9）·-8-个-if-塌缩成规则表" class="headerlink" title="第二步（7.9）· 8 个 if 塌缩成规则表"></a>第二步（7.9）· 8 个 if 塌缩成规则表</h3><p>观察 8 个 <code>if</code> 的结构——每一条都在说”如果[某个条件]成立，就报[某个错误]”，只有条件和消息在变。<strong>变化的东西不多 → 抽成数据</strong>：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> rules = [</span><br><span class="line">    &#123; <span class="attr">check</span>: pfName.<span class="property">value</span> === <span class="string">&#x27;&#x27;</span>, <span class="attr">message</span>: <span class="string">&#x27;姓名错误&#x27;</span> &#125;,</span><br><span class="line">    &#123; <span class="attr">check</span>: pfAge.<span class="property">value</span> &lt; <span class="number">18</span>, <span class="attr">message</span>: <span class="string">&#x27;年龄不符&#x27;</span> &#125;,</span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">]</span><br><span class="line">rules.<span class="title function_">forEach</span>(<span class="function"><span class="params">rule</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (rule.<span class="property">check</span>) errors.<span class="title function_">push</span>(rule.<span class="property">message</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>这是”代码变数据”的第一次真实体感——antd、Element、React Hook Form、Zod 这些校验库底层都是这个心智，只是套了更多壳子。</p>
+<h3 id="第三步（7-10）·-惰性求值：把值改成动作"><a href="#第三步（7-10）·-惰性求值：把值改成动作" class="headerlink" title="第三步（7.10）· 惰性求值：把值改成动作"></a>第三步（7.10）· 惰性求值：把值改成动作</h3><p>规则表放在 submit 回调里恰好能跑，但如果挪到顶层就会崩塌——<code>check: pfName.value === &#39;&#39;</code> 在<strong>对象创建那一刻</strong>就被算成了固定的 <code>true</code> &#x2F; <code>false</code>，之后用户在输入框里怎么改都追不上。</p>
+<p>修复方法：把每条 <code>check</code> 包成箭头函数——<code>check: () =&gt; pfName.value === &#39;&#39;</code>。这样 <code>check</code> 存的不再是”立刻算出的结果”，而是”待命的一段代码”，只有 <code>forEach</code> 里写 <code>rule.check()</code>（加括号调用）时才真正执行。</p>
+<p>改造完毕后规则表可以完全挪到顶层，跟 submit 回调解耦——最接近真校验库的形态。</p>
+<h3 id="踩坑清单-6"><a href="#踩坑清单-6" class="headerlink" title="踩坑清单"></a>踩坑清单</h3><p><strong>坑 1 · 只改一半就以为”效果一样”</strong></p>
+<p>第一次改 7.8 时只把第一个 <code>if</code> 换成了 <code>errors.push</code>，后面 7 个还是 <code>else if</code>。测”姓名空”这种单错场景时看着跟老代码没区别，一度怀疑重构没意义。换场景就露馅——同时犯 3 个错时，老代码显示 1 条错误、改到一半的代码也只显示 1 条（因为第一个 <code>if</code> 命中后剩下 <code>else if</code> 全跳过），并没有拿到”一次显示全部”的收益。<strong>验证重构效果必须换多个场景测</strong>，别只测最舒服的那种。</p>
+<p><strong>坑 2 · <code>rules.check</code> vs <code>rule.check</code></strong></p>
+<p><code>forEach</code> 里写成 <code>if (rules.check) rules.push(rules.message)</code>——两个 <code>rules</code> 全错，应该是 <code>rule</code>（形参）。<code>rules</code> 是整个数组（袋子），<code>rule</code> 是循环里当前那颗。<code>rules.check</code> 是 <code>undefined</code>（永远假），<code>rules.push(rules.message)</code> 是往规则数组里塞 <code>undefined</code>——而且对象没有 <code>.push()</code> 方法，用户漏填任何字段就直接崩。</p>
+<p><strong>坑 3 · 想着”先注释掉旧代码”结果一起注释了活代码</strong></p>
+<p>文件里堆了三版代码（旧的注释保留做成长轨迹），改到 7.9 时手滑把 snapshot + <code>setTimeout</code> 那段也注释了。表单校验能过但保存没反应——因为”渲染卡片”那段代码根本没在跑。排查动作：用户看不到卡片 → 找”生成卡片的那行代码”在不在 → 不在 → 检查是不是被注释了。</p>
+<p><strong>坑 4 · 规则表挪到顶层后 <code>pfGender</code> 报未定义</strong></p>
+<p>一开始以为是”顺序问题”，其实是作用域问题。<code>const pfGender = ...</code> 用 <code>const</code> 声明在 submit 函数体内 → 只活在那个函数里 → 顶层的箭头函数看不见。函数抬头找变量只顺着”自己写在哪”往外找，不看”调用时刻有没有同名变量”——这个规则叫词法作用域。</p>
+<p>修复：让箭头函数自己读 DOM，不依赖函数内的变量。<code>() =&gt; !document.querySelector(&#39;input[name=&quot;pfGender&quot;]:checked&#39;)</code>——<code>document</code> 是全局能访问的入口，箭头函数在顶层也能用。</p>
+<p><strong>坑 5 · 把 JS 判断塞进 CSS 选择器字符串</strong></p>
+<p>修 hobby 那两条时写成 <code>document.querySelectorAll(&#39;input[name=&quot;pfHobby&quot;]:checked===0&#39;)</code>——<code>===0</code> 被当成了选择器语法的一部分。<strong>CSS 选择器只描述”选什么元素”，判断（<code>.length === 0</code>、<code>&gt; 3</code>）必须写在字符串外面</strong>。</p>
+<p><strong>坑 6 · 救出来的时候把 <code>.length</code> 也丢了</strong></p>
+<p>把判断从字符串里救出来时写成 <code>document.querySelectorAll(...) === 0</code>——丢了 <code>.length</code>。<code>querySelectorAll</code> 返回的是 <code>NodeList</code>（一个对象），对象跟数字直接比大小永远是 <code>false</code>，所以勾 0 个能过、勾 4 个也能过。”有几个”不是选择器的属性，是选完之后 <code>NodeList</code> 的 <code>.length</code>。</p>
+<h3 id="一个心得-3"><a href="#一个心得-3" class="headerlink" title="一个心得"></a>一个心得</h3><p>这一天最大的顿悟是**”stale closure” 的原理跟 React <code>useEffect</code> 完全一样**——箭头函数被创建那一刻，外部变量就被冻在闭包里。React 依赖数组坑就是这个东西，只是被 hooks 的壳子包着不明显。今天在原生 JS 里提前撞了一次，以后学 React 就是”哦，这个见过”。</p>
+<p>另一个体感是**”代码变数据”**：一串结构一致的重复代码 → 抽成 <code>[&#123; check, message &#125;, ...]</code> + <code>forEach</code>，这是校验库、路由表、菜单配置、表格列定义所有”配置化”代码的地基。学会这个之后再看框架源码，看到的不是魔法而是同一个模式在不同层次上反复出现。</p>
+<h2 id="2026-7-24-把校验段抽成通用函数"><a href="#2026-7-24-把校验段抽成通用函数" class="headerlink" title="2026.7.24 把校验段抽成通用函数"></a>2026.7.24 把校验段抽成通用函数</h2><p>背景：接着 7.10 的规则表版本继续往前推。这一次不是”多加一条规则”，是把整段校验逻辑抽成独立函数，再把它变得能给任何表单复用。四小步走完，函数抽象这件事第一次真正落地。</p>
+<h3 id="第一步-·-抽函数（Extract-Function）"><a href="#第一步-·-抽函数（Extract-Function）" class="headerlink" title="第一步 · 抽函数（Extract Function）"></a>第一步 · 抽函数（Extract Function）</h3><p>把 submit 回调里的一整段校验逻辑——<code>forEach</code> 遍历 <code>rules</code>、<code>errors</code> 收集、<code>innerHTML</code> 显示、<code>return</code> 拦截——打包成独立函数 <code>validate</code>，放在顶层。submit 回调里只保留一句 <code>if (!validate()) return</code>。改造完后 submit 回调瘦了一半，一眼看出主流程是”校验 → 拍快照 → 延迟 → 渲染卡片”。</p>
+<h3 id="第二步-·-参数化"><a href="#第二步-·-参数化" class="headerlink" title="第二步 · 参数化"></a>第二步 · 参数化</h3><p>页面新增登录表单，规则和错误显示区都不一样。这时候发现 <code>validate</code> 跟 profile 那套 DOM 绑死了——函数里写死的 <code>rules</code>、<code>pfError</code> 改成形参 <code>rules</code>、<code>errorEl</code>。同一个 <code>validate</code>，两处调用传不同实参：<code>validate(profileRules, pfError)</code> 和 <code>validate(loginRules, loginError)</code>。</p>
+<h3 id="第三步-·-单一职责"><a href="#第三步-·-单一职责" class="headerlink" title="第三步 · 单一职责"></a>第三步 · 单一职责</h3><p>写着写着发现 <code>validate</code> 同时干了两件事——校验 + 显示错误。把”显示”那段从函数里搬出来放回调用者身边。<code>validate</code> 只留下”跑规则收集错误”，参数只剩 <code>rules</code>，返回值从 <code>true</code> &#x2F; <code>false</code> 改成 <code>errors</code> 数组。空数组代表通过、非空代表有错——信息量比布尔值大一个数量级。</p>
+<h3 id="第四步-·-复用验证"><a href="#第四步-·-复用验证" class="headerlink" title="第四步 · 复用验证"></a>第四步 · 复用验证</h3><p>再加一个留言表单，从 DOM → <code>msgRules</code> → submit 回调整套流程走一遍。<strong>整个过程没有改 <code>validate</code> 函数一行</strong>——证明抽象是真的通用。</p>
+<h3 id="踩坑清单-7"><a href="#踩坑清单-7" class="headerlink" title="踩坑清单"></a>踩坑清单</h3><p><strong>坑 1 · 抽函数只搬代码没建函数壳</strong></p>
+<p>把 <code>validate</code> 里的代码剪出来直接丢在文件顶层——没有 <code>function xxx() &#123;&#125;</code> 包裹。刷新页面立刻执行，还读到未定义的变量。修法：抽函数分两步，先建空壳 <code>function validate() &#123;&#125;</code>，再把代码搬进壳里。</p>
+<p><strong>坑 2 · 函数看不见变量（词法作用域）</strong></p>
+<p>把 <code>validate</code> 放顶层、<code>rules</code> 和 <code>errors</code> 留在 submit 回调里 → 函数抬头找不到这两个变量，报 <code>errors is not defined</code>。词法作用域按”写在哪”找，不按”何时调用”找。修法：<code>rules</code> 搬到顶层（跟 DOM 常量平级），<code>errors</code> 留在函数里（每次调用新建）。</p>
+<p><strong>坑 3 · <code>return</code> 跳错层</strong></p>
+<p><code>validate</code> 里的 <code>return</code> 只能跳出 <code>validate</code> 自己，跳不出 submit 回调。校验没通过还是继续拍快照 + <code>setTimeout</code>。修法：<code>validate</code> 用返回值告诉外面结果（<code>true</code> &#x2F; <code>false</code>），submit 里用 <code>if (!validate()) return</code> 拦下。</p>
+<p><strong>坑 4 · 布尔方向反了</strong></p>
+<p><code>if (errors.length &gt; 0) &#123; ... return true &#125;</code>——有错的时候告诉外面”通过了”。修法：<code>true</code> &#x3D; 通过、<code>false</code> &#x3D; 没通过（按英文单词字面意思用）。有错 <code>return false</code>，没错 <code>return true</code>。</p>
+<p><strong>坑 5 · <code>if (!validate()) return</code> 卡在”false 是关是开”</strong></p>
+<p>一直纠结布尔值到底是”开”还是”关”。修法：读大白话——“如果校验没通过就 return”。<code>!validate()</code> &#x3D; “没通过”，<code>if () return</code> &#x3D; “就滚”。跟 7.10 的守卫子句是同一个 pattern。</p>
+<p><strong>坑 6 · 把成功分支当成错误分支</strong></p>
+<p>以为 submit 里 <code>if (!validate()) return</code> 后面的 <code>setTimeout</code> + 卡片渲染是”错误提示逻辑”。其实错误提示在 <code>validate</code> 函数内部就贴到页面上了，submit 后面的代码全是”通过后才跑的成功分支”。搞清楚这一点后第一步才算真通关。</p>
+<p><strong>坑 7 · 参数当变量重新声明</strong></p>
+<p><code>function validate(rules, errorEl) &#123; const rules = [...] &#125;</code>——参数已经是函数私有变量，再 <code>const</code> 声明会报错。参数就是函数的私有变量，函数体里直接用，不用再声明。</p>
+<p><strong>坑 8 · 抽通用函数抽了个”半吊子”</strong></p>
+<p>函数签名写了 <code>(rules, errorEl)</code>，函数体里还用具体名字 <code>loginError.innerHTML</code>——等于没参数化。修法：形参写了就要用，函数体里出现具体名字（<code>loginError</code>、<code>pfError</code>）就说明没抽干净。</p>
+<p><strong>坑 9 · 把对象当函数调用</strong></p>
+<p><code>rules.forEach(rule =&gt; &#123; if (rule()) ... &#125;)</code>——<code>rule</code> 是对象 <code>&#123; check, message &#125;</code>，不是函数。报错 <code>rule is not a function</code>。修法：<code>rule.check()</code>——调用对象里的 <code>check</code> 属性。</p>
+<p><strong>坑 10 · 对象字面量里用了 <code>=</code> 不是 <code>:</code></strong></p>
+<p><code>&#123; check: () =&gt; ..., message = &#39;...&#39; &#125;</code>——<code>message</code> 后面写成等号 → 语法错误。对象里键值之间用冒号，等号是变量赋值。</p>
+<p><strong>坑 11 · 边界条件符号选错</strong></p>
+<p>“5-50 字以内”写成 <code>length &lt;= 5 || length &gt;= 50</code> → 正好 5 字和 50 字都被判为错。题目说”允许的边界”用 <code>&lt;</code> &#x2F; <code>&gt;</code>，不用 <code>&lt;=</code> &#x2F; <code>&gt;=</code>。</p>
+<p><strong>坑 12 · event 类型选错</strong></p>
+<p>表单校验监听 <code>submit</code> 而不是 <code>click</code>——<code>click</code> 抓不到回车键提交，<code>preventDefault()</code> 也只对 <code>submit</code> 事件有效。这个坑 7.17 踩过一次，今天又踩了。</p>
+<h3 id="一个心得-4"><a href="#一个心得-4" class="headerlink" title="一个心得"></a>一个心得</h3><p>这一天最大的收获是**”通用性验证”这件事<strong>：一个函数抽得干不干净，不是自己看着觉得”应该没问题”，而是</strong>换个场景直接拿来用，一行不改就跑通**。第三个表单从 DOM 到规则表到 submit 回调重写了一遍，<code>validate</code> 那 5 行代码完全没动——那一刻才真正相信这个抽象是有效的。</p>
+<p>另一个体感是”抽函数三步走”和”函数间沟通三通道”这两条口诀。以前看别人的代码觉得函数拆得挺自然，自己一动手就发现每一步都有坑：不建壳直接搬、参数留一半具体、单一职责糊在一起。把这些坑踩一遍，下次抽函数的时候手感就完全不一样了。</p>
 
                 </div>
 
